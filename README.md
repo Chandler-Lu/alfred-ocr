@@ -24,14 +24,13 @@ pip install cnocr
 
 ## 说明
 
-1. [cnocr](https://github.com/breezedeus/cnocr) 项目的一切安装方法请依据该项目 [README](https://github.com/breezedeus/cnocr/blob/master/README.md)。
+1. [CNOCR](https://github.com/breezedeus/cnocr) 项目的一切安装方法请依据该项目 [README](https://github.com/breezedeus/cnocr/blob/master/README.md)。
 2. [Baidu-OCR](https://ai.baidu.com/tech/ocr) 需自行申请 api_key 和 secret_key
 3. 请自行修改 Python 路径
 
 ## TODO
-! [ ] 完善代码
-! [ ] 完善文档
-! [ ] ~~有时间~~尝试接入更多 OCR 平台
+- [ ] 完善代码和文档
+- [ ] 有(bing)时(mei)间(you)尝试接入更多 OCR 平台
 
 ## 致谢
 

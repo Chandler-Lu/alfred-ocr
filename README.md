@@ -1,5 +1,7 @@
 # alfred-ocr
 
+![Demo](./demo.gif)
+
 ## 说明
 
 1. 目前只用了 [cnocr](https://github.com/breezedeus/cnocr) 项目，一切安装方法请依据该项目 [README](https://github.com/breezedeus/cnocr/blob/master/README.md)。

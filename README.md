@@ -1,12 +1,37 @@
 # alfred-ocr
 
+> 由于没有项目开发经验，代码的鲁棒性不足，肯定会有一些没能处理的异常，欢迎您的使用和反馈～
+
+## 版本号 (2019-11-27 00:11)
+
+1.1
+
+## 接口
+
+1. CNOCR (只支持 Python3)
+2. Baidu OCR (考虑到不能准确判别英文和中文逗号，所有的英文逗号将被全部替换为中文逗号；但由于句点和括号可能存在其他用途，不做处理)
+
+## Demo
+
 ![Demo](./demo.gif)
+
+## 依赖
+
+``` python
+pip install requests
+pip install cnocr
+```
 
 ## 说明
 
-1. 目前只用了 [cnocr](https://github.com/breezedeus/cnocr) 项目，一切安装方法请依据该项目 [README](https://github.com/breezedeus/cnocr/blob/master/README.md)。
-2. 请自行修改 Python 路径
-3. 暂无时间写文档和优化，~~有时间~~会尝试支持一下其他的在线 OCR 平台。
+1. [cnocr](https://github.com/breezedeus/cnocr) 项目的一切安装方法请依据该项目 [README](https://github.com/breezedeus/cnocr/blob/master/README.md)。
+2. [Baidu-OCR](https://ai.baidu.com/tech/ocr) 需自行申请 api_key 和 secret_key
+3. 请自行修改 Python 路径
+
+## TODO
+! [ ] 完善代码
+! [ ] 完善文档
+! [ ] ~~有时间~~尝试接入更多 OCR 平台
 
 ## 致谢
 

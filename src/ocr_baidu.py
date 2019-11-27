@@ -1,12 +1,13 @@
 # -*- coding: UTF-8 -*-
 import sys
+import os
 import requests
 import json
 from base64 import b64encode
 
 pic_path = sys.argv[1]
-baidu_api_key = sys.argv[2]
-baidu_secret_key = sys.argv[3]
+baidu_api_key = os.environ["baidu_api_key"]
+baidu_secret_key = os.environ["baidu_secret_key"]
 
 
 def convert_image_base64():
@@ -46,6 +47,7 @@ def baidu_ocr():
             if index != (len(response_json) - 1):
                 print()
     except requests.exceptions.RequestException:
-        print('HTTP Request failed')
+        print('Request failed')
+
 
 baidu_ocr()

@@ -1,10 +1,13 @@
 # alfred-ocr
 
-> 由于没有项目开发经验，代码的鲁棒性不足，肯定会有一些没能处理的异常，欢迎您的使用和反馈～
+> 由于没有项目开发经验，代码的鲁棒性不足，肯定会有一些没能处理的异常，欢迎您的使用和反馈。觉得好用的请点个 star，谢谢～
 
-## 版本号 (2019-11-27 14:09)
+## 版本号
 
-2.2
+2.3 (2019-11-27 19:36)
+
+- Python 路径由环境变量直接提供（需自行修改）
+- api_key 由 Python 直接获取环境变量
 
 ## Demo
 
@@ -12,8 +15,19 @@
 
 ## 接口
 
-1. CNOCR (只支持 Python3)
-2. Baidu OCR (考虑到不能准确判别英文和中文逗号，所有的英文逗号将被全部替换为中文逗号；但由于句点和括号可能存在其他用途，不做处理)
+### CNOCR
+
+#### 说明
+
+1. 只支持 Python3
+2. [CNOCR](https://github.com/breezedeus/cnocr) 项目的一切安装方法请依据该项目 [README](https://github.com/breezedeus/cnocr/blob/master/README.md)。
+
+### Baidu OCR
+
+#### 说明
+
+1. 考虑到不能准确判别中英文符号，所有的英文逗号将被全部替换为中文逗号；但由于句点和括号可能存在其他用途，不做处理。
+2. [Baidu OCR](https://ai.baidu.com/tech/ocr) 需自行申请 api_key 和 secret_key。
 
 ## 依赖
 
@@ -29,13 +43,8 @@ pip install cnocr
 pip install requests
 ```
 
-## 说明
-
-1. [CNOCR](https://github.com/breezedeus/cnocr) 项目的一切安装方法请依据该项目 [README](https://github.com/breezedeus/cnocr/blob/master/README.md)。
-2. [Baidu-OCR](https://ai.baidu.com/tech/ocr) 需自行申请 api_key 和 secret_key
-3. 请自行修改 Python 路径
-
 ## TODO
+
 - [ ] 完善代码和文档
 - [ ] 有(bing)时(mei)间(you)尝试接入更多 OCR 平台
 

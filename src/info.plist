@@ -25,19 +25,6 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>4FF0A4F8-0C41-4B22-A0E1-3E8DF6907905</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-				<key>vitoclose</key>
-				<false/>
-			</dict>
-		</array>
-		<key>4FF0A4F8-0C41-4B22-A0E1-3E8DF6907905</key>
-		<array>
-			<dict>
-				<key>destinationuid</key>
 				<string>0B59C0D3-DF1F-4754-A97E-A1E2CAB72CB5</string>
 				<key>modifiers</key>
 				<integer>0</integer>
@@ -129,7 +116,7 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>4FF0A4F8-0C41-4B22-A0E1-3E8DF6907905</string>
+				<string>0B59C0D3-DF1F-4754-A97E-A1E2CAB72CB5</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -142,7 +129,7 @@
 	<key>createdby</key>
 	<string>Chandler Lu</string>
 	<key>description</key>
-	<string>Capture then OCR.</string>
+	<string>OCR using multiple interfaces for Alfred.</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
@@ -152,13 +139,34 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>keyword</key>
+				<string>oo</string>
+				<key>subtext</key>
+				<string></string>
+				<key>text</key>
+				<string>Screenshot to Recognise</string>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>9D945DC9-84D7-4664-B35F-3139E4452494</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>concurrently</key>
 				<false/>
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>script</key>
 				<string>if [ -f "./screenshot.png" ]; then
-  ~/anaconda3/bin/python3 ./ocr_cnocr.py ./screenshot.png
+  $PYTHON_PATH ./ocr_cnocr.py ./screenshot.png
   rm ./screenshot.png
 fi</string>
 				<key>scriptargtype</key>
@@ -201,53 +209,6 @@ fi</string>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>argumenttype</key>
-				<integer>2</integer>
-				<key>keyword</key>
-				<string>oo</string>
-				<key>subtext</key>
-				<string></string>
-				<key>text</key>
-				<string>Screenshot to Recognise</string>
-				<key>withspace</key>
-				<false/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.input.keyword</string>
-			<key>uid</key>
-			<string>9D945DC9-84D7-4664-B35F-3139E4452494</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>concurrently</key>
-				<false/>
-				<key>escaping</key>
-				<integer>102</integer>
-				<key>script</key>
-				<string>if [ -f "./screenshot.png" ]; then
-  ~/anaconda3/bin/python3 ./ocr_baidu.py ./screenshot.png $baidu_api_key $baidu_secret_key
-  rm ./screenshot.png
-fi</string>
-				<key>scriptargtype</key>
-				<integer>1</integer>
-				<key>scriptfile</key>
-				<string></string>
-				<key>type</key>
-				<integer>5</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.script</string>
-			<key>uid</key>
-			<string>0B59C0D3-DF1F-4754-A97E-A1E2CAB72CB5</string>
-			<key>version</key>
-			<integer>2</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
 				<key>concurrently</key>
 				<false/>
 				<key>escaping</key>
@@ -267,6 +228,44 @@ fi</string>
 			<string>CB6DFA53-6EBA-4514-B3DF-9D29D00AB83C</string>
 			<key>version</key>
 			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<true/>
+				<key>removeextension</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>Capture then OCR</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>B2D69546-2C9C-4008-B87B-5083669593BD</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>autopaste</key>
+				<false/>
+				<key>clipboardtext</key>
+				<string>{query}</string>
+				<key>transient</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.clipboard</string>
+			<key>uid</key>
+			<string>47CB8905-BA80-42D9-A0AA-4D32152F0754</string>
+			<key>version</key>
+			<integer>3</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -302,81 +301,28 @@ fi</string>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>autopaste</key>
+				<key>concurrently</key>
 				<false/>
-				<key>clipboardtext</key>
-				<string>{query}</string>
-				<key>transient</key>
-				<false/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.output.clipboard</string>
-			<key>uid</key>
-			<string>47CB8905-BA80-42D9-A0AA-4D32152F0754</string>
-			<key>version</key>
-			<integer>3</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>lastpathcomponent</key>
-				<false/>
-				<key>onlyshowifquerypopulated</key>
-				<true/>
-				<key>removeextension</key>
-				<false/>
-				<key>text</key>
-				<string>{query}</string>
-				<key>title</key>
-				<string>Capture then OCR</string>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.output.notification</string>
-			<key>uid</key>
-			<string>B2D69546-2C9C-4008-B87B-5083669593BD</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>argument</key>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>if [ -f "./screenshot.png" ]; then
+  $PYTHON_PATH ./ocr_baidu.py ./screenshot.png
+  rm ./screenshot.png
+fi</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
 				<string></string>
-				<key>variables</key>
-				<dict>
-					<key>baidu_api_key</key>
-					<string>{var:baidu_api_key}</string>
-					<key>baidu_secret_key</key>
-					<string>{var:baidu_secret_key}</string>
-				</dict>
+				<key>type</key>
+				<integer>5</integer>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.utility.argument</string>
+			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
-			<string>4FF0A4F8-0C41-4B22-A0E1-3E8DF6907905</string>
+			<string>0B59C0D3-DF1F-4754-A97E-A1E2CAB72CB5</string>
 			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>argumenttype</key>
-				<integer>2</integer>
-				<key>keyword</key>
-				<string>ooc</string>
-				<key>subtext</key>
-				<string></string>
-				<key>text</key>
-				<string>Recognise from Clipboard</string>
-				<key>withspace</key>
-				<false/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.input.keyword</string>
-			<key>uid</key>
-			<string>AC0AD26B-C27F-4E05-802D-B2DEA72EEB1E</string>
-			<key>version</key>
-			<integer>1</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -401,10 +347,31 @@ fi</string>
 			<key>version</key>
 			<integer>2</integer>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>keyword</key>
+				<string>ooc</string>
+				<key>subtext</key>
+				<string></string>
+				<key>text</key>
+				<string>Recognise from Clipboard</string>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>AC0AD26B-C27F-4E05-802D-B2DEA72EEB1E</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
 	</array>
 	<key>readme</key>
 	<string>1. CNOCR (只支持 Python3)
-2. Baidu OCR (考虑到不能准确判别英文和中文逗号，所有的英文逗号将被全部替换为中文逗号；但由于句点和括号可能存在其他用途，不做处理)</string>
+2. Baidu OCR (考虑到不能准确判别中英文符号，所有的英文逗号将被全部替换为中文逗号；但由于句点和括号可能存在其他用途，不做处理)</string>
 	<key>uidata</key>
 	<dict>
 		<key>0B59C0D3-DF1F-4754-A97E-A1E2CAB72CB5</key>
@@ -431,13 +398,6 @@ fi</string>
 			<integer>220</integer>
 			<key>ypos</key>
 			<integer>465</integer>
-		</dict>
-		<key>4FF0A4F8-0C41-4B22-A0E1-3E8DF6907905</key>
-		<dict>
-			<key>xpos</key>
-			<integer>390</integer>
-			<key>ypos</key>
-			<integer>345</integer>
 		</dict>
 		<key>5655678A-0732-4F92-99FE-43D4990C750D</key>
 		<dict>
@@ -497,6 +457,8 @@ fi</string>
 	</dict>
 	<key>variables</key>
 	<dict>
+		<key>PYTHON_PATH</key>
+		<string>/Users/chandler/anaconda3/bin/python3</string>
 		<key>baidu_api_key</key>
 		<string>rmMynojL9KapDOikDTgKlImy</string>
 		<key>baidu_secret_key</key>
@@ -506,9 +468,10 @@ fi</string>
 	<array>
 		<string>baidu_api_key</string>
 		<string>baidu_secret_key</string>
+		<string>PYTHON_PATH</string>
 	</array>
 	<key>version</key>
-	<string>2.1</string>
+	<string>2.3</string>
 	<key>webaddress</key>
 	<string>https://github.com/Chandler-Lu/alfred-ocr</string>
 </dict>

@@ -1,6 +1,14 @@
+'''
+@Description: ocr_baidu
+@version: 2.5
+@Author: Chandler Lu
+@Date: 2019-11-26 23:52:36
+@LastEditTime: 2019-11-28 23:11:51
+'''
 # -*- coding: UTF-8 -*-
 import sys
 import os
+import time
 import requests
 import json
 from base64 import b64encode
@@ -17,13 +25,28 @@ def convert_image_base64():
         return pic_base64
 
 
-def get_baidu_token():
+def request_baidu_token():
     baidu_get_token_url = 'https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=' + \
         baidu_api_key + '&client_secret=' + baidu_secret_key
-    response = requests.get(baidu_get_token_url)
-    if response:
-        token = response.json().get('access_token')
+    api_message = requests.get(baidu_get_token_url)
+    if api_message:
+        with open("./baidu_api_token.json", "w") as json_file:
+            json.dump(api_message.json(), json_file)
+            json_file.close()
+        token = api_message.json().get('access_token')
         return token
+
+
+def return_baidu_token():
+    if (not os.path.exists('./baidu_api_token.json') or (int(time.time() - os.stat("./baidu_api_token.json").st_mtime) >= 259200)):
+        return request_baidu_token()
+    else:
+        with open("./baidu_api_token.json", 'r') as json_file:
+            api_message_JSON = json.load(json_file)
+            if 'access_token' in api_message_JSON:
+                return api_message_JSON.get('access_token')
+            else:
+                return request_baidu_token()
 
 
 def baidu_ocr():
@@ -32,7 +55,7 @@ def baidu_ocr():
         response = requests.post(
             url=baidu_ocr_api,
             params={
-                "access_token": get_baidu_token(),
+                "access_token": return_baidu_token(),
             },
             headers={
                 "Content-Type": "application/x-www-form-urlencoded",

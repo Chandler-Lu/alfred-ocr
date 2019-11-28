@@ -24,15 +24,17 @@
 
 #### 说明
 
-1. 只支持 Python3
-2. [CNOCR](https://github.com/breezedeus/cnocr) 项目的一切安装方法请依据该项目 [README](https://github.com/breezedeus/cnocr/blob/master/README.md)。
+1. 项目地址: [CNOCR](https://github.com/breezedeus/cnocr)
+2. 只支持 Python3
+3. 一切安装方法请依据该项目 [README](https://github.com/breezedeus/cnocr/blob/master/README.md)。
 
 ### Baidu OCR
 
 #### 说明
 
-1. 考虑到不能准确判别中英文符号，所有的英文逗号将被全部替换为中文逗号；但由于句点和括号可能存在其他用途，不做处理。
-2. [Baidu OCR](https://ai.baidu.com/tech/ocr) 需自行申请 api_key 和 secret_key。
+1. 官方地址: [Baidu OCR](https://ai.baidu.com/tech/ocr)
+2. 考虑到不能准确判别中英文符号，所有的英文逗号将被全部替换为中文逗号；但由于句点和括号可能存在其他用途，不做处理。
+3. 需自行申请 api_key 和 secret_key。
 
 ## 依赖
 
@@ -52,7 +54,7 @@ pip install requests
 
 - [ ] 完善代码和文档
 - [ ] 有(bing)时(mei)间(you)尝试接入更多 OCR 平台
-- [ ] 选择多文件后 OCR
+- [ ] 多文件识别
 - [ ] 截图翻译
 
 ## 致谢

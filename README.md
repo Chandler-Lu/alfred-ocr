@@ -1,22 +1,25 @@
 # alfred-ocr
 
-> 由于没有项目开发经验，代码的鲁棒性不足，肯定会有一些没能处理的异常，欢迎您的使用和反馈。觉得好用的请点个 star，谢谢～
+> 由于没有项目开发经验，肯定会有一些没能处理的异常，欢迎您的使用和反馈。觉得好用的请点个 star，谢谢～
 
-## 版本号
+## Demo
+
+![Demo](./demo.gif)
+
+## 版本
 
 2.4 (2019-11-28 10:49)
 
 - 临时截图文件移动至`/tmp/ocr_screenshot.png`
 - 不再使用`rm`删除临时文件
 
-2.3 (2019-11-27 19:36)
+<details>
+  <summary>历史版本</summary>
+  2.3 (2019-11-27 19:36)
 
 - Python 路径由环境变量直接提供（需自行修改）
 - api_key 由 Python 直接获取环境变量
-
-## Demo
-
-![Demo](./demo.gif)
+  </details>
 
 ## 接口
 
@@ -40,13 +43,13 @@
 
 ### CNOCR
 
-``` python
+```python
 pip install cnocr
 ```
 
 ### 其他
 
-``` python
+```python
 pip install requests
 ```
 

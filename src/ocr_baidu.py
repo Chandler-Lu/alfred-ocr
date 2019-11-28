@@ -47,7 +47,12 @@ def baidu_ocr():
             if index != (len(response_json) - 1):
                 print()
     except requests.exceptions.RequestException:
-        print('Request failed')
+        print('Request failed!')
+
+
+def remove_pic():
+    os.remove(pic_path)
 
 
 baidu_ocr()
+remove_pic()

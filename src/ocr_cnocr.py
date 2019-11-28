@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 import sys
+import os
 from cnocr import CnOcr
 
 pic_path = sys.argv[1]
@@ -13,3 +14,5 @@ for r in pic[:-1]:
 for r in pic[-1]:
     for c in r:
         print(c, end='')
+
+os.remove(pic_path)

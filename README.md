@@ -51,6 +51,8 @@
 
 ### Tencent Youtu（腾讯优图）
 
+> 已知问题：腾讯优图仅支持 1MB 以内的图片，而目前暂不会进行图片压缩，这将导致超大图片无返回。
+
 #### 说明
 
 1. 官方地址: [Tencent Youtu](https://ai.qq.com/product/ocr.shtml#common)
@@ -74,7 +76,7 @@ pip install requests
 ## TODO
 
 - [ ] 完善代码和文档
-- [ ] 有(bing)时(mei)间(you)尝试接入更多 OCR 平台
+- [ ] 接入更多 OCR 平台
 - [ ] 多文件识别
 - [ ] 截图翻译
 

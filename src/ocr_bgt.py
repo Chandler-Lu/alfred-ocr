@@ -3,7 +3,7 @@
 @version: 2.0
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-@LastEditTime: 2019-12-01 00:10:01
+@LastEditTime: 2019-12-01 10:29:27
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -101,11 +101,30 @@ def baidu_ocr_qrcode(pic_path):
         },
     )
     if (response.status_code == 200):
-        response_json = response.json().get('codes_result')[0].get('text')
-        for index in range(len(response_json)):
-            print(response_json[index], end='')
-            if index != (len(response_json) - 1):
-                print()
+        response_json = response.json().get('codes_result')
+        # 空二维码
+        if (len(response_json) < 1):
+            print('Empty QR Code!')
+        # 单二维码
+        elif (len(response_json) == 1):
+            text_array = response_json[0].get('text')
+            for index in range(len(text_array)):
+                print(text_array[index], end='')
+                if index != (len(text_array) - 1):
+                    print()
+        # 多二维码
+        else:
+            for index_qrcode in range(len(response_json)):
+                text_array = response_json[index_qrcode].get('text')
+                print('Group ' + str(index_qrcode + 1))
+                for index_text in range(len(text_array)):
+                    print(text_array[index_text], end='')
+                    # 组内格式控制
+                    if (index_qrcode != (len(response_json) - 1)):
+                        print()
+                # 组间格式控制
+                if (index_qrcode != (len(response_json) - 1)):
+                    print()
     else:
         print('Request failed!')
 

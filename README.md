@@ -2,9 +2,13 @@
 
 > 觉得好用的请点个 star，谢谢～ 由于没有项目开发经验，肯定会有一些没能处理的异常，欢迎您的使用和反馈。
 
-## Demo
+## OCR Demo
 
-![Demo](./demo.gif)
+![Demo_OCR](./examples/demo_ocr.gif)
+
+## Translate Demo
+
+![Demo_Trans](./examples/demo_trans.gif)
 
 ## 版本
 

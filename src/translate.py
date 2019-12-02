@@ -3,7 +3,7 @@
 @version: 1.0
 @Author: Chandler Lu
 @Date: 2019-12-01 10:29:27
-@LastEditTime: 2019-12-01 21:27:17
+@LastEditTime: 2019-12-02 10:17:33
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -14,10 +14,10 @@ import json
 
 translate_origin = sys.argv[1]
 
-# API
+# Key
 caiyun_translate_token = os.environ["caiyun_token"]
 
-# Key
+# API
 caiyun_translate_api = "http://api.interpreter.caiyunai.com/v1/translator"
 
 

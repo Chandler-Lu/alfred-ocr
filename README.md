@@ -55,6 +55,18 @@
 - 二维码识别 (百度)
 - 文本翻译 (彩云小译)
 
+## 使用（必看！！）
+
+1. 这**不是**一个开箱即用的产品！
+2. 您至少要拥有 macOS Alfred 3 及以上版本，同时安装 Python 3 及相应的依赖模块。
+3. 您需要将您的 Python 3 路径填写在`PYTHON_PATH`处，如果您使用默认的`python3`，请直接填入`python3`。
+4. 您需要申请并将对应接口的配置填入环境变量。
+
+### 设置方式
+
+![env_button](http://img.yeslu.cn/alfred/env_button.png)
+![env_value](http://img.yeslu.cn/alfred/env_value.png)
+
 ## 接口
 
 ### [CNOCR](https://github.com/breezedeus/cnocr)

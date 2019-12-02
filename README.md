@@ -1,4 +1,4 @@
-# Alfred-OCR (Combined Translation Function)
+# Alfred-OCR (Combined Translation)
 
 > 觉得好用的请点个 star，谢谢～ 由于没有项目开发经验，肯定会有一些没能处理的异常，欢迎您的使用和反馈。
 

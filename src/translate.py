@@ -1,14 +1,15 @@
 '''
 @Description: translate_caiyun
-@version: 1.0
+@version: 1.1
 @Author: Chandler Lu
 @Date: 2019-12-01 10:29:27
-@LastEditTime: 2019-12-02 10:17:33
+@LastEditTime: 2019-12-03 00:53:40
 '''
 # -*- coding: UTF-8 -*-
 import sys
 import os
 import time
+import re
 import requests
 import json
 
@@ -18,20 +19,24 @@ translate_origin = sys.argv[1]
 caiyun_translate_token = os.environ["caiyun_token"]
 
 # API
-caiyun_translate_api = "http://api.interpreter.caiyunai.com/v1/translator"
+caiyun_translate_api = 'http://api.interpreter.caiyunai.com/v1/translator'
 
 
-def caiyun_translate(source):
+def caiyun_translate(chinese_tag, source):
+    if (chinese_tag == 1):
+        trans_type = 'zh2en'
+    else:
+        trans_type = 'auto2zh'
     response = requests.post(
         url=caiyun_translate_api,
         headers={
-            "Content-Type": "application/json",
-            "X-Authorization": "token " + caiyun_translate_token,
+            'Content-Type': 'application/json',
+            'X-Authorization': 'token ' + caiyun_translate_token,
         },
         data=json.dumps({
             "source": source,
             "request_id": str(time.time()),
-            "trans_type": "auto2zh",
+            "trans_type": trans_type,
             "detect": "True"
         })
     )
@@ -54,5 +59,9 @@ def show_on_screen(title, subtitle):
 
 
 if __name__ == "__main__":
-    translate_result = caiyun_translate(translate_origin)
+    if (re.compile(u'[\u4e00-\u9fa5]+').search(translate_origin[0:10])):
+        chinese_tag = 1
+    else:
+        chinese_tag = 0
+    translate_result = caiyun_translate(chinese_tag, translate_origin)
     print(show_on_screen(translate_result, translate_origin))

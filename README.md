@@ -4,11 +4,11 @@
 
 ## OCR Demo
 
-![Demo_OCR](./examples/demo_ocr.gif)
+![Demo_OCR](http://img.yeslu.cn/alfred/demo_ocr.gif))
 
 ## Translate Demo
 
-![Demo_Trans](./examples/demo_trans.gif)
+![Demo_Trans](http://img.yeslu.cn/alfred/demo_trans.gif)
 
 ## 版本
 

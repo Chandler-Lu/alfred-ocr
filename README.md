@@ -95,7 +95,7 @@
 
 #### 触发
 
-1. 文本翻译: 使用关键词 tc (translate caiyun) + 需要翻译的内容来触发。
+1. 文本翻译: 使用关键词 tc (translate caiyun) + 需要翻译的内容来触发；输出结果可通过 command + v 复制。
 
 #### 说明
 
@@ -126,8 +126,8 @@ pip install requests
 
 - [ ] 接入更多 API
   - [ ] Google
-  - [x] 彩云小译
   - [x] 腾讯优图
+  - [x] 彩云小译
 - [ ] 多文件识别
 - [ ] 截图翻译
 - [x] 二维码识别

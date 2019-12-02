@@ -4,7 +4,7 @@
 
 ## OCR Demo
 
-![Demo_OCR](http://img.yeslu.cn/alfred/demo_ocr.gif))
+![Demo_OCR](http://img.yeslu.cn/alfred/demo_ocr.gif)
 
 ## Translate Demo
 

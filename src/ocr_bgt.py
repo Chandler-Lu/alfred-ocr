@@ -3,12 +3,13 @@
 @version: 2.0
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-@LastEditTime: 2019-12-01 10:29:27
+@LastEditTime: 2019-12-03 23:04:31
 '''
 # -*- coding: UTF-8 -*-
 import sys
 import os
 import time
+import re
 import requests
 import json
 from base64 import b64encode
@@ -17,17 +18,17 @@ OCR_SELECT = sys.argv[1]
 PIC_PATH = sys.argv[2]
 
 # Key
-baidu_api_key = os.environ["baidu_api_key"]
-baidu_secret_key = os.environ["baidu_secret_key"]
-tencent_youtu_appid = os.environ["tencent_youtu_appid"]
-tencent_youtu_appkey = os.environ["tencent_youtu_appkey"]
+BAIDU_API_KEY = os.environ["baidu_api_key"]
+BAIDU_SECRET_KEY = os.environ["baidu_secret_key"]
+TENCENT_YOUTU_APPID = os.environ["tencent_youtu_appid"]
+TENCENT_YOUTU_APPKEY = os.environ["tencent_youtu_appkey"]
 
 # API
-baidu_get_token_url = 'https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=' + \
-    baidu_api_key + '&client_secret=' + baidu_secret_key
-baidu_ocr_api = 'https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic'
-baidu_qrcode_api = 'https://aip.baidubce.com/rest/2.0/ocr/v1/qrcode'
-tencent_youtu_ocr_api = 'https://api.ai.qq.com/fcgi-bin/ocr/ocr_generalocr'
+BAIDU_GET_TOKEN_URL = 'https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=' + \
+    BAIDU_API_KEY + '&client_secret=' + BAIDU_SECRET_KEY
+BAIDU_OCR_API = 'https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic'
+BAIDU_QRCODE_API = 'https://aip.baidubce.com/rest/2.0/ocr/v1/qrcode'
+TENCENT_YOUTU_OCR_API = 'https://api.ai.qq.com/fcgi-bin/ocr/ocr_generalocr'
 
 
 def convert_image_base64(pic_path):
@@ -43,7 +44,7 @@ Baidu OCR Start
 
 
 def request_baidu_token():
-    api_message = requests.get(baidu_get_token_url)
+    api_message = requests.get(BAIDU_GET_TOKEN_URL)
     if api_message:
         with open("./baidu_api_token.json", "w") as json_file:
             json.dump(api_message.json(), json_file)
@@ -66,7 +67,7 @@ def return_baidu_token():
 
 def baidu_ocr(pic_path):
     response = requests.post(
-        url=baidu_ocr_api,
+        url=BAIDU_OCR_API,
         params={
             "access_token": return_baidu_token(),
         },
@@ -78,18 +79,15 @@ def baidu_ocr(pic_path):
         },
     )
     if (response.status_code == 200):
-        response_json = response.json().get('words_result')
-        for index in range(len(response_json)):
-            print(response_json[index]['words'].replace(",", "，"), end='')
-            if index != (len(response_json) - 1):
-                print()
+        response_json = response.json()['words_result']
+        output_result('baidu_ocr', response_json)
     else:
         print('Request failed!')
 
 
 def baidu_ocr_qrcode(pic_path):
     response = requests.post(
-        url=baidu_qrcode_api,
+        url=BAIDU_QRCODE_API,
         params={
             "access_token": return_baidu_token(),
         },
@@ -102,6 +100,70 @@ def baidu_ocr_qrcode(pic_path):
     )
     if (response.status_code == 200):
         response_json = response.json().get('codes_result')
+        output_result('baidu_ocr_qrcode', response_json)
+    else:
+        print('Request failed!')
+
+
+'''
+Tencent Youtu OCR Start
+'''
+
+
+def request_tencent_youtu_sign(postdata, pic_path):
+    import hashlib
+    from urllib import parse
+    # 字典升序排序
+    dic = sorted(postdata.items(), key=lambda d: d[0])
+    # URL编码 + 拼接app_key
+    sign_text = parse.urlencode(dic) + '&app_key=' + TENCENT_YOUTU_APPKEY
+    # MD5 + 转换大写
+    sign = hashlib.md5(sign_text.encode('utf-8')).hexdigest().upper()
+    return sign
+
+
+def tencent_youtu_ocr(pic_path):
+    import random
+    import string
+    if (os.path.getsize(pic_path) > 1048576 and os.path.getsize(pic_path) < 4194304):
+        baidu_ocr(pic_path)
+        return
+    elif (os.path.getsize(pic_path) <= 1048576):
+        postdata = {'app_id': TENCENT_YOUTU_APPID, 'time_stamp': int(time.time()), 'nonce_str': ''.join(
+            random.choices(string.ascii_letters + string.digits, k=8)), 'image': convert_image_base64(pic_path)}
+        postdata['sign'] = request_tencent_youtu_sign(postdata, pic_path)
+        # 通知腾讯优图开始搞事
+        response = requests.post(
+            url=TENCENT_YOUTU_OCR_API,
+            headers={
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            data=postdata
+        )
+        if (response.status_code == 200):
+            response_json = response.json()['data']['item_list']
+            output_result('tencent_youtu_ocr', response_json)
+        else:
+            print('Request failed!')
+    else:
+        print('Too large!')
+
+
+def output_result(which_api, result_json):
+    response_json = result_json
+    if (which_api is 'baidu_ocr'):
+        for index in range(len(response_json)):
+            if (re.search(r'[\u4e00-\u9fa5+]', response_json[index]['words'][0:10])):
+                print(response_json[index]['words'].replace(
+                    ",", "，").replace("!", "！"), end='')
+            else:
+                print(response_json[index]['words'].replace(
+                    "，", ", ").replace("！", "!"), end='')
+            if (index != (len(response_json) - 1)):
+                if (not (re.search(r'[,|，|;|；]', response_json[index]['words'][-1])
+                         or re.search(r'[,|，|.|。|;|；]', response_json[index + 1]['words'][0:3]))):
+                    print()
+    elif (which_api is 'baidu_ocr_qrcode'):
         # 空二维码
         if (len(response_json) < 1):
             print('Empty QR Code!')
@@ -125,56 +187,12 @@ def baidu_ocr_qrcode(pic_path):
                 # 组间格式控制
                 if (index_qrcode != (len(response_json) - 1)):
                     print()
-    else:
-        print('Request failed!')
-
-
-'''
-Tencent Youtu OCR Start
-'''
-
-
-def request_tencent_youtu_sign(postdata, pic_path):
-    import hashlib
-    from urllib import parse
-    # 字典升序排序
-    dic = sorted(postdata.items(), key=lambda d: d[0])
-    # URL编码 + 拼接app_key
-    sign_text = parse.urlencode(dic) + '&app_key=' + tencent_youtu_appkey
-    # MD5 + 转换大写
-    sign = hashlib.md5(sign_text.encode('utf-8')).hexdigest().upper()
-    return sign
-
-
-def tencent_youtu_ocr(pic_path):
-    import random
-    import string
-    if (os.path.getsize(pic_path) > 1048576 and os.path.getsize(pic_path) < 4194304):
-        baidu_ocr(pic_path)
-        return
-    elif (os.path.getsize(pic_path) <= 1048576):
-        postdata = {'app_id': tencent_youtu_appid, 'time_stamp': int(time.time()), 'nonce_str': ''.join(
-            random.choices(string.ascii_letters + string.digits, k=8)), 'image': convert_image_base64(pic_path)}
-        postdata['sign'] = request_tencent_youtu_sign(postdata, pic_path)
-        # 通知腾讯优图开始搞事
-        response = requests.post(
-            url=tencent_youtu_ocr_api,
-            headers={
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            data=postdata
-        )
-        if (response.status_code == 200):
-            response_json = response.json().get('data').get('item_list')
-            for index in range(len(response_json)):
-                print(response_json[index]
-                      ['itemstring'].replace(",", "，"), end='')
-                if index != (len(response_json) - 1):
-                    print()
-        else:
-            print('Request failed!')
-    else:
-        print('Too large!')
+    elif (which_api is 'tencent_youtu_ocr'):
+        for index in range(len(response_json)):
+            print(response_json[index]
+                  ['itemstring'].replace(",", "，"), end='')
+            if index != (len(response_json) - 1):
+                print()
 
 
 def remove_pic(pic_path):

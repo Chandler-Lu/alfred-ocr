@@ -3,7 +3,7 @@
 @version: 1.1
 @Author: Chandler Lu
 @Date: 2019-12-01 10:29:27
-@LastEditTime: 2019-12-03 00:53:40
+@LastEditTime: 2019-12-03 14:56:41
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -59,7 +59,7 @@ def show_on_screen(title, subtitle):
 
 
 if __name__ == "__main__":
-    if (re.compile(u'[\u4e00-\u9fa5]+').search(translate_origin[0:10])):
+    if ((re.compile(u'[\u4e00-\u9fa5]+').search(translate_origin[0:8])) and (not re.compile(u'[\u0800-\u4dff]+').search(translate_origin[0:8]))):
         chinese_tag = 1
     else:
         chinese_tag = 0

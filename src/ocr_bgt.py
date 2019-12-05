@@ -3,7 +3,7 @@
 @version: 2.0
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-@LastEditTime: 2019-12-03 23:04:31
+@LastEditTime: 2019-12-04 00:00:51
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -54,7 +54,8 @@ def request_baidu_token():
 
 
 def return_baidu_token():
-    if ((not os.path.exists('./baidu_api_token.json')) or (int(time.time() - os.stat("./baidu_api_token.json").st_mtime) >= 259200)):
+    if ((not os.path.exists('./baidu_api_token.json'))
+            or (int(time.time() - os.stat("./baidu_api_token.json").st_mtime) >= 259200)):
         return request_baidu_token()
     else:
         with open("./baidu_api_token.json", 'r') as json_file:
@@ -155,10 +156,10 @@ def output_result(which_api, result_json):
         for index in range(len(response_json)):
             if (re.search(r'[\u4e00-\u9fa5+]', response_json[index]['words'][0:10])):
                 print(response_json[index]['words'].replace(
-                    ",", "，").replace("!", "！"), end='')
+                    ",", "，").replace("!", "！").replace(";", "；"), end='')
             else:
                 print(response_json[index]['words'].replace(
-                    "，", ", ").replace("！", "!"), end='')
+                    "，", ", ").replace("！", "!").replace("；", "; "), end='')
             if (index != (len(response_json) - 1)):
                 if (not (re.search(r'[,|，|;|；]', response_json[index]['words'][-1])
                          or re.search(r'[,|，|.|。|;|；]', response_json[index + 1]['words'][0:3]))):

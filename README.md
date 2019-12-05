@@ -12,7 +12,11 @@
 
 ## 版本
 
-[查看更新历史](<https://github.com/Chandler-Lu/alfred-ocr/wiki/历史更新-(Update-History)>)
+[查看更新历史](https://github.com/Chandler-Lu/alfred-ocr/wiki/Update-History)
+
+### 3.5 (2019-12-05 10:55)
+
+- 自带部分接口 Key
 
 ### 3.4 (2019-12-03 23:09)
 
@@ -29,10 +33,9 @@
 ## 使用（必看！！）
 
 1. 这**不是**一个开箱即用的产品！
-2. 您至少要拥有 macOS Alfred 3 及以上版本，同时安装 Python 3 及相应的依赖模块。
+2. 您至少要拥有 macOS Alfred 3 及以上版本并激活 Workflow，同时安装 Python 3 及相应的依赖模块。
 3. 您需要将您的 Python 3 路径填写在`PYTHON_PATH`处，如果您使用默认的 Python 3，请直接填入`python3`。
-4. 您需要申请并将对应接口的配置填入环境变量。
-5. 我会[分享](<https://github.com/Chandler-Lu/alfred-ocr/wiki/Key-分享-(My-Key)>)我自己申请的 Key 供大家使用，但请勿滥用。
+4. 您需要申请并将对应接口的配置填入环境变量，部分接口附带我自己的 Key，严禁滥用。
 
 ### 设置方式
 
@@ -60,8 +63,9 @@
 
 #### 说明
 
-1. 考虑到不能准确判别中英文符号，所有的英文逗号将被全部替换为中文逗号；但由于句点和括号可能存在其他用途，不做处理。
-2. 需自行申请 api_key 和 secret_key。
+1. 具备简单的中英文识别，标点符号将被替换为对应语言下的符号。
+2. 具备简单的段落优化。
+3. 自带一个测试 Token，不保证可用性，需要稳定可自行申请。
 
 ### [Tencent Youtu (腾讯优图)](https://ai.qq.com/product/ocr.shtml#common)
 
@@ -73,8 +77,7 @@
 
 #### 说明
 
-1. 同百度处理方式。
-2. 需自行申请 appid 和 appkey。
+1. 自带一个测试 Token，不保证可用性，需要稳定可自行申请。
 
 ### [ColorfulClouds (彩云小译)](https://fanyi.caiyunapp.com/#/api)
 
@@ -85,7 +88,7 @@
 #### 说明
 
 1. 自带一个测试 Token，不保证可用性，需要稳定可自行申请。
-2. 目标语言目前只支持中文。
+2. 支持中翻英，及 X 翻中(X 为彩云小译已经支持的语言类别)。
 
 ## 依赖
 
@@ -117,6 +120,7 @@ pip install requests
 - [ ] 截图翻译
 - [x] 二维码识别
 - [x] 文本翻译
+- [x] 段落优化
 
 ## 致谢
 

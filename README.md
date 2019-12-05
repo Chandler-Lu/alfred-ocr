@@ -2,7 +2,8 @@
 
 > 觉得好用的请点个 star，谢谢～
 
-下载地址：[国内直链](http://bz.cndzq.com/ltr970503/3_software/2_tool/Capture%20then%20OCR.zip) 或 [Github Release](https://github.com/Chandler-Lu/alfred-ocr/releases)
+## 下载地址
+[国内直链](http://bz.cndzq.com/ltr970503/3_software/2_tool/Capture%20then%20OCR.zip) 或 [Github Release](https://github.com/Chandler-Lu/alfred-ocr/releases)
 
 ## OCR Demo
 

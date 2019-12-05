@@ -1,6 +1,8 @@
 # Alfred Workflow - OCR and Translation
 
-> 觉得好用的请点个 star，谢谢～ 由于没有项目开发经验，肯定会有一些没能处理的异常，欢迎您的使用和反馈。
+> 觉得好用的请点个 star，谢谢～
+
+下载地址：[国内直链](http://bz.cndzq.com/ltr970503/3_software/2_tool/Capture%20then%20OCR.zip) 或 [Github Release](https://github.com/Chandler-Lu/alfred-ocr/releases)
 
 ## OCR Demo
 

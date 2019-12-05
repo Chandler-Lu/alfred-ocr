@@ -3,16 +3,23 @@
 @version: 2.0
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-@LastEditTime: 2019-12-04 00:00:51
+@LastEditTime: 2019-12-05 16:48:02
 '''
 # -*- coding: UTF-8 -*-
 import sys
 import os
 import time
+
+import json
 import re
 import requests
-import json
+
+import hashlib
+import random
+import string
 from base64 import b64encode
+from urllib import parse
+
 
 OCR_SELECT = sys.argv[1]
 PIC_PATH = sys.argv[2]
@@ -48,7 +55,6 @@ def request_baidu_token():
     if api_message:
         with open("./baidu_api_token.json", "w") as json_file:
             json.dump(api_message.json(), json_file)
-            json_file.close()
         token = api_message.json().get('access_token')
         return token
 
@@ -112,8 +118,6 @@ Tencent Youtu OCR Start
 
 
 def request_tencent_youtu_sign(postdata, pic_path):
-    import hashlib
-    from urllib import parse
     # 字典升序排序
     dic = sorted(postdata.items(), key=lambda d: d[0])
     # URL编码 + 拼接app_key
@@ -124,8 +128,6 @@ def request_tencent_youtu_sign(postdata, pic_path):
 
 
 def tencent_youtu_ocr(pic_path):
-    import random
-    import string
     if (os.path.getsize(pic_path) > 1048576 and os.path.getsize(pic_path) < 4194304):
         baidu_ocr(pic_path)
         return
@@ -156,13 +158,13 @@ def output_result(which_api, result_json):
         for index in range(len(response_json)):
             if (re.search(r'[\u4e00-\u9fa5+]', response_json[index]['words'][0:10])):
                 print(response_json[index]['words'].replace(
-                    ",", "，").replace("!", "！").replace(";", "；"), end='')
+                    ",", "，").replace("!", "！").replace(";", "；").replace(":", "："), end='')
             else:
                 print(response_json[index]['words'].replace(
-                    "，", ", ").replace("！", "!").replace("；", "; "), end='')
+                    "，", ", ").replace("！", "!").replace("；", "; ").replace("：", ":"), end='')
             if (index != (len(response_json) - 1)):
                 if (not (re.search(r'[,|，|;|；]', response_json[index]['words'][-1])
-                         or re.search(r'[,|，|.|。|;|；]', response_json[index + 1]['words'][0:3]))):
+                         or re.search(r'[,|，|.|。|;|；]', response_json[index + 1]['words'][0:5]))):
                     print()
     elif (which_api is 'baidu_ocr_qrcode'):
         # 空二维码

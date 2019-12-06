@@ -3,7 +3,7 @@
 @version: 1.1
 @Author: Chandler Lu
 @Date: 2019-12-01 10:29:27
-@LastEditTime: 2019-12-03 14:56:41
+@LastEditTime: 2019-12-05 21:54:47
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -65,3 +65,14 @@ if __name__ == "__main__":
         chinese_tag = 0
     translate_result = caiyun_translate(chinese_tag, translate_origin)
     print(show_on_screen(translate_result, translate_origin))
+
+'''
+ ________
+< rabbit >
+ --------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+'''

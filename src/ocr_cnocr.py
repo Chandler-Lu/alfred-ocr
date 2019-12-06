@@ -1,3 +1,10 @@
+'''
+@Description: ocr_cnocr
+@version: 1.0
+@Author: Chandler Lu
+@Date: 2019-11-23 22:22:27
+@LastEditTime: 2019-12-05 21:55:16
+'''
 # -*- coding: UTF-8 -*-
 import sys
 import os
@@ -16,3 +23,14 @@ for r in pic[-1]:
         print(c, end='')
 
 os.remove(pic_path)
+
+'''
+ ________
+< rabbit >
+ --------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+'''

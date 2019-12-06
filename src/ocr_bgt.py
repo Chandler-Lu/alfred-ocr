@@ -3,7 +3,7 @@
 @version: 2.0
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-@LastEditTime: 2019-12-05 16:48:02
+@LastEditTime: 2019-12-05 21:54:10
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -210,3 +210,14 @@ if __name__ == "__main__":
     elif (OCR_SELECT == 'baidu_qrcode'):
         baidu_ocr_qrcode(PIC_PATH)
     remove_pic(PIC_PATH)
+
+'''
+ ________
+< rabbit >
+ --------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+'''

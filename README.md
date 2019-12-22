@@ -3,6 +3,7 @@
 > 觉得好用的请点个 star，谢谢～
 
 ## 下载地址
+
 [国内直链](http://bz.cndzq.com/ltr970503/3_software/2_tool/Capture%20then%20OCR.zip) 或 [Github Release](https://github.com/Chandler-Lu/alfred-ocr/releases)
 
 ## OCR Demo
@@ -17,19 +18,15 @@
 
 [查看更新历史](https://github.com/Chandler-Lu/alfred-ocr/wiki/Update-History)
 
-### 3.5 (2019-12-05 10:55)
+### 3.6 (2019-12-23 00:41)
 
-- 自带部分接口 Key
-
-### 3.4 (2019-12-03 23:09)
-
-- (测试) 优化了百度 OCR 的输出结果，支持基本的段落优化；是否应用到其他的 OCR 视实际体验决定。
-- 优化部分代码
+- 支持 Google OCR 接口
+- 修复升级脚本的 Bug
 
 ## 能力
 
 - 离线 OCR (CNOCR)
-- 通用 OCR (百度，腾讯优图)
+- 通用 OCR (百度，腾讯优图, Google)
 - 二维码识别 (百度)
 - 文本翻译 (彩云小译)
 
@@ -81,6 +78,23 @@
 #### 说明
 
 1. 自带一个测试 Token，不保证可用性，需要稳定可自行申请。
+
+### [Google OCR](https://cloud.google.com/vision/docs/ocr)
+
+#### 触发
+
+1. 通用 OCR: 截图后使用关键词 oog (google) 触发。
+
+#### 字段解释
+
+| google_access_token |                     授权密钥                     |
+| :-----------------: | :----------------------------------------------: |
+| google_post_referer |    Referer 参数可防止 Token 被盗用，默认为空     |
+|  google_http_proxy  | HTTP 代理，默认为空，填写方式如 `127.0.0.1:1234` |
+
+#### 说明
+
+1. Google OCR 为收费业务，需要绑定信用卡，故本项目不带测试 Token，需要自行申请。
 
 ### [ColorfulClouds (彩云小译)](https://fanyi.caiyunapp.com/#/api)
 

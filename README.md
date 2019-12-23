@@ -33,10 +33,10 @@
 ## 使用（必看！！）
 
 1. 这**不是**一个开箱即用的产品！
-2. 您至少要拥有 macOS Alfred 3 及以上版本并激活 Workflow，并安装 Python 3 及相应的依赖模块。
-3. 您需要将您的 Python 3 路径填写在`PYTHON_PATH`处。
+2. 您至少要拥有 macOS Alfred 3 及以上版本并激活 Powerpack。
+3. 您需要安装 Python 3 及相应的依赖模块，并将您的 Python 3 路径填写在`PYTHON_PATH`处。
 4. 您需要申请并将对应接口的配置填入环境变量，部分接口附带我自己的 Key，但严禁滥用。
-5. 具体配置方法请移步 [Q&A](https://github.com/Chandler-Lu/alfred-ocr/wiki/Q&A)
+5. 具体配置方法请移步 [Q&A](https://github.com/Chandler-Lu/alfred-ocr/wiki/Q&A)。
 
 ### 设置方式
 

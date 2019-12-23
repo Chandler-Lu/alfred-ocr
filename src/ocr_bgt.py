@@ -3,12 +3,13 @@
 @version: 3.0
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-@LastEditTime : 2019-12-23 00:39:05
+@LastEditTime : 2019-12-23 19:34:36
 '''
 # -*- coding: UTF-8 -*-
 import sys
 import os
 import time
+import statistics
 
 import json
 import re
@@ -24,21 +25,25 @@ from urllib import parse
 OCR_SELECT = sys.argv[1]
 PIC_PATH = sys.argv[2]
 
+# Control
+BAIDU_OCR_SPACING_OFFSET = 8
+BAIDU_OCR_SPACING_VARIANCE = 15
+BAIDU_OCR_LINE_BREAK = 100
+BAIDU_OCR_WIDTH_OFFSET = 50
+
 # Key
 BAIDU_API_KEY = os.environ["baidu_api_key"]
 BAIDU_SECRET_KEY = os.environ["baidu_secret_key"]
 TENCENT_YOUTU_APPID = os.environ["tencent_youtu_appid"]
 TENCENT_YOUTU_APPKEY = os.environ["tencent_youtu_appkey"]
 GOOGLE_ACCESS_TOKEN = os.environ["google_access_token"]
-
-# Control
 GOOGLE_POST_REFERER = os.environ["google_post_referer"]
 GOOGLE_HTTP_PROXY = os.environ["google_http_proxy"]
 
 # API
 BAIDU_GET_TOKEN_URL = 'https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=' + \
     BAIDU_API_KEY + '&client_secret=' + BAIDU_SECRET_KEY
-BAIDU_OCR_API = 'https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic'
+BAIDU_OCR_API = 'https://aip.baidubce.com/rest/2.0/ocr/v1/general'
 BAIDU_QRCODE_API = 'https://aip.baidubce.com/rest/2.0/ocr/v1/qrcode'
 TENCENT_YOUTU_OCR_API = 'https://api.ai.qq.com/fcgi-bin/ocr/ocr_generalocr'
 GOOGLE_OCR_API = 'https://vision.googleapis.com/v1/images:annotate'
@@ -61,7 +66,7 @@ def request_baidu_token():
     if api_message:
         with open("./baidu_api_token.json", "w") as json_file:
             json.dump(api_message.json(), json_file)
-        token = api_message.json().get('access_token')
+        token = api_message.json()['access_token']
         return token
 
 
@@ -92,8 +97,7 @@ def baidu_ocr(pic_path):
         },
     )
     if (response.status_code == 200):
-        response_json = response.json()['words_result']
-        output_result('baidu_ocr', response_json)
+        output_baidu_ocr(response.json())
     else:
         print('Request failed!', end='')
 
@@ -282,6 +286,95 @@ def output_result(which_api, result_json):
                 # 组间格式控制
                 if (index_qrcode != (len(response_json) - 1)):
                     print()
+
+
+def output_baidu_ocr(response_json):
+    line_spacing = []
+    line_width = []
+
+    for index in range(response_json['words_result_num'] - 1):
+        line_spacing.append(response_json['words_result'][index + 1]['location']
+                            ['top'] - response_json['words_result'][index]['location']['top'])
+    if line_spacing:
+        top_half = statistics.median(line_spacing)
+        top_variance = statistics.pvariance(line_spacing)
+    else:
+        top_half = 0
+        top_variance = BAIDU_OCR_SPACING_VARIANCE
+
+    if top_variance >= BAIDU_OCR_SPACING_VARIANCE:
+        is_line_spacing_check = 1
+    else:
+        is_line_spacing_check = 0
+
+    for index in range(response_json['words_result_num']):
+        line_width.append(
+            response_json['words_result'][index]['location']['width'])
+    width_half = statistics.median(line_width)
+
+    for index in range(response_json['words_result_num']):
+        words = response_json['words_result'][index]['words']
+        if re.search(r'[\u4e00-\u9fa5+]', words):
+            chinese_tag = 1
+        else:
+            chinese_tag = 0
+        if chinese_tag is 1:
+            is_num_between_chinese = re.finditer(
+                r'[\u4e00-\u9fa5+][0-9a-zA-Z]+[\u4e00-\u9fa5+]', words)  # 测试666代码
+            is_num_between_chinese_space = re.finditer(
+                r'[\u4e00-\u9fa5+][0-9a-zA-Z]+( )+[\u4e00-\u9fa5+]', words)  # 测试666 代码
+            is_num_between_space_chinese = re.finditer(
+                r'[\u4e00-\u9fa5+]( )+[0-9a-zA-Z]+[\u4e00-\u9fa5+]', words)  # 测试 666代码
+            if is_num_between_chinese != None:
+                space_insert_offset = 0  # 第一次插入空格后，后续插入点发生偏移
+                for i in is_num_between_chinese:
+                    list_words = list(words)
+                    list_words.insert(
+                        i.span()[0] + space_insert_offset + 1, ' ')
+                    list_words.insert(i.span()[1] + space_insert_offset, ' ')
+                    space_insert_offset += 2
+                    words = ''.join(list_words)
+            if is_num_between_chinese_space != None:
+                space_insert_offset = 0
+                for i in is_num_between_chinese_space:
+                    list_words = list(words)
+                    list_words.insert(
+                        i.span()[0] + space_insert_offset + 1, ' ')
+                    space_insert_offset += 1
+                    words = ''.join(list_words)
+            if is_num_between_space_chinese != None:
+                space_insert_offset = 0
+                for i in is_num_between_space_chinese:
+                    list_words = list(words)
+                    list_words.insert(
+                        i.span()[1] + space_insert_offset - 1, ' ')
+                    space_insert_offset += 1
+                    words = ''.join(list_words)
+            words = words.replace(",", "，")
+            words = words.replace("!", "！")
+            words = words.replace(";", "；")
+            words = words.replace(":", "：")
+            words = words.replace(".", "。")
+            words = words.replace("(", "（")
+            words = words.replace(")", "）")
+            words = words.replace("?", "？")
+            words = words.replace("—一", "——").replace("一—", "——")
+            words = re.sub(r'( ){2,}', ' ', words)
+            print(words, end='')
+        else:
+            words = words.replace("，", ",")
+            words = words.replace("！", "!")
+            words = words.replace("；", ";")
+            words = words.replace("。", ".")
+            words = words.replace("（", "(")
+            words = words.replace("）", ")")
+            words = words.replace("？", "?")
+            words = re.sub(r'( ){2,}', ' ', words)
+            print(words, end='')
+        if (is_line_spacing_check is 1) and (index != response_json['words_result_num'] - 1) and (response_json['words_result'][index + 1]['location']['top'] - response_json['words_result'][index]['location']['top'] > top_half + BAIDU_OCR_SPACING_OFFSET):
+            print()
+        elif (response_json['words_result'][index]['location']['width'] < width_half - BAIDU_OCR_WIDTH_OFFSET):
+            print()
 
 
 def remove_pic(pic_path):

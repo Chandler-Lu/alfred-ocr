@@ -18,10 +18,11 @@
 
 [查看更新历史](https://github.com/Chandler-Lu/alfred-ocr/wiki/Update-History)
 
-### 3.6 (2019-12-23 00:41)
+### 3.7 (2019-12-23 19:51:33)
 
-- 支持 Google OCR 接口
-- 修复升级脚本的 Bug
+- 百度接口更换为含有位置信息的通用 OCR 接口
+- 大幅度提高百度 OCR 接口的段落优化能力
+- 感谢[Elvis Cai](https://github.com/elviscai)提供的帮助
 
 ## 能力
 

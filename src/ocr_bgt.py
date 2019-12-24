@@ -1,9 +1,9 @@
 '''
 @Description: ocr_baidu_google_tencent
-@version: 3.0
+@version: 3.1
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-@LastEditTime : 2019-12-23 19:34:36
+@LastEditTime : 2019-12-24 10:13:37
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -24,11 +24,11 @@ from urllib import parse
 
 OCR_SELECT = sys.argv[1]
 PIC_PATH = sys.argv[2]
+FOLDER_PATH = '/private/tmp/com.chandler.alfredocr'
 
 # Control
 BAIDU_OCR_SPACING_OFFSET = 8
 BAIDU_OCR_SPACING_VARIANCE = 15
-BAIDU_OCR_LINE_BREAK = 100
 BAIDU_OCR_WIDTH_OFFSET = 50
 
 # Key
@@ -84,22 +84,25 @@ def return_baidu_token():
 
 
 def baidu_ocr(pic_path):
-    response = requests.post(
-        url=BAIDU_OCR_API,
-        params={
-            "access_token": return_baidu_token(),
-        },
-        headers={
-            "Content-Type": "application/x-www-form-urlencoded",
-        },
-        data={
-            "image": convert_image_base64(pic_path),
-        },
-    )
-    if (response.status_code == 200):
-        output_baidu_ocr(response.json())
+    if (os.path.getsize(pic_path) <= 4194304):
+        response = requests.post(
+            url=BAIDU_OCR_API,
+            params={
+                "access_token": return_baidu_token(),
+            },
+            headers={
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            data={
+                "image": convert_image_base64(pic_path),
+            },
+        )
+        if (response.status_code == 200):
+            output_baidu_ocr(response.json())
+        else:
+            print('Request failed!', end='')
     else:
-        print('Request failed!', end='')
+        print('Too large!')
 
 
 def baidu_ocr_qrcode(pic_path):
@@ -233,6 +236,17 @@ def google_ocr(pic_path):
         print('Request failed!', end='')
 
 
+def multi_file_ocr():
+    names = [name for name in os.listdir(FOLDER_PATH)
+             if re.search(r'.png|.jpg|.jpeg|.bmp', name, re.IGNORECASE) and os.path.getsize(FOLDER_PATH + '/' + name) <= 4194304]
+    for i in range(len(names)):
+        current_pic_path = FOLDER_PATH + '/' + names[i]
+        baidu_ocr(current_pic_path)
+        remove_pic(current_pic_path)
+        if i != len(names) - 1:
+            print('\n')
+
+
 '''
 Output
 '''
@@ -324,7 +338,7 @@ def output_baidu_ocr(response_json):
             is_num_between_chinese_space = re.finditer(
                 r'[\u4e00-\u9fa5+][0-9a-zA-Z]+( )+[\u4e00-\u9fa5+]', words)  # 测试666 代码
             is_num_between_space_chinese = re.finditer(
-                r'[\u4e00-\u9fa5+]( )+[0-9a-zA-Z]+[\u4e00-\u9fa5+]', words)  # 测试 666代码
+                r'( )+[0-9a-zA-Z]+[\u4e00-\u9fa5+]', words)  # 测试 666代码
             if is_num_between_chinese != None:
                 space_insert_offset = 0  # 第一次插入空格后，后续插入点发生偏移
                 for i in is_num_between_chinese:
@@ -350,11 +364,12 @@ def output_baidu_ocr(response_json):
                         i.span()[1] + space_insert_offset - 1, ' ')
                     space_insert_offset += 1
                     words = ''.join(list_words)
-            words = words.replace(",", "，")
+            words = words.replace(", ", "，").replace(",", "，")
+            words = words.replace(". ", "。").replace(
+                ".", "。").replace("。 ", "。")
             words = words.replace("!", "！")
             words = words.replace(";", "；")
             words = words.replace(":", "：")
-            words = words.replace(".", "。")
             words = words.replace("(", "（")
             words = words.replace(")", "）")
             words = words.replace("?", "？")
@@ -363,9 +378,9 @@ def output_baidu_ocr(response_json):
             print(words, end='')
         else:
             words = words.replace("，", ",")
+            words = words.replace("。", ".")
             words = words.replace("！", "!")
             words = words.replace("；", ";")
-            words = words.replace("。", ".")
             words = words.replace("（", "(")
             words = words.replace("）", ")")
             words = words.replace("？", "?")
@@ -373,7 +388,7 @@ def output_baidu_ocr(response_json):
             print(words, end='')
         if (is_line_spacing_check is 1) and (index != response_json['words_result_num'] - 1) and (response_json['words_result'][index + 1]['location']['top'] - response_json['words_result'][index]['location']['top'] > top_half + BAIDU_OCR_SPACING_OFFSET):
             print()
-        elif (response_json['words_result'][index]['location']['width'] < width_half - BAIDU_OCR_WIDTH_OFFSET):
+        elif (is_line_spacing_check is 0) and (index != response_json['words_result_num'] - 1) and (response_json['words_result'][index]['location']['width'] < width_half - BAIDU_OCR_WIDTH_OFFSET):
             print()
 
 
@@ -384,13 +399,18 @@ def remove_pic(pic_path):
 if __name__ == "__main__":
     if (OCR_SELECT == 'baidu'):
         baidu_ocr(PIC_PATH)
+        remove_pic(PIC_PATH)
     elif (OCR_SELECT == 'tencent'):
         tencent_youtu_ocr(PIC_PATH)
+        remove_pic(PIC_PATH)
     elif (OCR_SELECT == 'google'):
         google_ocr(PIC_PATH)
+        remove_pic(PIC_PATH)
     elif (OCR_SELECT == 'baidu_qrcode'):
         baidu_ocr_qrcode(PIC_PATH)
-    remove_pic(PIC_PATH)
+        remove_pic(PIC_PATH)
+    elif (OCR_SELECT == 'file'):
+        multi_file_ocr()
 
 '''
  ________

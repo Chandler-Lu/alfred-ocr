@@ -61,13 +61,16 @@
 
 1. 通用 OCR: 快捷键 ctrl+v 触发截图选框，或截图后使用关键词 oob (baidu) 触发。
 2. 二维码识别: 截图后使用关键词 ooq (qr code) 触发。
+3. 多文件识别: finder 中选中需要识别的图片并使用关键词 oof (file) 触发。
+
+![File_OCR](http://img.yeslu.cn/alfred/file_ocr.png)
 
 #### 说明
 
 1. 具备中英文识别，标点符号将被替换为对应语言下的符号。
 2. 具备对出版物的段落优化能力，但对于非常规文本的分段能力并不是很好，等待进一步优化。
 3. 自带一个测试 Token，不保证可用性，需要稳定可自行申请。
-4. 最大支持 4MB 的图片。
+4. 最大支持单个 4MB 的图片。
 
 ### [Tencent Youtu (腾讯优图)](https://ai.qq.com/product/ocr.shtml#common)
 
@@ -97,19 +100,6 @@
 #### 说明
 
 1. Google OCR 为收费业务，需要绑定信用卡，故本项目不带测试 Token，需要自行申请。
-
-### 多文件识别 (百度接口)
-
-#### 触发
-
-1. 通用 OCR: finder 中选中需要识别的图片并使用关键词 oof (file) 触发。
-
-![File_OCR](http://img.yeslu.cn/alfred/file_ocr.png)
-
-#### 说明
-
-1. 受限于百度接口的限制，仅支持单个 4MB 以内的文件。
-2. 目前仅支持简单的多文件识别输出，未来将对文件顺序和输出结果的显示进行优化。
 
 ### [ColorfulClouds (彩云小译)](https://fanyi.caiyunapp.com/#/api)
 

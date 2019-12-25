@@ -16,6 +16,8 @@
 
 ## 版本
 
+> 4.0 版本发布后，非严重 Bug 的修复等将不会发布 Release，仅更新源码。
+
 [查看更新历史](https://github.com/Chandler-Lu/alfred-ocr/wiki/Update-History)
 
 ### 4.0 (2019-12-24 10:16)
@@ -147,6 +149,7 @@ pip install requests
 
 ## 致谢
 
-1. [breezedeus/cnocr](https://github.com/breezedeus/cnocr)
-2. 调用系统截屏的方案源于: [ginfuru/alfred-screen-capture](https://github.com/ginfuru/alfred-screen-capture)
-3. Alfred Workflow 的设计方案来源于: [oott123/alfred-clipboard-ocr](https://github.com/oott123/alfred-clipboard-ocr)
+1. 离线识别方案：[breezedeus/cnocr](https://github.com/breezedeus/cnocr)
+2. 系统截屏的方案: [ginfuru/alfred-screen-capture](https://github.com/ginfuru/alfred-screen-capture)
+3. Workflow 的设计方案: [oott123/alfred-clipboard-ocr](https://github.com/oott123/alfred-clipboard-ocr)
+4. 感谢下列用户对本项目的贡献：[Elvis Cai](https://github.com/elviscai)

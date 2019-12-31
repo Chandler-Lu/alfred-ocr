@@ -16,7 +16,7 @@
 
 ## 版本
 
-> 4.0 版本发布后，非严重 Bug 的修复等将不会发布 Release，仅更新源码。
+> 4.0 版本发布后，除严重 Bug 的修复和功能新增外，将不会发布 Release，仅更新源码。
 
 [查看更新历史](https://github.com/Chandler-Lu/alfred-ocr/wiki/Update-History)
 
@@ -30,7 +30,7 @@
 - 通用 OCR (百度，腾讯优图，Google)
 - 二维码识别 (百度)
 - 文本翻译 (彩云小译)
-- 多文件识别
+- 多文件识别 (百度)
 
 ## 使用（必看！！）
 
@@ -51,7 +51,7 @@
 
 #### 触发
 
-1. 通用 OCR: 使用关键词 oo 触发截图选框。
+1. 通用 OCR：使用关键词 oo 触发截图选框。
 
 #### 说明
 
@@ -61,9 +61,9 @@
 
 #### 触发
 
-1. 通用 OCR: 快捷键 ctrl+v 触发截图选框，或截图后使用关键词 oob (baidu) 触发。
-2. 二维码识别: 截图后使用关键词 ooq (qr code) 触发。
-3. 多文件识别: finder 中选中需要识别的图片并使用关键词 oof (file) 触发。
+1. 通用 OCR：快捷键 ctrl+v 触发截图选框，或截图至剪贴板后使用关键词 oob (baidu) 触发。
+2. 二维码识别：截图后使用关键词 ooq (qr code) 触发。
+3. 多文件识别：finder 中选中需要识别的图片并使用关键词 oof (file) 触发。
 
 ![File_OCR](http://img.yeslu.cn/alfred/file_ocr.png)
 
@@ -78,7 +78,7 @@
 
 #### 触发
 
-1. 通用 OCR: 截图后使用关键词 oot (tencent) 触发。
+1. 通用 OCR：截图至剪贴板后使用关键词 oot (tencent) 触发。
 
 #### 说明
 
@@ -89,7 +89,7 @@
 
 #### 触发
 
-1. 通用 OCR: 截图后使用关键词 oog (google) 触发。
+1. 通用 OCR：截图至剪贴板后使用关键词 oog (google) 触发。
 
 #### 环境变量
 
@@ -101,18 +101,18 @@
 
 #### 说明
 
-1. Google OCR 为收费业务，需要绑定信用卡，故本项目不带测试 Token，需要自行申请。
+1. Google OCR 为收费业务，需绑定信用卡，故本项目不带测试 Token，需要自行申请。
 
 ### [ColorfulClouds (彩云小译)](https://fanyi.caiyunapp.com/#/api)
 
 #### 触发
 
-1. 文本翻译: 使用关键词 tc (translate caiyun) + 需要翻译的内容来触发；输出结果可通过 command + v 复制。
+1. 文本翻译：使用关键词 tc (translate caiyun) + 需要翻译的内容来触发；输出结果可通过 command + v 复制。
 
 #### 说明
 
 1. 自带一个测试 Token，不保证可用性，需要稳定可自行申请。
-2. 支持中翻英，及 X 翻中(X 为彩云小译已经支持的语言类别)。
+2. 支持中译英，及 X 译中(X 为彩云小译已经支持的语言类别)。
 
 ## 依赖
 
@@ -150,6 +150,6 @@ pip install requests
 ## 致谢
 
 1. 离线识别方案：[breezedeus/cnocr](https://github.com/breezedeus/cnocr)
-2. 系统截屏的方案: [ginfuru/alfred-screen-capture](https://github.com/ginfuru/alfred-screen-capture)
-3. Workflow 的设计方案: [oott123/alfred-clipboard-ocr](https://github.com/oott123/alfred-clipboard-ocr)
+2. 系统截屏的方案：[ginfuru/alfred-screen-capture](https://github.com/ginfuru/alfred-screen-capture)
+3. Workflow 的设计方案：[oott123/alfred-clipboard-ocr](https://github.com/oott123/alfred-clipboard-ocr)
 4. 感谢下列用户对本项目的贡献：[Elvis Cai](https://github.com/elviscai)

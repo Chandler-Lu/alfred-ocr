@@ -8,11 +8,11 @@
 
 ## OCR Demo
 
-![Demo_OCR](http://img.yeslu.cn/alfred/demo_ocr.gif)
+![Demo_OCR](examples/demo_ocr.gif)
 
 ## Translate Demo
 
-![Demo_Trans](http://img.yeslu.cn/alfred/demo_trans.gif)
+![Demo_Trans](examples/demo_trans.gif)
 
 ## 版本
 
@@ -42,8 +42,22 @@
 
 ### 设置方式
 
-![env_button](http://img.yeslu.cn/alfred/env_button.png)
-![env_value](http://img.yeslu.cn/alfred/env_value.png)
+![env_button](examples/env_button.png)
+![env_value](examples/env_value.png)
+
+## 依赖
+
+### CNOCR
+
+```python
+pip install cnocr
+```
+
+### 其他
+
+```python
+pip install requests
+```
 
 ## 接口
 
@@ -65,7 +79,7 @@
 2. 二维码识别：截图后使用关键词 ooq (qr code) 触发。
 3. 多文件识别：finder 中选中需要识别的图片并使用关键词 oof (file) 触发。
 
-![File_OCR](http://img.yeslu.cn/alfred/file_ocr.png)
+![File_OCR](examples/file_ocr.png)
 
 #### 说明
 
@@ -113,20 +127,6 @@
 
 1. 自带一个测试 Token，不保证可用性，需要稳定可自行申请。
 2. 支持中译英，及 X 译中(X 为彩云小译已经支持的语言类别)。
-
-## 依赖
-
-### CNOCR
-
-```python
-pip install cnocr
-```
-
-### 其他
-
-```python
-pip install requests
-```
 
 ## 说明
 

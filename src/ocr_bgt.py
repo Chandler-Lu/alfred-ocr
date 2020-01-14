@@ -3,7 +3,7 @@
 @version: 3.1
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-@LastEditTime : 2019-12-25 19:53:12
+@LastEditTime : 2020-01-14 14:16:32
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -45,6 +45,7 @@ BAIDU_GET_TOKEN_URL = 'https://aip.baidubce.com/oauth/2.0/token?grant_type=clien
     BAIDU_API_KEY + '&client_secret=' + BAIDU_SECRET_KEY
 BAIDU_OCR_API = 'https://aip.baidubce.com/rest/2.0/ocr/v1/general'
 BAIDU_QRCODE_API = 'https://aip.baidubce.com/rest/2.0/ocr/v1/qrcode'
+BAIDU_FORM_API = 'https://aip.baidubce.com/rest/2.0/solution/v1/form_ocr/request'
 TENCENT_YOUTU_OCR_API = 'https://api.ai.qq.com/fcgi-bin/ocr/ocr_generalocr'
 GOOGLE_OCR_API = 'https://vision.googleapis.com/v1/images:annotate'
 
@@ -122,6 +123,32 @@ def baidu_ocr_qrcode(pic_path):
         if (response.status_code == 200):
             response_json = response.json()['codes_result']
             output_result('baidu_qrcode', response_json)
+        else:
+            print('Request failed!', end='')
+    else:
+        print('Too large!')
+
+
+def baidu_ocr_form(pic_path):
+    if (os.path.getsize(pic_path) <= 4194304):
+        response = requests.post(
+            url=BAIDU_FORM_API,
+            params={
+                "access_token": return_baidu_token(),
+            },
+            headers={
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            data={
+                "image": convert_image_base64(pic_path),
+                "is_sync": "true",
+                "request_type": "json",
+            },
+        )
+        if (response.status_code == 200):
+            response_json = response.json()['result']['result_data']
+            response_json = json.loads(response_json)
+            output_baidu_ocr_form(response_json)
         else:
             print('Request failed!', end='')
     else:
@@ -365,8 +392,8 @@ def output_baidu_ocr(response_json):
                     space_insert_offset += 1
                     words = ''.join(list_words)
             words = words.replace(", ", "，").replace(",", "，")
-            words = words.replace(". ", "。").replace(
-                ".", "。").replace("。 ", "。")
+            # words = words.replace(". ", "。").replace(
+            #     ".", "。").replace("。 ", "。")
             words = words.replace("!", "！")
             words = words.replace(";", "；")
             words = words.replace(":", "：")
@@ -392,6 +419,29 @@ def output_baidu_ocr(response_json):
             print()
 
 
+def output_baidu_ocr_form(response_json):
+    form_num = response_json['form_num']
+    for i in range(form_num):
+        column = response_json['forms'][i]['body'][-1]['column'][0]  # 当前表格列数
+        row = response_json['forms'][i]['body'][-1]['row'][0]  # 当前表格行数
+        form_array = [[0 for a in range(column)] for a in range(row)]
+        form_body = response_json['forms'][i]['body']
+        for j in range(len(response_json['forms'][i]['header'])):
+            if response_json['forms'][i]['header'][j]['word'] != '':
+                print(response_json['forms'][i]['header'][j]['word'], end='\t')
+            if j != 0 or j != len(response_json['forms'][i]['header']) - 1:
+                print()
+        for j in range(len(form_body)):
+            cell_col = form_body[j]['column'][0] - 1  # 当前单元格所在列
+            cell_row = form_body[j]['row'][0] - 1  # 当前单元格所在行
+            form_array[cell_row][cell_col] = form_body[j]['word']
+        for k1 in range(cell_row + 1):
+            for k2 in range(cell_col + 1):
+                print(form_array[k1][k2], end='\t')
+            if k1 != cell_row:
+                print()
+
+
 def remove_pic(pic_path):
     os.remove(pic_path)
 
@@ -408,6 +458,9 @@ if __name__ == "__main__":
         remove_pic(PIC_PATH)
     elif (OCR_SELECT == 'baidu_qrcode'):
         baidu_ocr_qrcode(PIC_PATH)
+        remove_pic(PIC_PATH)
+    elif (OCR_SELECT == 'baidu_form'):
+        baidu_ocr_form(PIC_PATH)
         remove_pic(PIC_PATH)
     elif (OCR_SELECT == 'file'):
         multi_file_ocr()

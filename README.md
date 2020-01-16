@@ -20,19 +20,18 @@
 
 [查看更新历史](https://github.com/Chandler-Lu/alfred-ocr/wiki/Update-History)
 
-### 4.1 (2020-01-14 14:22)
+### 4.2 (2020-01-16 12:54)
 
-- 支持表格文字识别（未进行输出优化，多表格识别存在问题，等待优化）
-- 提前祝大家春节快乐，工作顺利，学习进步！
+- 鉴于百度更改了二维码识别收费方案，触发关键词 `ooq` 替换为由开源模块 [ZXing](https://github.com/dlenski/python-zxing) 的二维码识别，原有百度二维码识别的触发方式更改为 `ooqb`。
 
 ## 能力
 
 - 离线 OCR (CNOCR)
 - 通用 OCR (百度，腾讯优图，Google)
-- 二维码识别 (百度)
+- 二维码识别 (百度，ZXing)
 - 表格文字识别 (百度)
-- 文本翻译 (彩云小译)
 - 多文件识别 (百度)
+- 文本翻译 (彩云小译)
 
 ## 使用（必看！！）
 
@@ -51,13 +50,19 @@
 
 ### CNOCR
 
-```python
+``` bash
 pip install cnocr
+```
+
+### ZXing (QR code Offline)
+
+``` bash
+pip install zxing
 ```
 
 ### 其他
 
-```python
+``` bash
 pip install requests
 ```
 
@@ -78,8 +83,8 @@ pip install requests
 #### 触发
 
 1. 通用 OCR：快捷键 ctrl+v 触发截图选框，或截图至剪贴板后使用关键词 oob (baidu) 触发。
-2. 二维码识别：截图后使用关键词 ooq (qr code) 触发。
-3. 表格文字识别：截图后使用关键词 ooe (excel) 触发 (本来应当使用 oof (form) 触发的，但该关键词已被多文件识别占用)，识别后可直接复制至 Excel。
+2. 二维码识别：截图后使用关键词 ooqb (qr baidu) 触发。
+3. 表格文字识别：截图后使用关键词 ooe (excel) 触发，识别后可直接复制至 Excel。
 4. 多文件识别：finder 中选中需要识别的图片并使用关键词 oof (file) 触发。
 
 ![File_OCR](examples/file_ocr.png)
@@ -88,8 +93,9 @@ pip install requests
 
 1. 具备中英文识别，标点符号将被替换为对应语言下的符号。
 2. 具备对出版物的段落优化能力，但对于非常规文本的分段能力并不是很好，等待进一步优化。
-3. 自带一个测试 Token，不保证可用性，需要稳定可自行申请。
-4. 最大支持单个 4MB 的图片。
+3. 二维码识别支持同时识别多个。
+4. 自带一个测试 Token，不保证可用性，需要稳定可自行申请。
+5. 最大支持单个 4MB 的图片。
 
 ### [Tencent Youtu (腾讯优图)](https://ai.qq.com/product/ocr.shtml#common)
 
@@ -120,6 +126,17 @@ pip install requests
 
 1. Google OCR 为收费业务，需绑定信用卡，故本项目不带测试 Token，需要自行申请。
 
+### [ZXing](https://github.com/dlenski/python-zxing) (离线二维码识别)
+
+#### 触发
+
+1. 截图至剪贴板后使用关键词 ooq (qr code) 触发。
+
+#### 说明
+
+1. 一切安装方法请依据该项目 [README](https://github.com/dlenski/python-zxing/blob/master/README.md)。
+2. 仅支持单个二维码识别。
+
 ### [ColorfulClouds (彩云小译)](https://fanyi.caiyunapp.com/#/api)
 
 #### 触发
@@ -146,14 +163,15 @@ pip install requests
   - [x] 彩云小译
 - [x] 多文件识别
 - [x] 表格识别
-- [ ] 截图翻译
 - [x] 二维码识别
-- [x] 文本翻译
 - [ ] 段落优化
+- [ ] 截图翻译
+- [x] 文本翻译
 
 ## 致谢
 
 1. 离线识别方案：[breezedeus/cnocr](https://github.com/breezedeus/cnocr)
-2. 系统截屏的方案：[ginfuru/alfred-screen-capture](https://github.com/ginfuru/alfred-screen-capture)
-3. Workflow 的设计方案：[oott123/alfred-clipboard-ocr](https://github.com/oott123/alfred-clipboard-ocr)
-4. 感谢下列用户对本项目的贡献：[Elvis Cai](https://github.com/elviscai)
+2. 离线二维码识别方案：[dlenski/python-zxing](https://github.com/dlenski/python-zxing)
+3. 系统截屏的方案：[ginfuru/alfred-screen-capture](https://github.com/ginfuru/alfred-screen-capture)
+4. Workflow 的设计方案：[oott123/alfred-clipboard-ocr](https://github.com/oott123/alfred-clipboard-ocr)
+5. 感谢下列用户对本项目的贡献：[Elvis Cai](https://github.com/elviscai)

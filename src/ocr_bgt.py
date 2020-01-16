@@ -1,9 +1,9 @@
 '''
 @Description: ocr_baidu_google_tencent
-@version: 3.1
+@version: 3.3
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-@LastEditTime : 2020-01-14 14:16:32
+@LastEditTime : 2020-01-16 12:51:51
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -22,7 +22,7 @@ from base64 import b64encode
 from urllib import parse
 
 
-OCR_SELECT = sys.argv[1]
+OCR_SELECT = int(sys.argv[1])
 PIC_PATH = sys.argv[2]
 FOLDER_PATH = '/private/tmp/com.chandler.alfredocr'
 
@@ -275,6 +275,21 @@ def multi_file_ocr():
 
 
 '''
+Offline Barcode Decode (using !(zxing)[https://github.com/dlenski/python-zxing])
+'''
+
+
+def barcode_decode(pic_path):
+    import zxing
+    reader = zxing.BarCodeReader()
+    barcode = reader.decode(pic_path)
+    if barcode is not None:
+        print(barcode.parsed, end='')
+    else:
+        print('Empty QR Code!')
+
+
+'''
 Output
 '''
 
@@ -447,22 +462,34 @@ def remove_pic(pic_path):
 
 
 if __name__ == "__main__":
-    if (OCR_SELECT == 'baidu'):
+    '''
+    1: baidu
+    2: baidu_qrcode
+    3: baidu_form
+    4: tencent
+    5: google
+    6: zxing
+    7: file
+    '''
+    if (OCR_SELECT == 1):
         baidu_ocr(PIC_PATH)
         remove_pic(PIC_PATH)
-    elif (OCR_SELECT == 'tencent'):
-        tencent_youtu_ocr(PIC_PATH)
-        remove_pic(PIC_PATH)
-    elif (OCR_SELECT == 'google'):
-        google_ocr(PIC_PATH)
-        remove_pic(PIC_PATH)
-    elif (OCR_SELECT == 'baidu_qrcode'):
+    elif (OCR_SELECT == 2):
         baidu_ocr_qrcode(PIC_PATH)
         remove_pic(PIC_PATH)
-    elif (OCR_SELECT == 'baidu_form'):
+    elif (OCR_SELECT == 3):
         baidu_ocr_form(PIC_PATH)
         remove_pic(PIC_PATH)
-    elif (OCR_SELECT == 'file'):
+    elif (OCR_SELECT == 4):
+        tencent_youtu_ocr(PIC_PATH)
+        remove_pic(PIC_PATH)
+    elif (OCR_SELECT == 5):
+        google_ocr(PIC_PATH)
+        remove_pic(PIC_PATH)
+    elif (OCR_SELECT == 6):
+        barcode_decode(PIC_PATH)
+        remove_pic(PIC_PATH)
+    elif (OCR_SELECT == 7):
         multi_file_ocr()
 
 '''

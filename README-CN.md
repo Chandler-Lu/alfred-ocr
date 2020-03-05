@@ -1,6 +1,6 @@
 # Alfred - OCR and Translation
 
-## Language
+## 语言
 
 简体中文 | [English](https://github.com/Chandler-Lu/alfred-ocr/blob/master/README.md)
 

@@ -10,7 +10,7 @@
 
 ## OCR Demo
 
-![Demo_OCR](examples/demo_ocr.gif)
+![Demo_OCR](examples/demo_ocr_cn.gif)
 
 ## Translate Demo
 

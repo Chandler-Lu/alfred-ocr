@@ -130,8 +130,8 @@
 
 ## Reference
 
-1. [breezedeus/cnocr](#)(https://github.com/breezedeus/cnocr)
-2. [dlenski/python-zxing](#)(https://github.com/dlenski/python-zxing)
-3. [ginfuru/alfred-screen-capture](#)(https://github.com/ginfuru/alfred-screen-capture)
-4. [oott123/alfred-clipboard-ocr](#)(https://github.com/oott123/alfred-clipboard-ocr)
-5. [Elvis Cai](#)(https://github.com/elviscai)
+1. [breezedeus/cnocr](https://github.com/breezedeus/cnocr)
+2. [dlenski/python-zxing](https://github.com/dlenski/python-zxing)
+3. [ginfuru/alfred-screen-capture](https://github.com/ginfuru/alfred-screen-capture)
+4. [oott123/alfred-clipboard-ocr](https://github.com/oott123/alfred-clipboard-ocr)
+5. [Elvis Cai](https://github.com/elviscai)

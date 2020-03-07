@@ -3,7 +3,7 @@
 @version: 0.1
 @Author: Chandler Lu
 @Date: 2020-03-07 17:38:10
-@LastEditTime: 2020-03-07 18:26:42
+@LastEditTime: 2020-03-07 22:03:27
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -32,14 +32,14 @@ BAIDU_OCR_WIDTH_OFFSET = 50
 
 # Key
 with open("./API_Key.json", "r") as json_file:
-    key = json.load(json_file)
-BAIDU_API_KEY = key['baidu_api_key']
-BAIDU_SECRET_KEY = key['baidu_secret_key']
-TENCENT_YOUTU_APPID = key['tencent_youtu_appid']
-TENCENT_YOUTU_APPKEY = key['tencent_youtu_appkey']
-GOOGLE_ACCESS_TOKEN = key['google_access_token']
-GOOGLE_POST_REFERER = key['google_post_referer']
-GOOGLE_HTTP_PROXY = key['google_http_proxy']
+    api_key = json.load(json_file)
+BAIDU_API_KEY = api_key['baidu_api_key']
+BAIDU_SECRET_KEY = api_key['baidu_secret_key']
+TENCENT_YOUTU_APPID = api_key['tencent_youtu_appid']
+TENCENT_YOUTU_APPKEY = api_key['tencent_youtu_appkey']
+GOOGLE_ACCESS_TOKEN = api_key['google_access_token']
+GOOGLE_POST_REFERER = api_key['google_post_referer']
+GOOGLE_HTTP_PROXY = api_key['google_http_proxy']
 
 # API
 BAIDU_GET_TOKEN_URL = 'https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=' + \
@@ -47,6 +47,21 @@ BAIDU_GET_TOKEN_URL = 'https://aip.baidubce.com/oauth/2.0/token?grant_type=clien
 BAIDU_OCR_API = 'https://aip.baidubce.com/rest/2.0/ocr/v1/general'
 TENCENT_YOUTU_OCR_API = 'https://api.ai.qq.com/fcgi-bin/ocr/ocr_generalocr'
 GOOGLE_OCR_API = 'https://vision.googleapis.com/v1/images:annotate'
+
+
+'''
+Error Declare
+'''
+
+
+def declare_network_error():
+    print('Network connection refused!', end='')
+    sys.exit(0)
+
+
+'''
+Picture Convert
+'''
 
 
 def convert_image_base64(pic_path):
@@ -62,12 +77,15 @@ Baidu OCR
 
 
 def request_baidu_token():
-    api_message = requests.get(BAIDU_GET_TOKEN_URL)
-    if api_message:
-        with open("./baidu_api_token.json", "w") as json_file:
-            json.dump(api_message.json(), json_file)
-        token = api_message.json()['access_token']
-        return token
+    try:
+        api_message = requests.get(BAIDU_GET_TOKEN_URL)
+        if api_message:
+            with open("./baidu_api_token.json", "w") as json_file:
+                json.dump(api_message.json(), json_file)
+            token = api_message.json()['access_token']
+            return token
+    except requests.exceptions.ConnectionError:
+        declare_network_error()
 
 
 def return_baidu_token():
@@ -85,22 +103,25 @@ def return_baidu_token():
 
 def baidu_ocr(pic_path):
     if (os.path.getsize(pic_path) <= 4194304):
-        response = requests.post(
-            url=BAIDU_OCR_API,
-            params={
-                "access_token": return_baidu_token(),
-            },
-            headers={
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            data={
-                "image": convert_image_base64(pic_path),
-            }
-        )
-        if (response.status_code == 200):
-            output_baidu_ocr(response.json())
-        else:
-            print('Request failed!', end='')
+        try:
+            response = requests.post(
+                url=BAIDU_OCR_API,
+                params={
+                    "access_token": return_baidu_token(),
+                },
+                headers={
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                data={
+                    "image": convert_image_base64(pic_path),
+                },
+            )
+            if (response.status_code == 200):
+                output_baidu_ocr(response.json())
+            else:
+                print('Request failed!', end='')
+        except requests.exceptions.ConnectionError:
+            declare_network_error()
     else:
         print('Too large!')
 
@@ -128,18 +149,21 @@ def tencent_youtu_ocr(pic_path):
         postdata = {'app_id': TENCENT_YOUTU_APPID, 'time_stamp': int(time.time()), 'nonce_str': ''.join(
             random.choices(string.ascii_letters + string.digits, k=8)), 'image': convert_image_base64(pic_path)}
         postdata['sign'] = request_tencent_youtu_sign(postdata, pic_path)
-        response = requests.post(
-            url=TENCENT_YOUTU_OCR_API,
-            headers={
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            data=postdata
-        )
-        if (response.status_code == 200):
-            response_json = response.json()['data']['item_list']
-            output_result('tencent_youtu_ocr', response_json)
-        else:
-            print('Request failed!', end='')
+        try:
+            response = requests.post(
+                url=TENCENT_YOUTU_OCR_API,
+                headers={
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                data=postdata
+            )
+            if (response.status_code == 200):
+                response_json = response.json()['data']['item_list']
+                output_result('tencent_youtu_ocr', response_json)
+            else:
+                print('Request failed!', end='')
+        except requests.exceptions.ConnectionError:
+            declare_network_error()
     else:
         print('Too large!')
 
@@ -156,56 +180,62 @@ def google_ocr(pic_path):
     if GOOGLE_POST_REFERER:
         header['Referer'] = GOOGLE_POST_REFERER
     if GOOGLE_HTTP_PROXY:
-        response = requests.post(
-            url="https://vision.googleapis.com/v1/images:annotate",
-            params={
-                "key": GOOGLE_ACCESS_TOKEN,
-            },
-            headers=header,
-            data=json.dumps({
-                "requests": [
-                    {
-                        "image": {
-                            "content": convert_image_base64(pic_path)
-                        },
-                        "features": [
-                            {
-                                "type": "TEXT_DETECTION"
-                            }
-                        ]
-                    }
-                ]
-            }),
-            proxies={
-                'http': 'http://' + GOOGLE_HTTP_PROXY,
-                'https': 'https://' + GOOGLE_HTTP_PROXY,
-            }
-        )
+        try:
+            response = requests.post(
+                url="https://vision.googleapis.com/v1/images:annotate",
+                params={
+                    "key": GOOGLE_ACCESS_TOKEN,
+                },
+                headers=header,
+                data=json.dumps({
+                    "requests": [
+                        {
+                            "image": {
+                                "content": convert_image_base64(pic_path)
+                            },
+                            "features": [
+                                {
+                                    "type": "TEXT_DETECTION"
+                                }
+                            ]
+                        }
+                    ]
+                }),
+                proxies={
+                    'http': 'http://' + GOOGLE_HTTP_PROXY,
+                    'https': 'https://' + GOOGLE_HTTP_PROXY,
+                }
+            )
+        except requests.exceptions.ConnectionError:
+            declare_network_error()
     else:
-        response = requests.post(
-            url="https://vision.googleapis.com/v1/images:annotate",
-            params={
-                "key": GOOGLE_ACCESS_TOKEN,
-            },
-            headers={
-                "Content-Type": "application/json",
-                "Referer": GOOGLE_POST_REFERER,
-            },
-            data=json.dumps({
-                "requests": [
-                    {
-                        "image": {
-                            "content": convert_image_base64(pic_path)
-                        },
-                        "features": [
-                            {
-                                "type": "TEXT_DETECTION"
-                            }
-                        ]
-                    }
-                ]
-            })
-        )
+        try:
+            response = requests.post(
+                url="https://vision.googleapis.com/v1/images:annotate",
+                params={
+                    "key": GOOGLE_ACCESS_TOKEN,
+                },
+                headers={
+                    "Content-Type": "application/json",
+                    "Referer": GOOGLE_POST_REFERER,
+                },
+                data=json.dumps({
+                    "requests": [
+                        {
+                            "image": {
+                                "content": convert_image_base64(pic_path)
+                            },
+                            "features": [
+                                {
+                                    "type": "TEXT_DETECTION"
+                                }
+                            ]
+                        }
+                    ]
+                })
+            )
+        except requests.exceptions.ConnectionError:
+            declare_network_error()
     if (response.status_code == 200):
         response_json = response.json()['responses']
         output_result('google_ocr', response_json)
@@ -334,13 +364,11 @@ if __name__ == "__main__":
     '''
     if (ocr_select == 1):
         baidu_ocr(PIC_PATH)
-        remove_pic(PIC_PATH)
     elif (ocr_select == 2):
         tencent_youtu_ocr(PIC_PATH)
-        remove_pic(PIC_PATH)
     elif (ocr_select == 3):
         google_ocr(PIC_PATH)
-        remove_pic(PIC_PATH)
+    remove_pic(PIC_PATH)
 
 '''
  ________

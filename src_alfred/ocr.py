@@ -1,9 +1,9 @@
 '''
-@Description: ocr_baidu_google_tencent
+@Description: Capture than OCR - macOS - Online OCR
 @version: 3.3
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-@LastEditTime : 2020-01-16 12:51:51
+@LastEditTime: 2020-03-07 18:28:24
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -22,7 +22,7 @@ from base64 import b64encode
 from urllib import parse
 
 
-OCR_SELECT = int(sys.argv[1])
+ocr_select = int(sys.argv[1])
 PIC_PATH = sys.argv[2]
 FOLDER_PATH = '/private/tmp/com.chandler.alfredocr'
 
@@ -77,9 +77,9 @@ def return_baidu_token():
         return request_baidu_token()
     else:
         with open("./baidu_api_token.json", 'r') as json_file:
-            api_message_JSON = json.load(json_file)
-            if 'access_token' in api_message_JSON:
-                return api_message_JSON.get('access_token')
+            api_message_json = json.load(json_file)
+            if 'access_token' in api_message_json:
+                return api_message_json.get('access_token')
             else:
                 return request_baidu_token()
 
@@ -376,7 +376,7 @@ def output_baidu_ocr(response_json):
             chinese_tag = 0
         if chinese_tag is 1:
             is_num_between_chinese = re.finditer(
-                r'[\u4e00-\u9fa5+|\W][0-9a-zA-Z]+[\u4e00-\u9fa5+]', words)  # 测试666代码
+                r'[\u4e00-\u9fa5+|\W][0-9a-zA-Z]+[\u4e00-\u9fa5+]', words)  # 汉字+数字+汉字
             if is_num_between_chinese != None:
                 space_insert_offset = 0  # 第一次插入空格后，后续插入点发生偏移
                 for i in is_num_between_chinese:
@@ -387,7 +387,7 @@ def output_baidu_ocr(response_json):
                     space_insert_offset += 2
                     words = ''.join(list_words)
             is_num_between_chinese_space = re.finditer(
-                r'[\u4e00-\u9fa5+][0-9a-zA-Z]+( )+[\u4e00-\u9fa5+]', words)  # 测试666 代码
+                r'[\u4e00-\u9fa5+][0-9a-zA-Z]+( )+[\u4e00-\u9fa5+]', words)  # 汉字+数字+空格+汉字
             if is_num_between_chinese_space != None:
                 space_insert_offset = 0
                 for i in is_num_between_chinese_space:
@@ -397,7 +397,7 @@ def output_baidu_ocr(response_json):
                     space_insert_offset += 1
                     words = ''.join(list_words)
             is_num_between_space_chinese = re.finditer(
-                r'( )+[0-9a-zA-Z]+[\u4e00-\u9fa5+]', words)  # 测试 666代码
+                r'( )+[0-9a-zA-Z]+[\u4e00-\u9fa5+]', words)  # 汉字+空格+数字+汉字
             if is_num_between_space_chinese != None:
                 space_insert_offset = 0
                 for i in is_num_between_space_chinese:
@@ -471,25 +471,25 @@ if __name__ == "__main__":
     6: zxing
     7: file
     '''
-    if (OCR_SELECT == 1):
+    if (ocr_select == 1):
         baidu_ocr(PIC_PATH)
         remove_pic(PIC_PATH)
-    elif (OCR_SELECT == 2):
+    elif (ocr_select == 2):
         baidu_ocr_qrcode(PIC_PATH)
         remove_pic(PIC_PATH)
-    elif (OCR_SELECT == 3):
+    elif (ocr_select == 3):
         baidu_ocr_form(PIC_PATH)
         remove_pic(PIC_PATH)
-    elif (OCR_SELECT == 4):
+    elif (ocr_select == 4):
         tencent_youtu_ocr(PIC_PATH)
         remove_pic(PIC_PATH)
-    elif (OCR_SELECT == 5):
+    elif (ocr_select == 5):
         google_ocr(PIC_PATH)
         remove_pic(PIC_PATH)
-    elif (OCR_SELECT == 6):
+    elif (ocr_select == 6):
         barcode_decode(PIC_PATH)
         remove_pic(PIC_PATH)
-    elif (OCR_SELECT == 7):
+    elif (ocr_select == 7):
         multi_file_ocr()
 
 '''

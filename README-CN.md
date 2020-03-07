@@ -6,7 +6,7 @@
 
 ## 下载地址
 
-[国内直链][2] 或 [Github-Release][3]
+[国内直链][2] | [Github-Release][3]
 
 ## OCR Demo
 

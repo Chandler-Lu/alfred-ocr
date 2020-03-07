@@ -3,7 +3,7 @@
 @version: 1.0
 @Author: Chandler Lu
 @Date: 2020-03-07 17:38:10
-@LastEditTime: 2020-03-07 22:16:23
+@LastEditTime: 2020-03-07 22:48:22
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -276,7 +276,7 @@ def output_baidu_ocr(response_json):
             chinese_tag = 0
         if chinese_tag is 1:
             is_num_between_chinese = re.finditer(
-                r'[\u4e00-\u9fa5+|\W][0-9a-zA-Z]+[\u4e00-\u9fa5+]', words)  # 测试666代码
+                r'[\u4e00-\u9fa5+|\W][0-9a-zA-Z]+[\u4e00-\u9fa5+]', words)  # 汉字+数字+汉字
             if is_num_between_chinese != None:
                 space_insert_offset = 0  # 第一次插入空格后，后续插入点发生偏移
                 for i in is_num_between_chinese:
@@ -287,7 +287,7 @@ def output_baidu_ocr(response_json):
                     space_insert_offset += 2
                     words = ''.join(list_words)
             is_num_between_chinese_space = re.finditer(
-                r'[\u4e00-\u9fa5+][0-9a-zA-Z]+( )+[\u4e00-\u9fa5+]', words)  # 测试666 代码
+                r'[\u4e00-\u9fa5+][0-9a-zA-Z]+( )+[\u4e00-\u9fa5+]', words)  # 汉字+数字+空格+汉字
             if is_num_between_chinese_space != None:
                 space_insert_offset = 0
                 for i in is_num_between_chinese_space:
@@ -297,7 +297,7 @@ def output_baidu_ocr(response_json):
                     space_insert_offset += 1
                     words = ''.join(list_words)
             is_num_between_space_chinese = re.finditer(
-                r'( )+[0-9a-zA-Z]+[\u4e00-\u9fa5+]', words)  # 测试 666代码
+                r'( )+[0-9a-zA-Z]+[\u4e00-\u9fa5+]', words)  # 汉字+空格+数字+汉字
             if is_num_between_space_chinese != None:
                 space_insert_offset = 0
                 for i in is_num_between_space_chinese:

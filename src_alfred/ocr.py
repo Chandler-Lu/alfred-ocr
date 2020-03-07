@@ -1,9 +1,9 @@
 '''
 @Description: Capture than OCR - macOS - Online OCR
-@version: 3.3
+@version: 3.4
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-@LastEditTime: 2020-03-07 21:56:57
+@LastEditTime: 2020-03-07 22:17:01
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -232,70 +232,52 @@ def google_ocr(pic_path):
     header = {
         "Content-Type": "application/json",
     }
+    data = json.dumps({
+        "requests": [
+            {
+                "image": {
+                    "content": convert_image_base64(pic_path)
+                },
+                "features": [
+                    {
+                        "type": "TEXT_DETECTION"
+                    }
+                ]
+            }
+        ]
+    })
     if GOOGLE_POST_REFERER:
         header['Referer'] = GOOGLE_POST_REFERER
-    if GOOGLE_HTTP_PROXY:
-        try:
+    try:
+        if GOOGLE_HTTP_PROXY:
             response = requests.post(
-                url="https://vision.googleapis.com/v1/images:annotate",
+                url=GOOGLE_OCR_API,
                 params={
                     "key": GOOGLE_ACCESS_TOKEN,
                 },
                 headers=header,
-                data=json.dumps({
-                    "requests": [
-                        {
-                            "image": {
-                                "content": convert_image_base64(pic_path)
-                            },
-                            "features": [
-                                {
-                                    "type": "TEXT_DETECTION"
-                                }
-                            ]
-                        }
-                    ]
-                }),
+                data=data,
                 proxies={
                     'http': 'http://' + GOOGLE_HTTP_PROXY,
                     'https': 'https://' + GOOGLE_HTTP_PROXY,
                 }
             )
-        except requests.exceptions.ConnectionError:
-            declare_network_error()
-    else:
-        try:
+        else:
             response = requests.post(
-                url="https://vision.googleapis.com/v1/images:annotate",
+                url=GOOGLE_OCR_API,
                 params={
                     "key": GOOGLE_ACCESS_TOKEN,
                 },
-                headers={
-                    "Content-Type": "application/json",
-                    "Referer": GOOGLE_POST_REFERER,
-                },
-                data=json.dumps({
-                    "requests": [
-                        {
-                            "image": {
-                                "content": convert_image_base64(pic_path)
-                            },
-                            "features": [
-                                {
-                                    "type": "TEXT_DETECTION"
-                                }
-                            ]
-                        }
-                    ]
-                })
+                headers=header,
+                data=data
             )
-        except requests.exceptions.ConnectionError:
-            declare_network_error()
-    if (response.status_code == 200):
-        response_json = response.json()['responses']
-        output_result('google_ocr', response_json)
-    else:
-        print('Request failed!', end='')
+        if (response.status_code == 200):
+            response_json = response.json()['responses']
+            output_result('google_ocr', response_json)
+        else:
+            print('Request failed!', end='')
+    except requests.exceptions.ConnectionError:
+        declare_network_error()
 
 
 def multi_file_ocr():

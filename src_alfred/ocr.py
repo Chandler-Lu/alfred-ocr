@@ -3,7 +3,7 @@
 @version: 3.4
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-@LastEditTime: 2020-03-07 22:17:01
+@LastEditTime: 2020-03-09 22:44:50
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -16,38 +16,17 @@ import re
 import requests
 
 import hashlib
-import random
+import random 
 import string
 from base64 import b64encode
 from urllib import parse
 
+import config as c
+
 
 ocr_select = int(sys.argv[1])
-PIC_PATH = sys.argv[2]
-FOLDER_PATH = '/private/tmp/com.chandler.alfredocr'
-
-# Control
-BAIDU_OCR_SPACING_OFFSET = 8
-BAIDU_OCR_SPACING_VARIANCE = 15
-BAIDU_OCR_WIDTH_OFFSET = 50
-
-# Key
-BAIDU_API_KEY = os.environ["baidu_api_key"]
-BAIDU_SECRET_KEY = os.environ["baidu_secret_key"]
-TENCENT_YOUTU_APPID = os.environ["tencent_youtu_appid"]
-TENCENT_YOUTU_APPKEY = os.environ["tencent_youtu_appkey"]
-GOOGLE_ACCESS_TOKEN = os.environ["google_access_token"]
-GOOGLE_POST_REFERER = os.environ["google_post_referer"]
-GOOGLE_HTTP_PROXY = os.environ["google_http_proxy"]
-
-# API
-BAIDU_GET_TOKEN_URL = 'https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=' + \
-    BAIDU_API_KEY + '&client_secret=' + BAIDU_SECRET_KEY
-BAIDU_OCR_API = 'https://aip.baidubce.com/rest/2.0/ocr/v1/general'
-BAIDU_QRCODE_API = 'https://aip.baidubce.com/rest/2.0/ocr/v1/qrcode'
-BAIDU_FORM_API = 'https://aip.baidubce.com/rest/2.0/solution/v1/form_ocr/request'
-TENCENT_YOUTU_OCR_API = 'https://api.ai.qq.com/fcgi-bin/ocr/ocr_generalocr'
-GOOGLE_OCR_API = 'https://vision.googleapis.com/v1/images:annotate'
+pic_path = sys.argv[2]
+temp_path = '/private/tmp/com.chandler.alfredocr'
 
 '''
 Error Declare
@@ -78,7 +57,7 @@ Baidu OCR
 
 def request_baidu_token():
     try:
-        api_message = requests.get(BAIDU_GET_TOKEN_URL)
+        api_message = requests.get(c.BAIDU_GET_TOKEN_URL)
         if api_message:
             with open("./baidu_api_token.json", "w") as json_file:
                 json.dump(api_message.json(), json_file)
@@ -105,7 +84,7 @@ def baidu_ocr(pic_path):
     if (os.path.getsize(pic_path) <= 4194304):
         try:
             response = requests.post(
-                url=BAIDU_OCR_API,
+                url=c.BAIDU_OCR_API,
                 params={
                     "access_token": return_baidu_token(),
                 },
@@ -130,7 +109,7 @@ def baidu_ocr_qrcode(pic_path):
     if (os.path.getsize(pic_path) <= 4194304):
         try:
             response = requests.post(
-                url=BAIDU_QRCODE_API,
+                url=c.BAIDU_QRCODE_API,
                 params={
                     "access_token": return_baidu_token(),
                 },
@@ -156,7 +135,7 @@ def baidu_ocr_form(pic_path):
     if (os.path.getsize(pic_path) <= 4194304):
         try:
             response = requests.post(
-                url=BAIDU_FORM_API,
+                url=c.BAIDU_FORM_API,
                 params={
                     "access_token": return_baidu_token(),
                 },
@@ -190,7 +169,7 @@ def request_tencent_youtu_sign(postdata, pic_path):
     # 字典升序排序
     dic = sorted(postdata.items(), key=lambda d: d[0])
     # URL编码 + 拼接app_key
-    sign_text = parse.urlencode(dic) + '&app_key=' + TENCENT_YOUTU_APPKEY
+    sign_text = parse.urlencode(dic) + '&app_key=' + c.TENCENT_YOUTU_APPKEY
     # MD5 + 转换大写
     sign = hashlib.md5(sign_text.encode('utf-8')).hexdigest().upper()
     return sign
@@ -201,12 +180,12 @@ def tencent_youtu_ocr(pic_path):
         baidu_ocr(pic_path)
         return
     elif (os.path.getsize(pic_path) <= 1048576):
-        postdata = {'app_id': TENCENT_YOUTU_APPID, 'time_stamp': int(time.time()), 'nonce_str': ''.join(
+        postdata = {'app_id': c.TENCENT_YOUTU_APPID, 'time_stamp': int(time.time()), 'nonce_str': ''.join(
             random.choices(string.ascii_letters + string.digits, k=8)), 'image': convert_image_base64(pic_path)}
         postdata['sign'] = request_tencent_youtu_sign(postdata, pic_path)
         try:
             response = requests.post(
-                url=TENCENT_YOUTU_OCR_API,
+                url=c.TENCENT_YOUTU_OCR_API,
                 headers={
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
@@ -246,27 +225,27 @@ def google_ocr(pic_path):
             }
         ]
     })
-    if GOOGLE_POST_REFERER:
-        header['Referer'] = GOOGLE_POST_REFERER
+    if c.GOOGLE_POST_REFERER:
+        header['Referer'] = c.GOOGLE_POST_REFERER
     try:
-        if GOOGLE_HTTP_PROXY:
+        if c.GOOGLE_HTTP_PROXY:
             response = requests.post(
-                url=GOOGLE_OCR_API,
+                url=c.GOOGLE_OCR_API,
                 params={
-                    "key": GOOGLE_ACCESS_TOKEN,
+                    "key": c.GOOGLE_ACCESS_TOKEN,
                 },
                 headers=header,
                 data=data,
                 proxies={
-                    'http': 'http://' + GOOGLE_HTTP_PROXY,
-                    'https': 'https://' + GOOGLE_HTTP_PROXY,
+                    'http': 'http://' + c.GOOGLE_HTTP_PROXY,
+                    'https': 'https://' + c.GOOGLE_HTTP_PROXY,
                 }
             )
         else:
             response = requests.post(
-                url=GOOGLE_OCR_API,
+                url=c.GOOGLE_OCR_API,
                 params={
-                    "key": GOOGLE_ACCESS_TOKEN,
+                    "key": c.GOOGLE_ACCESS_TOKEN,
                 },
                 headers=header,
                 data=data
@@ -281,10 +260,10 @@ def google_ocr(pic_path):
 
 
 def multi_file_ocr():
-    names = [name for name in os.listdir(FOLDER_PATH)
-             if re.search(r'.png|.jpg|.jpeg|.bmp', name, re.IGNORECASE) and os.path.getsize(FOLDER_PATH + '/' + name) <= 4194304]
+    names = [name for name in os.listdir(temp_path)
+             if re.search(r'.png|.jpg|.jpeg|.bmp', name, re.IGNORECASE) and os.path.getsize(temp_path + '/' + name) <= 4194304]
     for i in range(len(names)):
-        current_pic_path = FOLDER_PATH + '/' + names[i]
+        current_pic_path = temp_path + '/' + names[i]
         baidu_ocr(current_pic_path)
         remove_pic(current_pic_path)
         if i != len(names) - 1:
@@ -360,9 +339,9 @@ def output_baidu_ocr(response_json):
         top_variance = statistics.pvariance(line_spacing)
     else:
         top_half = 0
-        top_variance = BAIDU_OCR_SPACING_VARIANCE
+        top_variance = c.BAIDU_OCR_SPACING_VARIANCE
 
-    if top_variance >= BAIDU_OCR_SPACING_VARIANCE:
+    if top_variance >= c.BAIDU_OCR_SPACING_VARIANCE:
         is_line_spacing_check = 1
     else:
         is_line_spacing_check = 0
@@ -379,6 +358,27 @@ def output_baidu_ocr(response_json):
         else:
             chinese_tag = 0
         if chinese_tag is 1:
+            is_num_between_chinese_space = re.finditer(
+                r'[\u4e00-\u9fa5+][0-9a-zA-Z]', words)  # 汉字+数字
+            if is_num_between_chinese_space != None:
+                space_insert_offset = 0
+                for i in is_num_between_chinese_space:
+                    list_words = list(words)
+                    list_words.insert(
+                        i.span()[0] + space_insert_offset + 1, ' ')
+                    space_insert_offset += 1
+                    words = ''.join(list_words)
+            is_num_between_space_chinese = re.finditer(
+                r'[0-9a-zA-Z]+[\u4e00-\u9fa5+]', words)  # 数字+汉字
+            if is_num_between_space_chinese != None:
+                space_insert_offset = 0
+                for i in is_num_between_space_chinese:
+                    list_words = list(words)
+                    list_words.insert(
+                        i.span()[1] + space_insert_offset - 1, ' ')
+                    space_insert_offset += 1
+                    words = ''.join(list_words)
+            '''
             is_num_between_chinese = re.finditer(
                 r'[\u4e00-\u9fa5+|\W][0-9a-zA-Z]+[\u4e00-\u9fa5+]', words)  # 汉字+数字+汉字
             if is_num_between_chinese != None:
@@ -410,6 +410,7 @@ def output_baidu_ocr(response_json):
                         i.span()[1] + space_insert_offset - 1, ' ')
                     space_insert_offset += 1
                     words = ''.join(list_words)
+            '''
             words = words.replace(", ", "，").replace(",", "，")
             # words = words.replace(". ", "。").replace(
             #     ".", "。").replace("。 ", "。")
@@ -432,9 +433,9 @@ def output_baidu_ocr(response_json):
             words = words.replace("？", "?")
             words = re.sub(r'( ){2,}', ' ', words)
             print(words, end='')
-        if (is_line_spacing_check is 1) and (index != response_json['words_result_num'] - 1) and (response_json['words_result'][index + 1]['location']['top'] - response_json['words_result'][index]['location']['top'] > top_half + BAIDU_OCR_SPACING_OFFSET):
+        if (is_line_spacing_check is 1) and (index != response_json['words_result_num'] - 1) and (response_json['words_result'][index + 1]['location']['top'] - response_json['words_result'][index]['location']['top'] > top_half + c.BAIDU_OCR_SPACING_OFFSET):
             print()
-        elif (is_line_spacing_check is 0) and (index != response_json['words_result_num'] - 1) and (response_json['words_result'][index]['location']['width'] < width_half - BAIDU_OCR_WIDTH_OFFSET):
+        elif (is_line_spacing_check is 0) and (index != response_json['words_result_num'] - 1) and (response_json['words_result'][index]['location']['width'] < width_half - c.BAIDU_OCR_WIDTH_OFFSET):
             print()
 
 
@@ -476,21 +477,21 @@ if __name__ == "__main__":
     7: file
     '''
     if (ocr_select == 1):
-        baidu_ocr(PIC_PATH)
+        baidu_ocr(pic_path)
     elif (ocr_select == 2):
-        baidu_ocr_qrcode(PIC_PATH)
+        baidu_ocr_qrcode(pic_path)
     elif (ocr_select == 3):
-        baidu_ocr_form(PIC_PATH)
+        baidu_ocr_form(pic_path)
     elif (ocr_select == 4):
-        tencent_youtu_ocr(PIC_PATH)
+        tencent_youtu_ocr(pic_path)
     elif (ocr_select == 5):
-        google_ocr(PIC_PATH)
+        google_ocr(pic_path)
     elif (ocr_select == 6):
-        barcode_decode(PIC_PATH)
+        barcode_decode(pic_path)
     elif (ocr_select == 7):
         multi_file_ocr()
     if (ocr_select != 7):
-        remove_pic(PIC_PATH)
+        remove_pic(pic_path)
 
 '''
  ________

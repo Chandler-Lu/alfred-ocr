@@ -1,9 +1,9 @@
 '''
-@Description: ocr_cnocr
+@Description: Capture than OCR - Alfred for macOS - CNOCR
 @version: 1.0
 @Author: Chandler Lu
 @Date: 2019-11-23 22:22:27
-@LastEditTime: 2019-12-05 21:55:16
+@LastEditTime: 2020-03-08 14:34:23
 '''
 # -*- coding: UTF-8 -*-
 import sys

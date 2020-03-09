@@ -1,134 +1,151 @@
 # Alfred - OCR and Translation
 
-## Language
+## 语言
 
-[简体中文][1] | English
+简体中文 | [English][1]
 
-## Download
+## 下载地址
 
-[China-Mirror][2] | [Github-Release][3]
+[国内直链][2] | [Github-Release][3]
 
 ## OCR Demo
 
-![][image-1]
+![Demo\_OCR][image-1]
 
-## Version
+## Translate Demo
 
-### 4.2
+![Demo\_Trans][image-2]
 
-- the trigger keyword `ooq` was replaced with the QR code recognition by a open source module [ZXing][4].
+## 版本
 
-## Feature
+### 4.3
 
-- Offline OCR (CNOCR)
-- Online OCR (Baidu | Tencent Youtu | Google)
-- QR Code Reader (Baidu | ZXing)
-- Form OCR (Baidu)
-- Multi File OCR (Baidu)
-- Translate (ColorfulClouds)
+- 优化百度 OCR 的输出结果
 
-## Installation
+## 能力
 
-- You need install at least Alfred 3 or latest version and activate Powerpack;
-- You need install Python 3 and necessary modules, then fill Python 3 Path at `PYTHON_PATH`;
-- You need to apply and fill the configuration of the API Key into the environment variable;
-- More installation details: [Install-Python(EN)][5]
+- 离线 OCR (CNOCR)
+- 通用 OCR (百度 | 腾讯优图 | Google)
+- 二维码识别 (百度 | ZXing)
+- 表格文字识别 (百度)
+- 多文件识别 (百度)
+- 文本翻译 (彩云小译)
 
-## Python Module
+## 使用（必看！！）
+
+1. 这**不是**一个开箱即用的产品！
+2. 您至少要拥有 macOS Alfred 3 及以上版本并激活 Powerpack。
+3. 您需要安装 Python 3 及相应的依赖模块，并将 Python 3 路径填写在`PYTHON_PATH`处。
+4. 您需要申请并将对应接口的配置填入环境变量，部分接口附带我自己的 Key，但严禁滥用。
+5. 具体配置方法请移步 [安装方式][4]。
+
+## 依赖
 
 ### CNOCR
 
 ```bash
- pip install cnocr
+pip install cnocr
 ```
 
 ### ZXing
 
 ```bash
- pip install zxing
+pip install zxing
 ```
 
-### Others
+### 其他
 
 ```bash
- pip install requests
+pip install requests
 ```
 
-## Interfaces
+## 接口
 
-### [CNOCR][6]
+### [CNOCR][5]
 
-#### Trigger
+#### 触发
 
-- Use keyword `oo` to trigger screenshot selector.
+- 使用关键词 oo 触发截图选框。
 
-#### Description
+#### 说明
 
-- More installation details: [README][7].
+- 一切安装方法请依据该项目 [README][6]。
 
-### [Baidu AI][8]
+### [Baidu AI (百度)][7]
 
-#### Trigger
+#### 触发
 
-1. Online OCR: Use shortcut key `ctrl + v` to trigger screenshot selector or Taking screenshot to clipboard then use keywords `oob (baidu)` to trigger.
-2. QR Code Reader: Taking screenshot to clipboard then use keywords `ooqb (qr baidu)` to trigger.
-3. Form OCR: Taking screenshot to clipboard then use keywords `ooe (excel)` to trigger, then you can copy it to Excel.
-4. Multi File OCR: Select file in Finder and use keywords `oof (file)` to trigger.
+1. 通用 OCR：快捷键 ctrl+v 触发截图选框，或截图至剪贴板后使用关键词 `oob (baidu)` 触发；
+2. 二维码识别：截图后使用关键词 `ooqb (qr baidu)` 触发；
+3. 表格文字识别：截图后使用关键词 `ooe (excel)` 触发，识别后可直接复制至 Excel；
+4. 多文件识别：finder 中选中需要识别的图片并使用关键词 `oof (file)` 触发。
 
-![][image-2]
+![File\_OCR][image-3]
 
-#### Description
+#### 说明
 
-1. QR Code support reading multiple at the same time;
-2. The test token does not guarantee availability, you can apply for it if you need stability;
-3. Single picture up to 4MB .
+1. 具备中英文识别，标点符号将被替换为对应语言下的符号；
+2. 二维码识别支持同时识别多个；
+3. 自带一个测试 Token，不保证可用性，需要稳定可自行申请；
+4. 最大支持单个 4MB 的图片。
 
-### [Tencent Youtu][9]
+### [Tencent Youtu (腾讯优图)][8]
 
-#### Trigger
+#### 触发
 
-- Online OCR: Taking screenshot to clipboard then use keywords `oot (tencent)` to trigger.
+- 通用 OCR：截图至剪贴板后使用关键词 `oot (tencent)` 触发。
 
-#### Description
+#### 说明
 
-1. The test token does not guarantee availability, you can apply for it if you need stability;
-2. Single picture up to 1MB .
+1. 自带一个测试 Token，不保证可用性，需要稳定可自行申请；
+2. 最大支持 1MB 的图片，过大图片会自动交由百度处理（当然百度最大也只支持 4MB）。
 
-### [Google OCR][10]
+### [Google OCR][9]
 
-#### Trigger
+#### 触发
 
-- Online OCR: Taking screenshot to clipboard then use keywords `oog (google)` to trigger.
+- 通用 OCR：截图至剪贴板后使用关键词 `oog (google)` 触发。
 
-#### Env Variable
+#### 环境变量
 
-| Name                | Description                                           |
-| ------------------- | ----------------------------------------------------- |
-| google_access_token | API Key                                               |
-| google_post_referer | Referer parameter in HTTP request, default NULL       |
-| google_http_proxy   | HTTP Proxy, default NULL. Reference: `127.0.0.1:1234` |
+| 变量名              | 字段说明                                         |
+| ------------------- | ------------------------------------------------ |
+| google\_access\_token | 授权密钥                                         |
+| google\_post\_referer | HTTP 请求时的 Referer 参数，默认为空             |
+| google\_http\_proxy   | HTTP 代理，默认为空，填写方式如 `127.0.0.1:1234` |
 
-#### Description
+#### 说明
 
-- Google OCR is a fee-paying interfaces and requires a credit card. Therefore, this project does not have a test token. You must apply for it.
+- Google OCR 为收费业务，需绑定信用卡，故本项目不带测试 Token，需要自行申请。
 
-### [ZXing][11]
+### [ZXing][10]
 
-#### Trigger
+#### 触发
 
-- QR Code Reader: Taking screenshot to clipboard then use keywords `ooq` to trigger.
+- 截图至剪贴板后使用关键词 `ooq` 触发。
 
-#### Description
+#### 说明
 
-1. More installation details: [README][12];
-2. Only supports single QR code recognition.
+1. 一切安装方法请依据该项目 [README][11];
+2. 仅支持单个二维码识别。
+
+### [彩云小译][12]
+
+#### 触发
+
+- 文本翻译：使用关键词 `tc (translate caiyun) + 需要翻译的内容` 来触发；输出结果可通过 `command + v` 复制。
+
+#### 说明
+
+1. 自带一个测试 Token，不保证可用性，需要稳定可自行申请；
+2. 支持中译英，及 X 译中(X 为彩云小译已经支持的语言类别)。
 
 ## TODO
 
-- Paragraph optimization.
-- Screenshot translation.
+- 段落优化
+- 截图翻译
 
-## Reference
+## 致谢
 
 1. [breezedeus/cnocr][13]
 2. [dlenski/python-zxing][14]
@@ -136,22 +153,24 @@
 4. [oott123/alfred-clipboard-ocr][16]
 5. [Elvis Cai][17]
 
-[1]: https://github.com/Chandler-Lu/alfred-ocr/blob/master/README-CN.md
-[2]: http://bz.cndzq.com/ltr970503/3_software/2_tool/Capture%20then%20OCR.zip
-[3]: https://github.com/Chandler-Lu/alfred-ocr/releases "Github-Release"
-[4]: https://github.com/dlenski/python-zxing
-[5]: https://github.com/Chandler-Lu/alfred-ocr/wiki/Install-Python(CN)
-[6]: https://github.com/breezedeus/cnocr
-[7]: https://github.com/breezedeus/cnocr/blob/master/README.md
-[8]: https://ai.baidu.com/tech/ocr
-[9]: https://ai.qq.com/product/ocr.shtml#common
-[10]: https://cloud.google.com/vision/docs/ocr
-[11]: https://github.com/dlenski/python-zxing
-[12]: https://github.com/dlenski/python-zxing/blob/master/README.md
-[13]: https://github.com/breezedeus/cnocr
-[14]: https://github.com/dlenski/python-zxing
-[15]: https://github.com/ginfuru/alfred-screen-capture
-[16]: https://github.com/oott123/alfred-clipboard-ocr
-[17]: https://github.com/elviscai
-[image-1]: examples/demo_ocr_en.gif
-[image-2]: examples/file_ocr.png
+[1]:	https://github.com/Chandler-Lu/alfred-ocr/blob/master/README-EN.md
+[2]:	https://cloud.yeslu.cn/github/Capture%20then%20OCR.zip
+[3]:	https://github.com/Chandler-Lu/alfred-ocr/releases
+[4]:	https://github.com/Chandler-Lu/alfred-ocr/wiki/Install-Python(CN)
+[5]:	https://github.com/breezedeus/cnocr
+[6]:	https://github.com/breezedeus/cnocr/blob/master/README.md
+[7]:	https://ai.baidu.com/tech/ocr
+[8]:	https://ai.qq.com/product/ocr.shtml#common
+[9]:	https://cloud.google.com/vision/docs/ocr
+[10]:	https://github.com/dlenski/python-zxing
+[11]:	https://github.com/dlenski/python-zxing/blob/master/README.md
+[12]:	https://fanyi.caiyunapp.com/#/api
+[13]:	https://github.com/breezedeus/cnocr
+[14]:	https://github.com/dlenski/python-zxing
+[15]:	https://github.com/ginfuru/alfred-screen-capture
+[16]:	https://github.com/oott123/alfred-clipboard-ocr
+[17]:	https://github.com/elviscai
+
+[image-1]:	examples/demo_ocr_cn.gif
+[image-2]:	examples/demo_trans.gif
+[image-3]:	examples/file_ocr.png

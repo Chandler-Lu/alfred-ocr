@@ -3,7 +3,7 @@
 @version: 1.1
 @Author: Chandler Lu
 @Date: 2019-12-01 10:29:27
-@LastEditTime: 2019-12-05 21:54:47
+@LastEditTime: 2020-03-09 22:54:31
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -13,13 +13,9 @@ import re
 import requests
 import json
 
+import config as c
+
 translate_origin = sys.argv[1]
-
-# Key
-caiyun_translate_token = os.environ["caiyun_token"]
-
-# API
-caiyun_translate_api = 'http://api.interpreter.caiyunai.com/v1/translator'
 
 
 def caiyun_translate(chinese_tag, source):
@@ -28,10 +24,10 @@ def caiyun_translate(chinese_tag, source):
     else:
         trans_type = 'auto2zh'
     response = requests.post(
-        url=caiyun_translate_api,
+        url=c.CAIYUN_TRANSLATE_API,
         headers={
             'Content-Type': 'application/json',
-            'X-Authorization': 'token ' + caiyun_translate_token,
+            'X-Authorization': 'token ' + c.CAIYUN_TRANSLATE_TOKEN,
         },
         data=json.dumps({
             "source": source,

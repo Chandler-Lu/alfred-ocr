@@ -1,9 +1,9 @@
 '''
-@Description: Capture than OCR - Windows - Online OCR
+@Description: Capture than OCR - Quicker for Windows - Online OCR
 @version: 1.0
 @Author: Chandler Lu
 @Date: 2020-03-07 17:38:10
-@LastEditTime: 2020-03-07 22:48:22
+@LastEditTime: 2020-03-08 14:34:03
 '''
 # -*- coding: UTF-8 -*-
 import sys

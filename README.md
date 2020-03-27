@@ -10,17 +10,17 @@
 
 ## OCR Demo
 
-![Demo\_OCR][image-1]
+![Demo_OCR][image-1]
 
 ## Translate Demo
 
-![Demo\_Trans][image-2]
+![Demo_Trans][image-2]
 
 ## 版本
 
-### 4.3
+### 4.4
 
-- 优化百度 OCR 的输出结果
+- 修复 python 3.8 的报错问题，感谢 [LucasZhan](https://github.com/LucasZhan) 报告并帮助测试。
 
 ## 能力
 
@@ -39,24 +39,28 @@
 4. 您需要申请并将对应接口的配置填入环境变量，部分接口附带我自己的 Key，但严禁滥用。
 5. 具体配置方法请移步 [安装方式][4]。
 
+### 截图权限
+
+第一次使用时，请先用 `oo` 触发 CNOCR（无论你是否安装/需要 CNOCR 模块），此时 Alfred 会向系统请求屏幕录制权限，授权后，方可正常通过 `ctrl+v` 触发截屏。
+
 ## 依赖
 
-### CNOCR
+### 通用 OCR
+
+```bash
+pip install requests
+```
+
+### CNOCR (离线 OCR)
 
 ```bash
 pip install cnocr
 ```
 
-### ZXing
+### ZXing (离线二维码识别)
 
 ```bash
 pip install zxing
-```
-
-### 其他
-
-```bash
-pip install requests
 ```
 
 ## 接口
@@ -80,7 +84,7 @@ pip install requests
 3. 表格文字识别：截图后使用关键词 `ooe (excel)` 触发，识别后可直接复制至 Excel；
 4. 多文件识别：finder 中选中需要识别的图片并使用关键词 `oof (file)` 触发。
 
-![File\_OCR][image-3]
+![File_OCR][image-3]
 
 #### 说明
 
@@ -110,9 +114,9 @@ pip install requests
 
 | 变量名              | 字段说明                                         |
 | ------------------- | ------------------------------------------------ |
-| google\_access\_token | 授权密钥                                         |
-| google\_post\_referer | HTTP 请求时的 Referer 参数，默认为空             |
-| google\_http\_proxy   | HTTP 代理，默认为空，填写方式如 `127.0.0.1:1234` |
+| google_access_token | 授权密钥                                         |
+| google_post_referer | HTTP 请求时的 Referer 参数，默认为空             |
+| google_http_proxy   | HTTP 代理，默认为空，填写方式如 `127.0.0.1:1234` |
 
 #### 说明
 
@@ -151,26 +155,29 @@ pip install requests
 2. [dlenski/python-zxing][14]
 3. [ginfuru/alfred-screen-capture][15]
 4. [oott123/alfred-clipboard-ocr][16]
-5. [Elvis Cai][17]
 
-[1]:	https://github.com/Chandler-Lu/alfred-ocr/blob/master/README-EN.md
-[2]:	https://cloud.yeslu.cn/github/Capture%20then%20OCR.zip
-[3]:	https://github.com/Chandler-Lu/alfred-ocr/releases
-[4]:	https://github.com/Chandler-Lu/alfred-ocr/wiki/Install-Python(CN)
-[5]:	https://github.com/breezedeus/cnocr
-[6]:	https://github.com/breezedeus/cnocr/blob/master/README.md
-[7]:	https://ai.baidu.com/tech/ocr
-[8]:	https://ai.qq.com/product/ocr.shtml#common
-[9]:	https://cloud.google.com/vision/docs/ocr
-[10]:	https://github.com/dlenski/python-zxing
-[11]:	https://github.com/dlenski/python-zxing/blob/master/README.md
-[12]:	https://fanyi.caiyunapp.com/#/api
-[13]:	https://github.com/breezedeus/cnocr
-[14]:	https://github.com/dlenski/python-zxing
-[15]:	https://github.com/ginfuru/alfred-screen-capture
-[16]:	https://github.com/oott123/alfred-clipboard-ocr
-[17]:	https://github.com/elviscai
+### 测试员
 
-[image-1]:	examples/demo_ocr_cn.gif
-[image-2]:	examples/demo_trans.gif
-[image-3]:	examples/file_ocr.png
+1. [Elvis Cai][17]
+2. [LucasZhan](https://github.com/LucasZhan)
+
+[1]: https://github.com/Chandler-Lu/alfred-ocr/blob/master/README-EN.md
+[2]: https://cloud.yeslu.cn/github/Capture%20then%20OCR.zip
+[3]: https://github.com/Chandler-Lu/alfred-ocr/releases
+[4]: https://www.yeslu.cn/archives/7fe802d0.html
+[5]: https://github.com/breezedeus/cnocr
+[6]: https://github.com/breezedeus/cnocr/blob/master/README.md
+[7]: https://ai.baidu.com/tech/ocr
+[8]: https://ai.qq.com/product/ocr.shtml#common
+[9]: https://cloud.google.com/vision/docs/ocr
+[10]: https://github.com/dlenski/python-zxing
+[11]: https://github.com/dlenski/python-zxing/blob/master/README.md
+[12]: https://fanyi.caiyunapp.com/#/api
+[13]: https://github.com/breezedeus/cnocr
+[14]: https://github.com/dlenski/python-zxing
+[15]: https://github.com/ginfuru/alfred-screen-capture
+[16]: https://github.com/oott123/alfred-clipboard-ocr
+[17]: https://github.com/elviscai
+[image-1]: examples/demo_ocr_cn.gif
+[image-2]: examples/demo_trans.gif
+[image-3]: examples/file_ocr.png

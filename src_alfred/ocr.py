@@ -3,7 +3,7 @@
 @version: 3.4
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-@LastEditTime: 2020-03-09 22:44:50
+@LastEditTime: 2020-03-27 20:52:33
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -16,7 +16,7 @@ import re
 import requests
 
 import hashlib
-import random 
+import random
 import string
 from base64 import b64encode
 from urllib import parse
@@ -122,7 +122,7 @@ def baidu_ocr_qrcode(pic_path):
             )
             if (response.status_code == 200):
                 response_json = response.json()['codes_result']
-                output_result('baidu_qrcode', response_json)
+                output_result(2, response_json)
             else:
                 print('Request failed!', end='')
         except requests.exceptions.ConnectionError:
@@ -193,7 +193,7 @@ def tencent_youtu_ocr(pic_path):
             )
             if (response.status_code == 200):
                 response_json = response.json()['data']['item_list']
-                output_result('tencent_youtu_ocr', response_json)
+                output_result(4, response_json)
             else:
                 print('Request failed!', end='')
         except requests.exceptions.ConnectionError:
@@ -252,7 +252,7 @@ def google_ocr(pic_path):
             )
         if (response.status_code == 200):
             response_json = response.json()['responses']
-            output_result('google_ocr', response_json)
+            output_result(5, response_json)
         else:
             print('Request failed!', end='')
     except requests.exceptions.ConnectionError:
@@ -291,17 +291,17 @@ Output
 
 
 def output_result(which_api, result_json):
-    if (which_api is 'tencent_youtu_ocr'):
+    if (which_api == 4):
         for index in range(len(result_json)):
             print(result_json[index]
                   ['itemstring'].replace(",", "，"), end='')
             if index != (len(result_json) - 1):
                 print()
-    elif (which_api is 'google_ocr'):
+    elif (which_api == 5):
         text = result_json[0]['textAnnotations'][0]['description'].rstrip(
             '\n')
         print(text, end='')
-    elif (which_api is 'baidu_qrcode'):
+    elif (which_api == 2):
         # 空二维码
         if (len(result_json) < 1):
             print('Empty QR Code!')
@@ -349,7 +349,11 @@ def output_baidu_ocr(response_json):
     for index in range(response_json['words_result_num']):
         line_width.append(
             response_json['words_result'][index]['location']['width'])
-    width_half = statistics.median(line_width)
+    try:
+        width_half = statistics.median(line_width)
+    except statistics.StatisticsError:
+        print('Empty!', end='')
+        sys.exit(0)
 
     for index in range(response_json['words_result_num']):
         words = response_json['words_result'][index]['words']
@@ -357,7 +361,7 @@ def output_baidu_ocr(response_json):
             chinese_tag = 1
         else:
             chinese_tag = 0
-        if chinese_tag is 1:
+        if chinese_tag == 1:
             is_num_between_chinese_space = re.finditer(
                 r'[\u4e00-\u9fa5+][0-9a-zA-Z]', words)  # 汉字+数字
             if is_num_between_chinese_space != None:
@@ -433,9 +437,9 @@ def output_baidu_ocr(response_json):
             words = words.replace("？", "?")
             words = re.sub(r'( ){2,}', ' ', words)
             print(words, end='')
-        if (is_line_spacing_check is 1) and (index != response_json['words_result_num'] - 1) and (response_json['words_result'][index + 1]['location']['top'] - response_json['words_result'][index]['location']['top'] > top_half + c.BAIDU_OCR_SPACING_OFFSET):
+        if (is_line_spacing_check == 1) and (index != response_json['words_result_num'] - 1) and (response_json['words_result'][index + 1]['location']['top'] - response_json['words_result'][index]['location']['top'] > top_half + c.BAIDU_OCR_SPACING_OFFSET):
             print()
-        elif (is_line_spacing_check is 0) and (index != response_json['words_result_num'] - 1) and (response_json['words_result'][index]['location']['width'] < width_half - c.BAIDU_OCR_WIDTH_OFFSET):
+        elif (is_line_spacing_check == 0) and (index != response_json['words_result_num'] - 1) and (response_json['words_result'][index]['location']['width'] < width_half - c.BAIDU_OCR_WIDTH_OFFSET):
             print()
 
 

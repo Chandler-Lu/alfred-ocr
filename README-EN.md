@@ -14,9 +14,10 @@
 
 ## Version
 
-### 4.3
+### 4.4
 
-- Updated format optimization for Baidu OCR
+- Fix a problem with python 3.8;
+- Fix Baidu QR code can not be used.
 
 ## Feature
 

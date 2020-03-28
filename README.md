@@ -20,7 +20,8 @@
 
 ### 4.4
 
-- 修复 python 3.8 的报错问题，感谢 [LucasZhan](https://github.com/LucasZhan) 报告并帮助测试。
+- 修复 python 3.8 的报错问题，感谢 [LucasZhan](https://github.com/LucasZhan) 报告并帮助测试；
+- 修复百度二维码识别无法使用的问题。
 
 ## 能力
 

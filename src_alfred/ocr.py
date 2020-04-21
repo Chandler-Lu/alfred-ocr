@@ -3,7 +3,7 @@
 @version: 4.5
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-@LastEditTime: 2020-04-21 19:43:15
+@LastEditTime: 2020-04-21 20:48:23
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -37,6 +37,7 @@ def declare_network_error():
     print('Network connection refused!', end='')
     sys.exit(0)
 
+
 def declare_file_error():
     print('File ERROR!', end='')
     sys.exit(0)
@@ -52,6 +53,24 @@ def convert_image_base64(pic_path):
         byte_content = pic_file.read()
         pic_base64 = b64encode(byte_content).decode('utf-8')
         return pic_base64
+
+
+'''
+CNOCR
+'''
+
+
+def cnocr_ocr(pic_path):
+    from cnocr import CnOcr
+    ocr = CnOcr()
+    res = ocr.ocr(pic_path)
+    for r in res[:-1]:
+        for c in r:
+            print(c, end='')
+        print()
+    for r in res[-1]:
+        for c in r:
+            print(c, end='')
 
 
 '''
@@ -446,6 +465,7 @@ if __name__ == "__main__":
     except FileNotFoundError:
         declare_file_error()
     '''
+    0: CNOCR
     1: baidu
     2: baidu_qrcode
     3: baidu_form
@@ -454,7 +474,9 @@ if __name__ == "__main__":
     6: zxing
     7: file
     '''
-    if (ocr_select == 1):
+    if (ocr_select == 0):
+        cnocr_ocr(pic_path)
+    elif (ocr_select == 1):
         baidu_ocr(pic_path)
     elif (ocr_select == 2):
         baidu_ocr_qrcode(pic_path)

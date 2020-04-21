@@ -1,9 +1,8 @@
 '''
 @Description: Capture than OCR - Variable
-@version: 1.0
 @Author: Chandler Lu
 @Date: 2020-03-09 20:32:15
-@LastEditTime: 2020-03-09 23:31:02
+@LastEditTime: 2020-04-21 19:42:11
 '''
 # -*- coding: UTF-8 -*-
 
@@ -17,6 +16,10 @@ BAIDU_OCR_WIDTH_OFFSET = 50
 # Key - Alfred
 BAIDU_API_KEY = os.environ['baidu_api_key']
 BAIDU_SECRET_KEY = os.environ['baidu_secret_key']
+if os.environ['baidu_language_type'] == '':
+    BAIDU_LANGUAGE_TYPE = 'auto_detect'
+else:
+    BAIDU_LANGUAGE_TYPE = os.environ['baidu_language_type']
 TENCENT_YOUTU_APPID = os.environ['tencent_youtu_appid']
 TENCENT_YOUTU_APPKEY = os.environ['tencent_youtu_appkey']
 GOOGLE_ACCESS_TOKEN = os.environ['google_access_token']

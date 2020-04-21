@@ -18,10 +18,9 @@
 
 ## 版本
 
-### 4.4
+### 4.5
 
-- 修复 python 3.8 的报错问题，感谢 [LucasZhan](https://github.com/LucasZhan) 报告并帮助测试；
-- 修复百度二维码识别无法使用的问题。
+- 支持百度 OCR 自定义语种识别，详情请见：[https://ai.baidu.com/ai-doc/OCR/vk3h7y58v](https://ai.baidu.com/ai-doc/OCR/vk3h7y58v)
 
 ## 能力
 
@@ -93,6 +92,40 @@ pip install zxing
 2. 二维码识别支持同时识别多个；
 3. 自带一个测试 Token，不保证可用性，需要稳定可自行申请；
 4. 最大支持单个 4MB 的图片。
+
+#### 自定义语种
+
+> 目前仅支持通用 OCR 选择语种
+
+语种选择逻辑：
+
+1. ctrl+v 触发时，将选择环境变量中的 `baidu_language_type` 来定义语种，如果该值为空，则定义为默认值 `CHN_ENG`，即中英文混合识别；
+2. 当使用 `oob` 直接触发时，同上；
+3. 当使用 `oob` 调出选择菜单，并按住 command 触发时，将使用第二语言识别。
+
+第一语言选择位置：
+![First_Lang_Select][image-4]
+
+第二语言选择位置：
+![Second_Lang_Select][image-5]
+
+<details>
+  <summary>支持的全部语种及其语种代码如下所示：</summary>
+
+```
+- CHN_ENG：中英文混合
+- ENG：英文
+- JAP：日语
+- KOR：韩语
+- FRE：法语
+- SPA：西班牙语
+- POR：葡萄牙语
+- GER：德语
+- ITA：意大利语
+- RUS：俄语
+```
+
+</details>
 
 ### [Tencent Youtu (腾讯优图)][8]
 
@@ -182,3 +215,5 @@ pip install zxing
 [image-1]: examples/demo_ocr_cn.gif
 [image-2]: examples/demo_trans.gif
 [image-3]: examples/file_ocr.png
+[image-4]: examples/first_lang_select.png
+[image-5]: examples/second_lang_select.png

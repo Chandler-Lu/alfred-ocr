@@ -1,9 +1,9 @@
 '''
 @Description: Capture than OCR - macOS - Online OCR
-@version: 3.4
+@version: 4.5
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-@LastEditTime: 2020-03-27 20:52:33
+@LastEditTime: 2020-04-21 19:43:15
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -35,6 +35,10 @@ Error Declare
 
 def declare_network_error():
     print('Network connection refused!', end='')
+    sys.exit(0)
+
+def declare_file_error():
+    print('File ERROR!', end='')
     sys.exit(0)
 
 
@@ -93,6 +97,7 @@ def baidu_ocr(pic_path):
                 },
                 data={
                     "image": convert_image_base64(pic_path),
+                    "language_type": c.BAIDU_LANGUAGE_TYPE,
                 },
             )
             if (response.status_code == 200):
@@ -382,42 +387,7 @@ def output_baidu_ocr(response_json):
                         i.span()[1] + space_insert_offset - 1, ' ')
                     space_insert_offset += 1
                     words = ''.join(list_words)
-            '''
-            is_num_between_chinese = re.finditer(
-                r'[\u4e00-\u9fa5+|\W][0-9a-zA-Z]+[\u4e00-\u9fa5+]', words)  # 汉字+数字+汉字
-            if is_num_between_chinese != None:
-                space_insert_offset = 0  # 第一次插入空格后，后续插入点发生偏移
-                for i in is_num_between_chinese:
-                    list_words = list(words)
-                    list_words.insert(
-                        i.span()[0] + space_insert_offset + 1, ' ')
-                    list_words.insert(i.span()[1] + space_insert_offset, ' ')
-                    space_insert_offset += 2
-                    words = ''.join(list_words)
-            is_num_between_chinese_space = re.finditer(
-                r'[\u4e00-\u9fa5+][0-9a-zA-Z]+( )+[\u4e00-\u9fa5+]', words)  # 汉字+数字+空格+汉字
-            if is_num_between_chinese_space != None:
-                space_insert_offset = 0
-                for i in is_num_between_chinese_space:
-                    list_words = list(words)
-                    list_words.insert(
-                        i.span()[0] + space_insert_offset + 1, ' ')
-                    space_insert_offset += 1
-                    words = ''.join(list_words)
-            is_num_between_space_chinese = re.finditer(
-                r'( )+[0-9a-zA-Z]+[\u4e00-\u9fa5+]', words)  # 汉字+空格+数字+汉字
-            if is_num_between_space_chinese != None:
-                space_insert_offset = 0
-                for i in is_num_between_space_chinese:
-                    list_words = list(words)
-                    list_words.insert(
-                        i.span()[1] + space_insert_offset - 1, ' ')
-                    space_insert_offset += 1
-                    words = ''.join(list_words)
-            '''
             words = words.replace(", ", "，").replace(",", "，")
-            # words = words.replace(". ", "。").replace(
-            #     ".", "。").replace("。 ", "。")
             words = words.replace("!", "！")
             words = words.replace(";", "；")
             words = words.replace(":", "：")
@@ -471,6 +441,10 @@ def remove_pic(pic_path):
 
 
 if __name__ == "__main__":
+    try:
+        os.path.getsize(pic_path)
+    except FileNotFoundError:
+        declare_file_error()
     '''
     1: baidu
     2: baidu_qrcode

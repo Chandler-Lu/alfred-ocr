@@ -20,7 +20,7 @@
 
 ### 4.5
 
-- 支持百度 OCR 自定义语种识别，详情请见：[https://ai.baidu.com/ai-doc/OCR/vk3h7y58v](https://ai.baidu.com/ai-doc/OCR/vk3h7y58v)
+- 支持百度 OCR 自定义语种识别，详情请见：[https://github.com/Chandler-Lu/alfred-ocr#自定义语种](https://github.com/Chandler-Lu/alfred-ocr#自定义语种)
 
 ## 能力
 
@@ -95,7 +95,7 @@ pip install zxing
 
 #### 自定义语种
 
-> 目前仅支持通用 OCR 选择语种
+> 目前仅支持通用 OCR 选择语
 
 语种选择逻辑：
 

@@ -104,9 +104,11 @@ pip install zxing
 3. 当使用 `oob` 调出选择菜单，并按住 command 触发时，将使用第二语言识别。
 
 第一语言选择位置：
+
 ![First_Lang_Select][image-4]
 
 第二语言选择位置：
+
 ![Second_Lang_Select][image-5]
 
 <details>

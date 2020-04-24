@@ -21,8 +21,7 @@
 ### 4.6
 
 - 更改 CNOCR 的触发方式，现与其余 OCR 一致；
-- CNOCR 上游更新至 V1.1.0 ([查看详情](https://github.com/breezedeus/cnocr))；
-- 新版本 CNOCR 会有一个奇怪的输出，已经反馈。
+- CNOCR 上游更新至 V1.1.1 ([查看详情](https://github.com/breezedeus/cnocr))。
 
 ### 4.5
 

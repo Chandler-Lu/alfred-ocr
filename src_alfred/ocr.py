@@ -1,9 +1,9 @@
 '''
 @Description: Capture than OCR - macOS - Online OCR
-@version: 4.5
+@version: 4.7
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-@LastEditTime: 2020-04-21 20:48:23
+@LastEditTime: 2020-04-24 17:25:21
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -460,10 +460,11 @@ def remove_pic(pic_path):
 
 
 if __name__ == "__main__":
-    try:
-        os.path.getsize(pic_path)
-    except FileNotFoundError:
-        declare_file_error()
+    if (0 <= ocr_select <= 6):
+        try:
+            os.path.getsize(pic_path)
+        except FileNotFoundError:
+            declare_file_error()
     '''
     0: CNOCR
     1: baidu

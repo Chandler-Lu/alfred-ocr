@@ -39,7 +39,6 @@ def declare_network_error():
 
 
 def declare_file_error():
-    print('File ERROR!', end='')
     sys.exit(0)
 
 

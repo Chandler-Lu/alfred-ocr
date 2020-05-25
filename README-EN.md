@@ -12,13 +12,6 @@
 
 ![][image-1]
 
-## Version
-
-### 4.4
-
-- Fix a problem with python 3.8;
-- Fix Baidu QR code can not be used.
-
 ## Feature
 
 - Offline OCR (CNOCR)
@@ -138,7 +131,7 @@
 5. [Elvis Cai][16]
 
 [1]:	https://github.com/Chandler-Lu/alfred-ocr/blob/master/README.md
-[2]:	https://cloud.yeslu.cn/github/Capture%20then%20OCR.zip
+[2]:	https://img.yeslu.cn/github/Capture_then_OCR.zip
 [3]:	https://github.com/Chandler-Lu/alfred-ocr/releases "Github-Release"
 [4]:	https://realpython.com/installing-python/#macos-mac-os-x
 [5]:	https://github.com/breezedeus/cnocr

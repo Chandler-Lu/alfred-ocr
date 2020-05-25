@@ -207,7 +207,7 @@ pip install zxing
 2. [LucasZhan](https://github.com/LucasZhan)
 
 [1]: https://github.com/Chandler-Lu/alfred-ocr/blob/master/README-EN.md
-[2]: https://cloud.yeslu.cn/github/Capture%20then%20OCR.zip
+[2]: https://img.yeslu.cn/github/Capture_then_OCR.zip
 [3]: https://github.com/Chandler-Lu/alfred-ocr/releases
 [4]: https://www.yeslu.cn/archives/7fe802d0.html
 [5]: https://github.com/breezedeus/cnocr

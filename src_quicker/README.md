@@ -1,5 +1,9 @@
 # Quicker - OCR and Translation
 
+## 备注
+
+由于手上没有 Windows 的设备，Quicker 版本及功能会严重滞后于 Alfred。
+
 ## 动作
 
 - [https://getquicker.net/Sharedaction?code=f73ca43a-98c6-475d-a3cc-08d7c216a695][1]

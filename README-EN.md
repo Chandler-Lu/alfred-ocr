@@ -30,7 +30,14 @@
 
 ## Python Module
 
-### CNOCR
+
+### Online OCR
+
+```bash
+ pip install requests
+```
+
+### CNOCR (Offline OCR)
 
 ```bash
  pip install cnocr
@@ -40,12 +47,6 @@
 
 ```bash
  pip install zxing
-```
-
-### Others
-
-```bash
- pip install requests
 ```
 
 ## Interfaces

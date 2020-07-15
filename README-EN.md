@@ -18,6 +18,7 @@
 - Online OCR (Baidu | Tencent Youtu | Google)
 - QR Code Reader (Baidu | ZXing)
 - Form OCR (Baidu)
+- Equations OCR (Mathpix)
 - Multi File OCR (Baidu)
 - Translate (ColorfulClouds)
 
@@ -55,7 +56,7 @@
 
 #### Trigger
 
-- Use keyword `oo` to trigger screenshot selector.
+- Use keyword `ooc` to trigger screenshot selector.
 
 #### Description
 

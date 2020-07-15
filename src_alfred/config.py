@@ -2,10 +2,9 @@
 @Description: Capture than OCR - Variable
 @Author: Chandler Lu
 @Date: 2020-03-09 20:32:15
-@LastEditTime: 2020-04-21 19:42:11
+@LastEditTime: 2020-07-15 20:51:39
 '''
 # -*- coding: UTF-8 -*-
-
 import os
 
 # Control
@@ -26,6 +25,8 @@ GOOGLE_ACCESS_TOKEN = os.environ['google_access_token']
 GOOGLE_POST_REFERER = os.environ['google_post_referer']
 GOOGLE_HTTP_PROXY = os.environ['google_http_proxy']
 CAIYUN_TRANSLATE_TOKEN = os.environ['caiyun_token']
+MATHPIX_APP_ID = os.environ['mathpix_app_id']
+MATHPIX_APP_KEY = os.environ['mathpix_app_key']
 
 # Key - Quicker
 
@@ -37,6 +38,8 @@ CAIYUN_TRANSLATE_TOKEN = os.environ['caiyun_token']
 # GOOGLE_POST_REFERER = ''
 # GOOGLE_HTTP_PROXY = ''
 # CAIYUN_TRANSLATE_TOKEN = '3975l6lr5pcbvidl6jl2'
+# MATHPIX_APP_ID = ''
+# MATHPIX_APP_KEY = ''
 
 # API
 BAIDU_GET_TOKEN_URL = 'https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=' + \
@@ -47,3 +50,4 @@ BAIDU_FORM_API = 'https://aip.baidubce.com/rest/2.0/solution/v1/form_ocr/request
 TENCENT_YOUTU_OCR_API = 'https://api.ai.qq.com/fcgi-bin/ocr/ocr_generalocr'
 GOOGLE_OCR_API = 'https://vision.googleapis.com/v1/images:annotate'
 CAIYUN_TRANSLATE_API = 'http://api.interpreter.caiyunai.com/v1/translator'
+MATHPIX_API = 'https://api.mathpix.com/v3/text'

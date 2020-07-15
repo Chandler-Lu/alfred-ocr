@@ -1,9 +1,9 @@
 '''
-@Description: Capture than OCR - macOS - Online OCR
-@version: 4.7
+@Description: Capture than OCR - Online OCR
+@version: 4.8
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-@LastEditTime: 2020-04-24 17:25:21
+@LastEditTime: 2020-07-15 20:52:29
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -282,6 +282,42 @@ def google_ocr(pic_path):
         declare_network_error()
 
 
+'''
+Mathpix OCR
+'''
+
+
+def mathpix_ocr(pic_path):
+    ''' https://docs.mathpix.com/?python#request-parameters
+    file_path = 'limit.jpg'
+    image_uri = "data:image/jpg;base64," + b64encode(open(pic_path, "rb").read()).decode()
+    r = requests.post("https://api.mathpix.com/v3/text",
+                    data=json.dumps({'src': image_uri}),
+                    headers={"app_id": "YOUR_APP_ID", "app_key": "YOUR_APP_KEY",
+                            "Content-type": "application/json"})
+    print(json.dumps(json.loads(r.text), indent=4, sort_keys=True))
+    '''
+    try:
+        response = requests.post(
+            url=c.MATHPIX_API,
+            headers={
+                'app_id': c.MATHPIX_APP_ID,
+                'app_key': c.MATHPIX_APP_KEY,
+                'Content-type': 'application/json',
+            },
+            data=json.dumps({
+                'src': 'data:image/jpg;base64,' + convert_image_base64(pic_path)
+            })
+        )
+        if (response.status_code == 200):
+            response_json = response.json()['latex_styled']
+            print(response_json, end='')
+        else:
+            print('Request failed!', end='')
+    except requests.exceptions.ConnectionError:
+        declare_network_error()
+
+
 def multi_file_ocr():
     names = [name for name in os.listdir(temp_path)
              if re.search(r'.png|.jpg|.jpeg|.bmp', name, re.IGNORECASE) and os.path.getsize(temp_path + '/' + name) <= 4194304]
@@ -459,7 +495,7 @@ def remove_pic(pic_path):
 
 
 if __name__ == "__main__":
-    if (0 <= ocr_select <= 6):
+    if (ocr_select != 99):
         try:
             os.path.getsize(pic_path)
         except FileNotFoundError:
@@ -472,7 +508,8 @@ if __name__ == "__main__":
     4: tencent
     5: google
     6: zxing
-    7: file
+    7: mathpix
+    99: file
     '''
     if (ocr_select == 0):
         cnocr_ocr(pic_path)
@@ -489,8 +526,10 @@ if __name__ == "__main__":
     elif (ocr_select == 6):
         barcode_decode(pic_path)
     elif (ocr_select == 7):
+        mathpix_ocr(pic_path)
+    elif (ocr_select == 99):
         multi_file_ocr()
-    if (ocr_select != 7):
+    if (ocr_select != 99):
         remove_pic(pic_path)
 
 '''

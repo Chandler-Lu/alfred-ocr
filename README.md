@@ -18,6 +18,11 @@
 
 ## 版本
 
+### 4.8
+
+- 支持 Mathpix 公式识别（因学业原因，仅支持识别后输出 Latex 格式文本，更多支持选项待后期开发）;
+- 由于可选识别方式过多，CNOCR 的触发方式修改为唯一触发词 ooc (CNOCR)。
+
 ### 近期更新
 
 - 紧急修复批量文件识别报错的问题；
@@ -26,10 +31,13 @@
 
 ## 能力
 
+### CNOCR
+
 - 离线 OCR (CNOCR)
 - 通用 OCR (百度 | 腾讯优图 | Google)
 - 二维码识别 (百度 | ZXing)
 - 表格文字识别 (百度)
+- 数学公式识别 (Mathpix)
 - 多文件识别 (百度)
 - 文本翻译 (彩云小译)
 
@@ -158,6 +166,16 @@ pip install zxing
 #### 说明
 
 - Google OCR 为收费业务，需绑定信用卡，故本项目不带测试 Token，需要自行申请。
+
+### [Mathpix](https://mathpix.com)
+
+#### 触发
+
+- 公式识别：截图至剪贴板后使用关键词 `oom (mathpix)` 触发。
+
+#### 说明
+
+- Mathpix 为收费业务，需绑定信用卡，故本项目不带测试 Token，需要自行[申请](https://accounts.mathpix.com/ocr-api)。
 
 ### [ZXing][10]
 

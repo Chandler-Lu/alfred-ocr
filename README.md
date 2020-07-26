@@ -31,8 +31,6 @@
 
 ## 能力
 
-### CNOCR
-
 - 离线 OCR (CNOCR)
 - 通用 OCR (百度 | 腾讯优图 | Google)
 - 二维码识别 (百度 | ZXing)
@@ -211,7 +209,7 @@ pip install zxing
 3. [ginfuru/alfred-screen-capture][15]
 4. [oott123/alfred-clipboard-ocr][16]
 
-### 测试员
+感谢以下小伙伴帮助测试：
 
 1. [Elvis Cai][17]
 2. [LucasZhan](https://github.com/LucasZhan)

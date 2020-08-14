@@ -2,7 +2,7 @@
 @Description: Capture than OCR - Variable
 @Author: Chandler Lu
 @Date: 2020-03-09 20:32:15
-@LastEditTime: 2020-07-15 20:51:39
+LastEditTime: 2020-08-14 14:18:47
 '''
 # -*- coding: UTF-8 -*-
 import os
@@ -16,7 +16,7 @@ BAIDU_OCR_WIDTH_OFFSET = 50
 BAIDU_API_KEY = os.environ['baidu_api_key']
 BAIDU_SECRET_KEY = os.environ['baidu_secret_key']
 if os.environ['baidu_language_type'] == '':
-    BAIDU_LANGUAGE_TYPE = 'auto_detect'
+    BAIDU_LANGUAGE_TYPE = 'CHN_ENG'
 else:
     BAIDU_LANGUAGE_TYPE = os.environ['baidu_language_type']
 TENCENT_YOUTU_APPID = os.environ['tencent_youtu_appid']

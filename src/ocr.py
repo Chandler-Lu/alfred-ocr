@@ -1,9 +1,9 @@
 '''
-@Description: Capture than OCR - Online OCR
+@Description: Capture then OCR - Alfred for macOS
 @version: 4.8
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-@LastEditTime: 2020-07-15 20:52:29
+LastEditTime: 2020-12-27 22:52:10
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -119,7 +119,10 @@ def baidu_ocr(pic_path):
                 },
             )
             if (response.status_code == 200):
-                output_baidu_ocr(response.json())
+                if ('error_code' in response.json()):
+                    print(response.json()['error_msg'])
+                else:
+                    output_baidu_ocr(response.json())
             else:
                 print('Request failed!', end='')
         except requests.exceptions.ConnectionError:
@@ -144,8 +147,11 @@ def baidu_ocr_qrcode(pic_path):
                 },
             )
             if (response.status_code == 200):
-                response_json = response.json()['codes_result']
-                output_result(2, response_json)
+                if ('error_code' in response.json()):
+                    print(response.json()['error_msg'])
+                else:
+                    response_json = response.json()['codes_result']
+                    output_result(2, response_json)
             else:
                 print('Request failed!', end='')
         except requests.exceptions.ConnectionError:

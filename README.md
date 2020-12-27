@@ -1,8 +1,10 @@
 # Alfred - OCR and Translation
 
-## 语言
+## 声明
 
-简体中文 | [English][1]
+![ocr_abuse][image-7]
+
+近期发现有用户滥用百度 OCR 的 API，如上图所示，有用户在短时间内进行了上百次调用。请有较高需求的用户自行注册百度AI，这样的滥用行为将导致日调用额度超标以致其他用户无法正常使用。若长期发现这样的行为，将重新考虑是否要内置 Key。谢谢配合!
 
 ## 下载地址
 
@@ -18,17 +20,11 @@
 
 ## 版本
 
-### 4.8
+### 4.8.1
 
+- 百度 OCR 更换接口参数，已修复
 - 支持 Mathpix 公式识别（因学业原因，仅支持识别后输出 Latex 格式文本，更多支持选项待后期开发）;
 - 由于可选识别方式过多，CNOCR 的触发方式修改为唯一触发词 `ooc (CNOCR)`。
-
-### 近期更新
-
-- 紧急修复批量文件识别报错的问题；
-- 更改 CNOCR 的触发方式，现与其余 OCR 一致；
-- 支持百度 OCR 自定义语种识别，详情请见：[https://github.com/Chandler-Lu/alfred-ocr#自定义语种](https://github.com/Chandler-Lu/alfred-ocr#自定义语种)
-
 ## 能力
 
 - 离线 OCR (CNOCR)
@@ -204,10 +200,18 @@ pip install zxing
 
 ## 致谢
 
+### [Jetbrains](https://www.jetbrains.com/?from=Alfred-OCR)
+
+![jetbrains_logo][image-6]
+
+### 项目
+
 1. [breezedeus/cnocr][13]
 2. [dlenski/python-zxing][14]
 3. [ginfuru/alfred-screen-capture][15]
 4. [oott123/alfred-clipboard-ocr][16]
+
+### 用户
 
 感谢以下小伙伴帮助测试：
 
@@ -231,8 +235,10 @@ pip install zxing
 [15]: https://github.com/ginfuru/alfred-screen-capture
 [16]: https://github.com/oott123/alfred-clipboard-ocr
 [17]: https://github.com/elviscai
-[image-1]: examples/demo_ocr_cn.gif
-[image-2]: examples/demo_trans.gif
-[image-3]: examples/file_ocr.png
-[image-4]: examples/first_lang_select.png
-[image-5]: examples/second_lang_select.png
+[image-1]: img/demo_ocr_cn.gif
+[image-2]: img/demo_trans.gif
+[image-3]: img/file_ocr.png
+[image-4]: img/first_lang_select.png
+[image-5]: img/second_lang_select.png
+[image-6]: img/jetbrains_logo.png
+[image-7]: img/ocr_abuse.png

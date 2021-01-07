@@ -3,25 +3,25 @@
 @version: 4.8
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-LastEditTime: 2020-12-27 22:52:10
+LastEditTime: 2021-01-07 17:26:36
 '''
 # -*- coding: UTF-8 -*-
 import sys
 import os
 import time
 import statistics
-
 import json
 import re
 import requests
-
 import hashlib
+import hmac
 import random
 import string
 from base64 import b64encode
 from urllib import parse
 
 import config as c
+import tencent_ocr
 
 
 ocr_select = int(sys.argv[1])
@@ -181,48 +181,6 @@ def baidu_ocr_form(pic_path):
                 response_json = response.json()['result']['result_data']
                 response_json = json.loads(response_json)
                 output_baidu_ocr_form(response_json)
-            else:
-                print('Request failed!', end='')
-        except requests.exceptions.ConnectionError:
-            declare_network_error()
-    else:
-        print('Too large!')
-
-
-'''
-Tencent Youtu OCR
-'''
-
-
-def request_tencent_youtu_sign(postdata, pic_path):
-    # 字典升序排序
-    dic = sorted(postdata.items(), key=lambda d: d[0])
-    # URL编码 + 拼接app_key
-    sign_text = parse.urlencode(dic) + '&app_key=' + c.TENCENT_YOUTU_APPKEY
-    # MD5 + 转换大写
-    sign = hashlib.md5(sign_text.encode('utf-8')).hexdigest().upper()
-    return sign
-
-
-def tencent_youtu_ocr(pic_path):
-    if (1048576 <= os.path.getsize(pic_path) <= 4194304):
-        baidu_ocr(pic_path)
-        return
-    elif (os.path.getsize(pic_path) <= 1048576):
-        postdata = {'app_id': c.TENCENT_YOUTU_APPID, 'time_stamp': int(time.time()), 'nonce_str': ''.join(
-            random.choices(string.ascii_letters + string.digits, k=8)), 'image': convert_image_base64(pic_path)}
-        postdata['sign'] = request_tencent_youtu_sign(postdata, pic_path)
-        try:
-            response = requests.post(
-                url=c.TENCENT_YOUTU_OCR_API,
-                headers={
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                data=postdata
-            )
-            if (response.status_code == 200):
-                response_json = response.json()['data']['item_list']
-                output_result(4, response_json)
             else:
                 print('Request failed!', end='')
         except requests.exceptions.ConnectionError:
@@ -429,7 +387,7 @@ def output_baidu_ocr(response_json):
         if chinese_tag == 1:
             is_num_between_chinese_space = re.finditer(
                 r'[\u4e00-\u9fa5+][0-9a-zA-Z]', words)  # 汉字+数字
-            if is_num_between_chinese_space != None:
+            if is_num_between_chinese_space is not None:
                 space_insert_offset = 0
                 for i in is_num_between_chinese_space:
                     list_words = list(words)
@@ -439,7 +397,7 @@ def output_baidu_ocr(response_json):
                     words = ''.join(list_words)
             is_num_between_space_chinese = re.finditer(
                 r'[0-9a-zA-Z]+[\u4e00-\u9fa5+]', words)  # 数字+汉字
-            if is_num_between_space_chinese != None:
+            if is_num_between_space_chinese is not None:
                 space_insert_offset = 0
                 for i in is_num_between_space_chinese:
                     list_words = list(words)
@@ -467,7 +425,8 @@ def output_baidu_ocr(response_json):
             words = words.replace("？", "?")
             words = re.sub(r'( ){2,}', ' ', words)
             print(words, end='')
-        if (is_line_spacing_check == 1) and (index != response_json['words_result_num'] - 1) and (response_json['words_result'][index + 1]['location']['top'] - response_json['words_result'][index]['location']['top'] > top_half + c.BAIDU_OCR_SPACING_OFFSET):
+        if (is_line_spacing_check == 1) and (index != response_json['words_result_num'] - 1) and (
+                response_json['words_result'][index + 1]['location']['top'] - response_json['words_result'][index]['location']['top'] > top_half + c.BAIDU_OCR_SPACING_OFFSET):
             print()
         elif (is_line_spacing_check == 0) and (index != response_json['words_result_num'] - 1) and (response_json['words_result'][index]['location']['width'] < width_half - c.BAIDU_OCR_WIDTH_OFFSET):
             print()
@@ -526,7 +485,7 @@ if __name__ == "__main__":
     elif (ocr_select == 3):
         baidu_ocr_form(pic_path)
     elif (ocr_select == 4):
-        tencent_youtu_ocr(pic_path)
+        tencent_ocr.tencent_ocr(pic_path)
     elif (ocr_select == 5):
         google_ocr(pic_path)
     elif (ocr_select == 6):

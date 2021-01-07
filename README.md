@@ -1,14 +1,8 @@
 # Alfred - OCR and Translation
 
-## 声明
-
-![ocr_abuse][image-7]
-
-近期发现有用户滥用百度 OCR 的 API，如上图所示，有用户在短时间内进行了上百次调用。请有较高需求的用户自行注册百度AI，这样的滥用行为将导致日调用额度超标以致其他用户无法正常使用。若长期发现这样的行为，将重新考虑是否要内置 Key。谢谢配合!
-
 ## 下载地址
 
-[国内直链][2] | [Github-Release][3]
+[Packal][3] | [国内直链][2]
 
 ## OCR Demo
 
@@ -20,15 +14,22 @@
 
 ## 版本
 
-### 4.8.1
+### 4.9
+
+1. 删除腾讯优图接口；
+2. 新增腾讯云文字识别接口（正式版）；
+3. 新版本不再发布至 GitHub Release，将发布至 Packal。
+
+### 近期更新
 
 - 百度 OCR 更换接口参数，已修复
-- 支持 Mathpix 公式识别（因学业原因，仅支持识别后输出 Latex 格式文本，更多支持选项待后期开发）;
+- 支持 Mathpix 公式识别;
 - 由于可选识别方式过多，CNOCR 的触发方式修改为唯一触发词 `ooc (CNOCR)`。
+
 ## 能力
 
 - 离线 OCR (CNOCR)
-- 通用 OCR (百度 | 腾讯优图 | Google)
+- 通用 OCR (百度 | 腾讯 | Google)
 - 二维码识别 (百度 | ZXing)
 - 表格文字识别 (百度)
 - 数学公式识别 (Mathpix)
@@ -42,10 +43,6 @@
 3. 您需要安装 Python 3 及相应的依赖模块，并将 Python 3 路径填写在`PYTHON_PATH`处。
 4. 您需要申请并将对应接口的配置填入环境变量，部分接口附带我自己的 Key，但严禁滥用。
 5. 具体配置方法请移步 [安装方式][4]。
-
-<!-- ### 截图权限
-
-第一次使用时，请先用 `oo` 触发 CNOCR（无论你是否安装/需要 CNOCR 模块），此时 Alfred 会向系统请求屏幕录制权限，授权后，方可正常通过 `ctrl+v` 触发截屏。 -->
 
 ## 依赖
 
@@ -132,7 +129,7 @@ pip install zxing
 
 </details>
 
-### [Tencent Youtu (腾讯优图)][8]
+### [Tencent (腾讯)][8]
 
 #### 触发
 
@@ -141,7 +138,7 @@ pip install zxing
 #### 说明
 
 1. 自带一个测试 Token，不保证可用性，需要稳定可自行申请；
-2. 最大支持 1MB 的图片，过大图片会自动交由百度处理（当然百度最大也只支持 4MB）。
+2. 最大支持 3MB 的图片。
 
 ### [Google OCR][9]
 
@@ -219,13 +216,13 @@ pip install zxing
 2. [LucasZhan](https://github.com/LucasZhan)
 
 [1]: https://github.com/Chandler-Lu/alfred-ocr/blob/master/README-EN.md
-[2]: https://img.yeslu.cn/github/Capture_then_OCR.zip
-[3]: https://github.com/Chandler-Lu/alfred-ocr/releases
+[2]: https://t.yeslu.cn/github/Capture_then_OCR.zip
+[3]: https://www.packal.org/workflow/alfred-ocr
 [4]: https://www.yeslu.cn/archives/7fe802d0.html
 [5]: https://github.com/breezedeus/cnocr
 [6]: https://github.com/breezedeus/cnocr/blob/master/README.md
 [7]: https://ai.baidu.com/tech/ocr
-[8]: https://ai.qq.com/product/ocr.shtml#common
+[8]: https://console.cloud.tencent.com/ocr/overview
 [9]: https://cloud.google.com/vision/docs/ocr
 [10]: https://github.com/dlenski/python-zxing
 [11]: https://github.com/dlenski/python-zxing/blob/master/README.md
@@ -238,7 +235,7 @@ pip install zxing
 [image-1]: img/demo_ocr_cn.gif
 [image-2]: img/demo_trans.gif
 [image-3]: img/file_ocr.png
-[image-4]: img/first_lang_select.png
-[image-5]: img/second_lang_select.png
+[image-4]: img/first_lang_selection.png
+[image-5]: img/second_lang_selection.png
 [image-6]: img/jetbrains_logo.png
 [image-7]: img/ocr_abuse.png

@@ -2,7 +2,7 @@
 
 ## 下载地址
 
-[Packal][3] | [国内直链][2]
+[Packal][3]
 
 ## OCR Demo
 
@@ -215,8 +215,6 @@ pip install zxing
 1. [Elvis Cai][17]
 2. [LucasZhan](https://github.com/LucasZhan)
 
-[1]: https://github.com/Chandler-Lu/alfred-ocr/blob/master/README-EN.md
-[2]: https://t.yeslu.cn/github/Capture_then_OCR.zip
 [3]: https://www.packal.org/workflow/alfred-ocr
 [4]: https://www.yeslu.cn/archives/7fe802d0.html
 [5]: https://github.com/breezedeus/cnocr

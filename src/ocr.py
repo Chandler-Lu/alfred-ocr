@@ -1,9 +1,9 @@
 '''
 @Description: Capture then OCR - Alfred for macOS
-@version: 4.8
+@version: 4.9
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-LastEditTime: 2021-01-07 17:26:36
+LastEditTime: 2021-09-02 23:30:49
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -55,7 +55,7 @@ def convert_image_base64(pic_path):
 
 
 '''
-CNOCR
+CNOCR: 2.0
 '''
 
 
@@ -63,13 +63,12 @@ def cnocr_ocr(pic_path):
     from cnocr import CnOcr
     ocr = CnOcr()
     res = ocr.ocr(pic_path)
-    for r in res[:-1]:
-        for c in r:
-            print(c, end='')
+    for i in res[:-1]:
+        for j in i[0]:
+            print(j, end='')
         print()
-    for r in res[-1]:
-        for c in r:
-            print(c, end='')
+    for i in res[-1][0]:
+        print(i, end='')
 
 
 '''

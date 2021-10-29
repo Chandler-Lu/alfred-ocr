@@ -1,8 +1,12 @@
 # Alfred - OCR and Translation
 
+## 公告
+
+- 因本人 mac 已出，故本项目暂停更新，未来会跟进 Windows Quicker 的版本。
+
 ## 下载地址
 
-[Packal][3]
+[Packal][3] | [Github Release](https://github.com/Chandler-Lu/alfred-ocr/releases)
 
 ## OCR Demo
 
@@ -17,8 +21,7 @@
 ### 4.9
 
 1. 删除腾讯优图接口；
-2. 新增腾讯云文字识别接口（正式版）；
-3. 新版本不再发布至 GitHub Release，将发布至 Packal。
+2. 新增腾讯云文字识别接口（正式版）。
 
 ### 近期更新
 
@@ -194,12 +197,6 @@ pip install zxing
 
 - 段落优化
 - 截图翻译
-
-## 致谢
-
-### [Jetbrains](https://www.jetbrains.com/?from=Alfred-OCR)
-
-![jetbrains_logo][image-6]
 
 ### 项目
 

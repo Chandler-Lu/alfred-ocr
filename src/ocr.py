@@ -3,7 +3,7 @@
 @version: 4.9.1
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-LastEditTime: 2022-08-23 12:30:09
+LastEditTime: 2022-08-24 08:07:18
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -63,9 +63,8 @@ def cnocr_ocr(pic_path):
     from cnocr import CnOcr
     ocr = CnOcr(det_model_name='naive_det')
     res = ocr.ocr(pic_path)
-    for i in range(len(res)):
-        print(res[i]['text'], end='')
-
+    for i in res:
+        print(i['text'], end='')
 
 '''
 Baidu OCR

@@ -2,7 +2,7 @@
 
 ## 公告
 
-- 因本人 mac 已出，故本项目暂停更新，未来会跟进 Windows Quicker 的版本。
+- 因本人 mac 已出，故本项目针对 Alfred 的部分将停止更新，接下来将跟进针对  [Windows Quicker](https://getquicker.net/Sharedaction?code=f73ca43a-98c6-475d-a3cc-08d7c216a695) 的部分，但源码通用。
 
 ## 下载地址
 
@@ -20,7 +20,7 @@
 
 ### 4.9.2
 
-1. 支持 CNOCR 基于 FastAPI 的 HTTP [服务模式](https://github.com/breezedeus/cnocr#http%E6%9C%8D%E5%8A%A1)。
+1. 支持 CNOCR 基于 FastAPI 的 HTTP [服务模式](https://github.com/breezedeus/cnocr#http%E6%9C%8D%E5%8A%A1)，您可以使用[此方法](https://github.com/Chandler-Lu/alfred-ocr/wiki/Q&A#启用-cnocr-的-fastapi-服务模式-windows)注册 Windows 服务。
 
 ### 4.9.1
 
@@ -67,6 +67,7 @@ pip install requests
 
 ```bash
 pip install cnocr
+pip install cnocr[serve] # 针对 FastAPI 服务模式
 ```
 
 ### ZXing (离线二维码识别)

@@ -18,6 +18,10 @@
 
 ## 版本
 
+### 4.9.2
+
+1. 支持 CNOCR 基于 FastAPI 的 HTTP [服务模式](https://github.com/breezedeus/cnocr#http%E6%9C%8D%E5%8A%A1)。
+
 ### 4.9.1
 
 1. 修复新版 CNOCR 的输出问题（因没有 mac 设备，只更新了源码）。

@@ -3,7 +3,7 @@
 @version: 4.9.1
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-LastEditTime: 2022-08-24 08:07:18
+LastEditTime: 2022-09-12 17:41:48
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -60,11 +60,21 @@ CNOCR: 2.2.1
 
 
 def cnocr_ocr(pic_path):
-    from cnocr import CnOcr
-    ocr = CnOcr(det_model_name='naive_det')
-    res = ocr.ocr(pic_path)
+    if c.CNOCR_SERVE == 0:
+        from cnocr import CnOcr
+        ocr = CnOcr(det_model_name='naive_det')
+        res = ocr.ocr(pic_path)
+    elif c.CNOCR_SERVE == 1:
+        try:
+            req = requests.post(
+                c.CNOCR_API, timeout=1.5, files={'image': (pic_path, open(pic_path, 'rb'))})
+        except requests.Timeout:
+            print('Request timeout!', end='')
+            sys.exit(0)
+        res = req.json()['results']
     for i in res:
         print(i['text'], end='')
+
 
 '''
 Baidu OCR
@@ -268,8 +278,12 @@ def mathpix_ocr(pic_path):
             })
         )
         if (response.status_code == 200):
-            response_json = response.json()['latex_styled']
-            print(response_json, end='')
+            if 'error' in response.json():
+                print(response.json()['error'], end='')
+            elif 'latex_styled' in response.json():
+                print(response.json()['latex_styled'], end='')
+            else:
+                print(response.json()['text'], end='')
         else:
             print('Request failed!', end='')
     except requests.exceptions.ConnectionError:
@@ -495,9 +509,9 @@ if __name__ == "__main__":
  ________
 < rabbit >
  --------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
+        \\   ^__^
+         \\  (oo)\\_______
+            (__)\\       )\\/\
                 ||----w |
                 ||     ||
 '''

@@ -2,7 +2,7 @@
 @Description: Capture than OCR - Variable
 @Author: Chandler Lu
 @Date: 2020-03-09 20:32:15
-LastEditTime: 2021-01-07 17:29:41
+LastEditTime: 2022-09-12 17:50:31
 '''
 # -*- coding: UTF-8 -*-
 import os
@@ -10,10 +10,6 @@ import os
 # Key - Alfred
 BAIDU_API_KEY = os.environ['baidu_api_key']
 BAIDU_SECRET_KEY = os.environ['baidu_secret_key']
-if os.environ['baidu_language_type'] == '':
-    BAIDU_LANGUAGE_TYPE = 'CHN_ENG'
-else:
-    BAIDU_LANGUAGE_TYPE = os.environ['baidu_language_type']
 TENCENT_SECRET_ID = os.environ['tencent_secret_id']
 TENCENT_SECRET_KEY = os.environ['tencent_secret_key']
 GOOGLE_ACCESS_TOKEN = os.environ['google_access_token']
@@ -24,12 +20,11 @@ MATHPIX_APP_ID = os.environ['mathpix_app_id']
 MATHPIX_APP_KEY = os.environ['mathpix_app_key']
 
 # Key - Quicker
-
 # BAIDU_API_KEY = 'rmMynojL9KapDOikDTgKlImy'
 # BAIDU_SECRET_KEY = '3QKoI1E56u16tEMdwBnpXSPNezdoZWFD'
 # TENCENT_SECRET_ID = ''
 # TENCENT_SECRET_KEY = ''
-# # GOOGLE_ACCESS_TOKEN = ''
+# GOOGLE_ACCESS_TOKEN = ''
 # GOOGLE_POST_REFERER = ''
 # GOOGLE_HTTP_PROXY = ''
 # CAIYUN_TRANSLATE_TOKEN = '3975l6lr5pcbvidl6jl2'
@@ -46,6 +41,10 @@ GOOGLE_OCR_API = 'https://vision.googleapis.com/v1/images:annotate'
 CAIYUN_TRANSLATE_API = 'http://api.interpreter.caiyunai.com/v1/translator'
 MATHPIX_API = 'https://api.mathpix.com/v3/text'
 
+# CNOCR Control
+CNOCR_SERVE = 0
+CNOCR_API = 'http://127.0.0.1:8501/ocr'
+
 # Tencent Control
 TENCENT_SERVICE = 'ocr'
 TENCENT_ACTION = 'GeneralFastOCR'
@@ -54,6 +53,13 @@ TENCENT_OCR_API = 'https://ocr.tencentcloudapi.com'
 TENCENT_CONTENT_TYPE = 'application/json; charset=utf-8'
 
 # Baidu Control
+try:
+    if os.environ['baidu_language_type'] == '':
+        BAIDU_LANGUAGE_TYPE = 'CHN_ENG'
+    else:
+        BAIDU_LANGUAGE_TYPE = os.environ['baidu_language_type']
+except KeyError:
+    BAIDU_LANGUAGE_TYPE = 'CHN_ENG'
 BAIDU_OCR_SPACING_OFFSET = 8
 BAIDU_OCR_SPACING_VARIANCE = 15
 BAIDU_OCR_WIDTH_OFFSET = 50

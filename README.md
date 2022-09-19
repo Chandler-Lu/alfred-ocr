@@ -6,7 +6,7 @@
 
 ## 下载地址
 
-[Packal][3] | [Github Release](https://github.com/Chandler-Lu/alfred-ocr/releases)
+[Packal][3] | [Github](https://github.com/Chandler-Lu/alfred-ocr/releases) | [Quicker (Windows)](https://getquicker.net/Sharedaction?code=f73ca43a-98c6-475d-a3cc-08d7c216a695)
 
 ## OCR Demo
 

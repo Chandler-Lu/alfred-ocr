@@ -1,9 +1,8 @@
 '''
-Description:
-version:
+Description: Capture then OCR - Tencent
 Author: Chandler Lu
 Date: 2021-01-07 16:47:12
-LastEditTime: 2021-01-07 17:25:26
+LastEditTime: 2022-09-23 11:45:48
 '''
 
 import os

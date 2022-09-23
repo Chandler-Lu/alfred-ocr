@@ -1,9 +1,9 @@
 '''
 @Description: Capture then OCR - Alfred for macOS
-@version: 4.9.1
+@version: 4.9.3
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-LastEditTime: 2022-09-12 17:41:48
+LastEditTime: 2022-09-23 11:44:58
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -185,6 +185,37 @@ def baidu_ocr_form(pic_path):
                 response_json = response.json()['result']['result_data']
                 response_json = json.loads(response_json)
                 output_baidu_ocr_form(response_json)
+            else:
+                print('Request failed!', end='')
+        except requests.exceptions.ConnectionError:
+            declare_network_error()
+    else:
+        print('Too large!')
+
+def baidu_ocr_formula(pic_path):
+    if (os.path.getsize(pic_path) <= 4194304):
+        try:
+            response = requests.post(
+                url=c.BAIDU_FORMULA_API,
+                params={
+                    "access_token": return_baidu_token(),
+                },
+                headers={
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                data={
+                    "image": convert_image_base64(pic_path),
+                    "disp_formula": "true"
+                },
+            )
+            if (response.status_code == 200):
+                result_num = response.json()['formula_result_num']
+                if (result_num > 0):
+                    response_json = response.json()['formula_result']
+                    for i in range(result_num):
+                        print(response_json[i]['words'])
+                        if i == result_num - 1:
+                            print(response_json[i]['words'], end='')
             else:
                 print('Request failed!', end='')
         except requests.exceptions.ConnectionError:
@@ -500,6 +531,8 @@ if __name__ == "__main__":
         barcode_decode(pic_path)
     elif (ocr_select == 7):
         mathpix_ocr(pic_path)
+    elif (ocr_select == 8):
+        baidu_ocr_formula(pic_path)
     elif (ocr_select == 99):
         multi_file_ocr()
     if (ocr_select != 99):

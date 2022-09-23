@@ -3,7 +3,7 @@
 @version: 4.9.3
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-LastEditTime: 2022-09-23 11:44:58
+LastEditTime: 2022-09-23 12:00:49
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -213,9 +213,9 @@ def baidu_ocr_formula(pic_path):
                 if (result_num > 0):
                     response_json = response.json()['formula_result']
                     for i in range(result_num):
-                        print(response_json[i]['words'])
-                        if i == result_num - 1:
-                            print(response_json[i]['words'], end='')
+                        print(response_json[i]['words'], end=" \\\\")
+                        if (i != result_num - 1):
+                            print('\n')
             else:
                 print('Request failed!', end='')
         except requests.exceptions.ConnectionError:

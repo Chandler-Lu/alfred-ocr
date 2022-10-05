@@ -2,7 +2,7 @@
 @Description: Capture than OCR - Variable
 @Author: Chandler Lu
 @Date: 2020-03-09 20:32:15
-LastEditTime: 2022-10-04 15:25:42
+LastEditTime: 2022-10-05 10:04:13
 '''
 # -*- coding: UTF-8 -*-
 import platform
@@ -37,7 +37,7 @@ else:
 # API
 BAIDU_GET_TOKEN_URL = 'https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=' + \
     BAIDU_API_KEY + '&client_secret=' + BAIDU_SECRET_KEY
-BAIDU_OCR_API = 'https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic'
+BAIDU_OCR_API = 'https://aip.baidubce.com/rest/2.0/ocr/v1/general'
 BAIDU_QRCODE_API = 'https://aip.baidubce.com/rest/2.0/ocr/v1/qrcode'
 BAIDU_FORM_API = 'https://aip.baidubce.com/rest/2.0/solution/v1/form_ocr/request'
 BAIDU_FORMULA_API = 'https://aip.baidubce.com/rest/2.0/ocr/v1/formula'

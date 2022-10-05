@@ -1,9 +1,9 @@
 '''
 @Description: Capture then OCR - Alfred for macOS
-@version: 4.9.3
+@version: 4.9.4
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-LastEditTime: 2022-09-23 12:00:49
+LastEditTime: 2022-10-05 09:45:00
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -34,7 +34,7 @@ Error Declare
 
 
 def declare_network_error():
-    print('Network connection refused!', end='')
+    print('Error: Network connection refused!', end='')
     sys.exit(0)
 
 
@@ -55,7 +55,7 @@ def convert_image_base64(pic_path):
 
 
 '''
-CNOCR: 2.2.1
+CNOCR: 2.2.1+
 '''
 
 
@@ -84,11 +84,14 @@ Baidu OCR
 def request_baidu_token():
     try:
         api_message = requests.get(c.BAIDU_GET_TOKEN_URL)
-        if api_message:
+        if ('access_token' in api_message.json()):
             with open("./baidu_api_token.json", "w") as json_file:
                 json.dump(api_message.json(), json_file)
             token = api_message.json()['access_token']
             return token
+        else:
+            print("Error: " + api_message.json()['error_description'], end='')
+            sys.exit(0)
     except requests.exceptions.ConnectionError:
         declare_network_error()
 
@@ -191,6 +194,7 @@ def baidu_ocr_form(pic_path):
             declare_network_error()
     else:
         print('Too large!')
+
 
 def baidu_ocr_formula(pic_path):
     if (os.path.getsize(pic_path) <= 4194304):

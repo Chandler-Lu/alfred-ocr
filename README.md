@@ -4,9 +4,8 @@
 
 - 因本人 mac 已出，故本项目针对 Alfred 的部分将停止更新，接下来将跟进针对  [Windows Quicker](https://getquicker.net/Sharedaction?code=f73ca43a-98c6-475d-a3cc-08d7c216a695) 的部分，但源码通用。
 
-- 由于部分用户恶意滥用 API，导致 API 频繁返回错误信息，已经终止内置 API 的使用，如有需要，可以自行申请。
+- 由于部分用户[恶意滥用 API](https://github.com/Chandler-Lu/alfred-ocr/wiki#关于滥用)，导致 API 频繁返回错误信息，已经终止内置 API 的使用，如有需要，可以自行申请。
 
-  ![](https://img.yeslu.cn/blog/2022-10/08-2263da611cf7f7ec382219498f9fafac.png)
 
 ## 下载地址
 

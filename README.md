@@ -4,6 +4,10 @@
 
 - 因本人 mac 已出，故本项目针对 Alfred 的部分将停止更新，接下来将跟进针对  [Windows Quicker](https://getquicker.net/Sharedaction?code=f73ca43a-98c6-475d-a3cc-08d7c216a695) 的部分，但源码通用。
 
+- 由于部分用户恶意滥用 API，导致 API 频繁返回错误信息，已经终止内置 API 的使用，如有需要，可以自行申请。
+
+  ![](https://img.yeslu.cn/blog/2022-10/08-2263da611cf7f7ec382219498f9fafac.png)
+
 ## 下载地址
 
 [Packal][3] | [Github](https://github.com/Chandler-Lu/alfred-ocr/releases) | [Quicker (Windows)](https://getquicker.net/Sharedaction?code=f73ca43a-98c6-475d-a3cc-08d7c216a695)
@@ -26,15 +30,11 @@
 
 1. 修复新版 CNOCR 的输出问题（因没有 mac 设备，只更新了源码）。
 
-### 4.9
-
-1. 删除腾讯优图接口；
-2. 新增腾讯云文字识别接口（正式版）。
-
 ### 近期更新
 
-- 百度 OCR 更换接口参数，已修复
-- 支持 Mathpix 公式识别;
+- 百度 OCR 更换接口参数，已修复；
+- 支持 Mathpix 公式识别；
+- 删除腾讯优图接口，新增腾讯云文字识别接口（正式版）;
 - 由于可选识别方式过多，CNOCR 的触发方式修改为唯一触发词 `ooc (CNOCR)`。
 
 ## 能力

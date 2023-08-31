@@ -2,7 +2,7 @@
 @Description: Capture than OCR - Variable
 @Author: Chandler Lu
 @Date: 2020-03-09 20:32:15
-LastEditTime: 2022-10-05 10:04:13
+LastEditTime: 2023-08-31 21:22:32
 '''
 # -*- coding: UTF-8 -*-
 import platform
@@ -11,14 +11,14 @@ sysstr = platform.system()
 
 if (sysstr == 'Windows'):
     # Key - Quicker
-    BAIDU_API_KEY = 'rmMynojL9KapDOikDTgKlImy'
-    BAIDU_SECRET_KEY = '3QKoI1E56u16tEMdwBnpXSPNezdoZWFD'
+    BAIDU_API_KEY = ''
+    BAIDU_SECRET_KEY = ''
     TENCENT_SECRET_ID = ''
     TENCENT_SECRET_KEY = ''
     GOOGLE_ACCESS_TOKEN = ''
     GOOGLE_POST_REFERER = ''
     GOOGLE_HTTP_PROXY = ''
-    CAIYUN_TRANSLATE_TOKEN = '3975l6lr5pcbvidl6jl2'
+    CAIYUN_TRANSLATE_TOKEN = ''
     MATHPIX_APP_ID = ''
     MATHPIX_APP_KEY = ''
 else:

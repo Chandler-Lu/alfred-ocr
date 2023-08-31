@@ -1,12 +1,5 @@
 # Alfred - OCR and Translation
 
-## 公告
-
-- 因本人 mac 已出，故本项目针对 Alfred 的部分将停止更新，接下来将跟进针对  [Windows Quicker](https://getquicker.net/Sharedaction?code=f73ca43a-98c6-475d-a3cc-08d7c216a695) 的部分，但源码通用。
-
-- 由于部分用户[恶意滥用 API](https://github.com/Chandler-Lu/alfred-ocr/wiki#关于滥用)，导致 API 频繁返回错误信息，已经终止内置 API 的使用，如有需要，可以自行申请。
-
-
 ## 下载地址
 
 [Packal][3] | [Github](https://github.com/Chandler-Lu/alfred-ocr/releases) | [Quicker (Windows)](https://getquicker.net/Sharedaction?code=f73ca43a-98c6-475d-a3cc-08d7c216a695)
@@ -21,13 +14,13 @@
 
 ## 版本
 
+### 4.9.5
+
+- 同步 macOS Alfred 版本。
+
 ### 4.9.2
 
-1. 支持 CNOCR 基于 FastAPI 的 HTTP [服务模式](https://github.com/breezedeus/cnocr#http%E6%9C%8D%E5%8A%A1)，您可以使用[此方法](https://github.com/Chandler-Lu/alfred-ocr/wiki/Q&A#启用-cnocr-的-fastapi-服务模式-windows)注册 Windows 服务。
-
-### 4.9.1
-
-1. 修复新版 CNOCR 的输出问题（因没有 mac 设备，只更新了源码）。
+- 支持 CNOCR 基于 FastAPI 的 HTTP  [服务模式](https://github.com/breezedeus/cnocr#http%E6%9C%8D%E5%8A%A1)，您可以使用[此方法](https://github.com/Chandler-Lu/alfred-ocr/wiki/Q&A#启用-cnocr-的-fastapi-服务模式-windows)注册 Windows 服务。
 
 ### 近期更新
 

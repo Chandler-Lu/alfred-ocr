@@ -2,7 +2,7 @@
 
 ## 下载地址
 
-[Packal][3] | [Github](https://github.com/Chandler-Lu/alfred-ocr/releases) | [Quicker (Windows)](https://getquicker.net/Sharedaction?code=f73ca43a-98c6-475d-a3cc-08d7c216a695)
+[Github](https://github.com/Chandler-Lu/alfred-ocr/releases) | [Quicker (Windows)](https://getquicker.net/Sharedaction?code=f73ca43a-98c6-475d-a3cc-08d7c216a695)
 
 ## OCR Demo
 
@@ -213,7 +213,6 @@ pip install zxing
 1. [Elvis Cai][17]
 2. [LucasZhan](https://github.com/LucasZhan)
 
-[3]: https://www.packal.org/workflow/alfred-ocr
 [4]: https://www.yeslu.cn/archives/7fe802d0.html
 [5]: https://github.com/breezedeus/cnocr
 [6]: https://github.com/breezedeus/cnocr/blob/master/README.md

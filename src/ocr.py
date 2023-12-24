@@ -3,7 +3,7 @@
 @version: 4.9.4
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-LastEditTime: 2022-12-02 15:28:19
+LastEditTime: 2023-12-24 23:33:27
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -55,23 +55,24 @@ def convert_image_base64(pic_path):
 
 
 '''
-CNOCR: 2.2.1+
+CNOCR: v2.3
+https://github.com/breezedeus/CnOCR
 '''
 
 
 def cnocr_ocr(pic_path):
     if c.CNOCR_SERVE == 0:
         from cnocr import CnOcr
-        ocr = CnOcr(det_model_name='naive_det')
+        ocr = CnOcr(rec_model_name='doc-densenet_lite_136-gru', det_model_name='ch_PP-OCRv3_det')
         res = ocr.ocr(pic_path)
     elif c.CNOCR_SERVE == 1:
         try:
             req = requests.post(
                 c.CNOCR_API, timeout=1.5, files={'image': (pic_path, open(pic_path, 'rb'))})
+            res = req.json()['results']
         except requests.Timeout:
             print('Request timeout!', end='')
             sys.exit(0)
-        res = req.json()['results']
     for i in res:
         print(i['text'], end='')
 

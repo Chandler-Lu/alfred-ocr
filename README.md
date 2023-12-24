@@ -52,20 +52,20 @@
 ### 通用 OCR
 
 ```bash
-pip install requests
+pip install requests==2.31.0
 ```
 
 ### CNOCR (离线 OCR)
 
 ```bash
-pip install cnocr
-pip install cnocr[serve] # 针对 FastAPI 服务模式
+pip install cnocr[ort-cpu]==2.3
+pip install cnocr[serve]==2.3 # 针对 FastAPI 服务模式
 ```
 
 ### ZXing (离线二维码识别)
 
 ```bash
-pip install zxing
+pip install zxing==1.0.1
 ```
 
 ## 接口

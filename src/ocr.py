@@ -1,9 +1,9 @@
 '''
 @Description: Capture then OCR - Alfred for macOS
-@version: 4.9.4
+@version: 4.9.5
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-LastEditTime: 2023-12-24 23:33:27
+LastEditTime: 2024-03-17 14:42:58
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -63,7 +63,8 @@ https://github.com/breezedeus/CnOCR
 def cnocr_ocr(pic_path):
     if c.CNOCR_SERVE == 0:
         from cnocr import CnOcr
-        ocr = CnOcr(rec_model_name='doc-densenet_lite_136-gru', det_model_name='ch_PP-OCRv3_det')
+        ocr = CnOcr(rec_model_name='doc-densenet_lite_136-gru',
+                    det_model_name='ch_PP-OCRv3_det')
         res = ocr.ocr(pic_path)
     elif c.CNOCR_SERVE == 1:
         try:
@@ -167,12 +168,28 @@ def baidu_ocr_qrcode(pic_path):
     else:
         print('Too large!')
 
+def baidu_ocr_form_process_table(d):
+    # Initialize the table with empty strings
+    max_row = max(item['row_start'] for item in d) + 1
+    max_col = max(item['col_start'] for item in d) + 1
+    table = [[""] * max_col for _ in range(max_row)]
+
+    # Fill in the table with the data
+    for item in d:
+        row = item['row_start']
+        col = item['col_start']
+        words = item['words'].replace('\n', ' ')
+        table[row][col] = words
+
+    # Convert the table to a tab-separated string for display
+    r = '\n'.join(['\t'.join(row) for row in table])
+    return r
 
 def baidu_ocr_form(pic_path):
-    if (os.path.getsize(pic_path) <= 4194304):
+    if (os.path.getsize(pic_path) <= 8388608):
         try:
             response = requests.post(
-                url=c.BAIDU_FORM_API,
+                url=c.BAIDU_TABLE_API,
                 params={
                     "access_token": return_baidu_token(),
                 },
@@ -180,15 +197,14 @@ def baidu_ocr_form(pic_path):
                     "Content-Type": "application/x-www-form-urlencoded",
                 },
                 data={
-                    "image": convert_image_base64(pic_path),
-                    "is_sync": "true",
-                    "request_type": "json",
+                    "image": convert_image_base64(pic_path)
                 },
             )
             if (response.status_code == 200):
-                response_json = response.json()['result']['result_data']
-                response_json = json.loads(response_json)
-                output_baidu_ocr_form(response_json)
+                 for table_index, table in enumerate(response.json()['tables_result']):
+                    r = baidu_ocr_form_process_table(table['body'])
+                    print(r)
+                    print("\n")
             else:
                 print('Request failed!', end='')
         except requests.exceptions.ConnectionError:
@@ -513,7 +529,7 @@ if __name__ == "__main__":
     0: CNOCR
     1: baidu
     2: baidu_qrcode
-    3: baidu_form
+    3: baidu_table
     4: tencent
     5: google
     6: zxing

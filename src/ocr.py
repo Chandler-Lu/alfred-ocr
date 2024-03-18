@@ -3,7 +3,7 @@
 @version: 4.9.5
 @Author: Chandler Lu
 @Date: 2019-11-26 23:52:36
-LastEditTime: 2024-03-17 14:42:58
+LastEditTime: 2024-03-18 15:41:55
 '''
 # -*- coding: UTF-8 -*-
 import sys
@@ -168,7 +168,8 @@ def baidu_ocr_qrcode(pic_path):
     else:
         print('Too large!')
 
-def baidu_ocr_form_process_table(d):
+
+def baidu_ocr_table_process(d):
     # Initialize the table with empty strings
     max_row = max(item['row_start'] for item in d) + 1
     max_col = max(item['col_start'] for item in d) + 1
@@ -185,7 +186,8 @@ def baidu_ocr_form_process_table(d):
     r = '\n'.join(['\t'.join(row) for row in table])
     return r
 
-def baidu_ocr_form(pic_path):
+
+def baidu_ocr_table(pic_path):
     if (os.path.getsize(pic_path) <= 8388608):
         try:
             response = requests.post(
@@ -201,8 +203,8 @@ def baidu_ocr_form(pic_path):
                 },
             )
             if (response.status_code == 200):
-                 for table_index, table in enumerate(response.json()['tables_result']):
-                    r = baidu_ocr_form_process_table(table['body'])
+                for table_index, table in enumerate(response.json()['tables_result']):
+                    r = baidu_ocr_table_process(table['body'])
                     print(r)
                     print("\n")
             else:
@@ -465,26 +467,20 @@ def output_baidu_ocr(response_json):
                         i.span()[1] + space_insert_offset - 1, ' ')
                     space_insert_offset += 1
                     words = ''.join(list_words)
-            words = words.replace(", ", "，").replace(",", "，")
-            words = words.replace("!", "！")
-            words = words.replace(";", "；")
-            words = words.replace(":", "：")
-            words = words.replace("(", "（")
-            words = words.replace(")", "）")
-            words = words.replace("?", "？")
-            words = words.replace("—一", "——").replace("一—", "——")
-            words = re.sub(r'( ){2,}', ' ', words)
-            print(words, end='')
+            replace_map = {
+                ", ": "，", ",": "，", "!": "！", ";": "；",
+                ":": "：", "(": "（", ")": "）", "?": "？",
+                "—一": "——", "一—": "——"
+            }
         else:
-            words = words.replace("，", ",")
-            words = words.replace("。", ".")
-            words = words.replace("！", "!")
-            words = words.replace("；", ";")
-            words = words.replace("（", "(")
-            words = words.replace("）", ")")
-            words = words.replace("？", "?")
-            words = re.sub(r'( ){2,}', ' ', words)
-            print(words, end='')
+            replace_map = {
+                "，": ",", "。": ".", "！": "!", "；": ";",
+                "（": "(", "）": ")", "？": "?"
+            }
+        for a, b in replace_map.items():
+            words = words.replace(a, b)
+        words = re.sub(r'( ){2,}', ' ', words)
+        print(words)
         if (is_line_spacing_check == 1) and (index != response_json['words_result_num'] - 1) and (
                 response_json['words_result'][index + 1]['location']['top'] - response_json['words_result'][index]['location']['top'] > top_half + c.BAIDU_OCR_SPACING_OFFSET):
             print()
@@ -492,72 +488,43 @@ def output_baidu_ocr(response_json):
             print()
 
 
-def output_baidu_ocr_form(response_json):
-    form_num = response_json['form_num']
-    for i in range(form_num):
-        column = response_json['forms'][i]['body'][-1]['column'][0]  # 当前表格列数
-        row = response_json['forms'][i]['body'][-1]['row'][0]  # 当前表格行数
-        form_array = [[0 for a in range(column)] for a in range(row)]
-        form_body = response_json['forms'][i]['body']
-        for j in range(len(response_json['forms'][i]['header'])):
-            if response_json['forms'][i]['header'][j]['word'] != '':
-                print(response_json['forms'][i]['header'][j]['word'], end='\t')
-            if j != 0 or j != len(response_json['forms'][i]['header']) - 1:
-                print()
-        for j in range(len(form_body)):
-            cell_col = form_body[j]['column'][0] - 1  # 当前单元格所在列
-            cell_row = form_body[j]['row'][0] - 1  # 当前单元格所在行
-            form_array[cell_row][cell_col] = form_body[j]['word']
-        for k1 in range(cell_row + 1):
-            for k2 in range(cell_col + 1):
-                print(form_array[k1][k2], end='\t')
-            if k1 != cell_row:
-                print()
-
-
 def remove_pic(pic_path):
-    os.remove(pic_path)
+    if os.path.isfile(pic_path):
+        try:
+            os.remove(pic_path)
+            return True
+        except Exception as e:
+            return False
+    else:
+        return False
 
 
 if __name__ == "__main__":
-    if (ocr_select != 99):
-        try:
-            os.path.getsize(pic_path)
-        except FileNotFoundError:
-            declare_file_error()
-    '''
-    0: CNOCR
-    1: baidu
-    2: baidu_qrcode
-    3: baidu_table
-    4: tencent
-    5: google
-    6: zxing
-    7: mathpix
-    99: file
-    '''
-    if (ocr_select == 0):
-        cnocr_ocr(pic_path)
-    elif (ocr_select == 1):
-        baidu_ocr(pic_path)
-    elif (ocr_select == 2):
-        baidu_ocr_qrcode(pic_path)
-    elif (ocr_select == 3):
-        baidu_ocr_form(pic_path)
-    elif (ocr_select == 4):
-        tencent_ocr.tencent_ocr(pic_path)
-    elif (ocr_select == 5):
-        google_ocr(pic_path)
-    elif (ocr_select == 6):
-        barcode_decode(pic_path)
-    elif (ocr_select == 7):
-        mathpix_ocr(pic_path)
-    elif (ocr_select == 8):
-        baidu_ocr_formula(pic_path)
-    elif (ocr_select == 99):
-        multi_file_ocr()
-    if (ocr_select != 99):
-        remove_pic(pic_path)
+    ocr_functions = {
+        0: cnocr_ocr,
+        1: baidu_ocr,
+        2: baidu_ocr_qrcode,
+        3: baidu_ocr_table,
+        4: tencent_ocr.tencent_ocr,
+        5: google_ocr,
+        6: barcode_decode,
+        7: mathpix_ocr,
+        8: baidu_ocr_formula,
+        99: multi_file_ocr,
+    }
+
+    try:
+        if ocr_select != 99:
+            try:
+                os.path.getsize(pic_path)
+                ocr_functions[ocr_select](pic_path)
+                remove_pic(pic_path)
+            except FileNotFoundError:
+                declare_file_error()
+        else:
+            ocr_functions[ocr_select]()
+    except KeyError:
+        print("Invalid API selector.")
 
 '''
  ________

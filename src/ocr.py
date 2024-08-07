@@ -480,7 +480,7 @@ def output_baidu_ocr(response_json):
         for a, b in replace_map.items():
             words = words.replace(a, b)
         words = re.sub(r'( ){2,}', ' ', words)
-        print(words)
+        print(words, end="")
         if (is_line_spacing_check == 1) and (index != response_json['words_result_num'] - 1) and (
                 response_json['words_result'][index + 1]['location']['top'] - response_json['words_result'][index]['location']['top'] > top_half + c.BAIDU_OCR_SPACING_OFFSET):
             print()

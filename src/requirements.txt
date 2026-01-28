@@ -1,4 +1,0 @@
-requests==2.31.0
-cnocr[ort-cpu]==2.3
-cnocr[serve]==2.3
-zxing==1.0.1

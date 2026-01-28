@@ -1,0 +1,4 @@
+requests
+cnocr[ort-cpu]
+cnocr[serve]
+zxing-cpp

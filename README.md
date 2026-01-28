@@ -14,6 +14,10 @@
 
 ## 版本
 
+### 4.9.6
+
+- 使用 ZXing-C++ 进行二维码识别。
+
 ### 4.9.5
 
 - 同步 macOS Alfred 版本；
@@ -54,20 +58,20 @@
 ### 通用 OCR
 
 ```bash
-pip install requests==2.31.0
+pip install requests
 ```
 
 ### CNOCR (离线 OCR)
 
 ```bash
-pip install cnocr[ort-cpu]==2.3
-pip install cnocr[serve]==2.3 # 针对 FastAPI 服务模式
+pip install cnocr[ort-cpu]
+pip install cnocr[serve] # 针对 FastAPI 服务模式
 ```
 
 ### ZXing (离线二维码识别)
 
 ```bash
-pip install zxing==1.0.1
+pip install zxing-cpp
 ```
 
 ## 接口

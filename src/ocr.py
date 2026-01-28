@@ -356,18 +356,18 @@ def multi_file_ocr():
 
 
 '''
-Offline Barcode Decode (using !(zxing)[https://github.com/dlenski/python-zxing])
+Offline Barcode Decode (using !(zxing-cpp)[https://github.com/zxing-cpp/zxing-cpp])
 '''
 
 
 def barcode_decode(pic_path):
-    import zxing
-    reader = zxing.BarCodeReader()
-    barcode = reader.decode(pic_path)
-    if barcode is not None:
-        print(barcode.parsed, end='')
-    else:
-        print('Empty QR Code!')
+    import cv2, zxingcpp
+    img_qr = cv2.imread(pic_path)
+    barcodes = zxingcpp.read_barcodes(img_qr)
+    for barcode in barcodes:
+        print(barcode.text)
+    if len(barcodes) == 0:
+        print('Empty QR Code!', end="")
 
 
 '''

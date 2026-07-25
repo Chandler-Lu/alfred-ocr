@@ -1,2 +1,16 @@
 debug
 README-EN.md
+
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+.venv/
+
+# Local secrets and settings
+config/credentials.json
+config/user.yaml
+baidu_api_token.json
+**/baidu_api_token.json

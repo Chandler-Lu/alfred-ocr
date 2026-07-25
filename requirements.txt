@@ -1,4 +1,16 @@
+# Required
 requests
-cnocr[ort-cpu]
-cnocr[serve]
-zxing-cpp
+
+# Optional - offline OCR (CNOCR)
+# cnocr[ort-cpu]
+# cnocr[serve]          # FastAPI service mode
+
+# Optional - offline barcode / QR decoding (ZXing)
+# zxing-cpp
+# opencv-python
+
+# Optional - nested YAML in config/*.yaml (a flat reader is built in)
+# PyYAML
+
+# Development
+# pytest

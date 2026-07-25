@@ -14,6 +14,15 @@
 
 ## 版本
 
+### 5.0.0
+
+- **重构为分层结构**：`core`（基础设施）+ `providers`（各引擎）+ `utils`（纯工具），入口统一为 `src/main.py`；新增引擎只需新增一个 Provider 子类并在 `router.py` 注册；
+- **段落识别重写**：由「行距方差二选一」改为多信号加权判定（行距、行尾留白、首行缩进、字号变化、行尾标点、分栏、列表项），阈值全部相对于实测版面度量，同一段落的上下行不再插入回车；
+- **中英文空格与标点重写**：按字符上下文而非整行判断，URL、邮箱、`1,000.50`、`f(x)`、`v1.2.3` 不再被破坏；跨行的中英文边界也能正确加空格；英文换行不再被粘连（`canhandle` → `can handle`），英文连字符断行自动还原；
+- **健壮性**：所有网络请求增加超时、重试与统一代理；缺少某个密钥不再导致整个脚本崩溃；异常不会以 traceback 形式进入剪贴板；百度 Token 失效可自动刷新；
+- 修复腾讯接口在网络异常时的 `NameError`；
+- 新增单元测试与 `config/*.yaml` 配置支持。
+
 ### 4.9.6
 
 - 使用 ZXing-C++ 进行二维码识别。
@@ -52,6 +61,93 @@
 3. 您需要安装 Python 3 及相应的依赖模块，并将 Python 3 路径填写在`PYTHON_PATH`处。
 4. 您需要申请并将对应接口的配置填入环境变量，部分接口附带我自己的 Key，但严禁滥用。
 5. 具体配置方法请移步 [安装方式][4]。
+
+### 命令行
+
+统一入口为 `src/main.py`，服务可用数字（与旧版一致）、名称或 Alfred 关键词指定：
+
+```bash
+python src/main.py 1 /tmp/shot.png          # 数字选择器，兼容旧版 Action
+python src/main.py baidu /tmp/shot.png      # 名称
+python src/main.py oob -                    # 关键词，'-' 表示读取剪贴板图片
+python src/main.py baidu https://host/a.png # 远程图片
+python src/main.py translate "你好"          # 翻译
+python src/main.py                          # 查看全部服务
+```
+
+可选参数：`--json`（输出 Alfred Script Filter JSON）、`--copy`（同时写入剪贴板）、`--debug`（把段落判定过程打到 stderr）。
+
+> 旧入口 `src/ocr.py` 与 `src/translate.py` 仍然可用，它们会转发到 `main.py`，已安装的 Workflow 无需改动。
+
+## 项目结构
+
+```
+src/
+├── main.py            # 唯一入口
+├── router.py          # ServiceRouter：数字/名称/关键词 → Provider
+├── core/              # 公共基础设施
+│   ├── base_provider.py   # BaseProvider 抽象基类 + OcrResult
+│   ├── config.py          # 配置（默认值 + 配置文件 + 环境变量）
+│   ├── auth_manager.py    # Token 获取、缓存、自动刷新
+│   ├── http_client.py     # 超时、重试、代理、异常归一
+│   ├── image_loader.py    # 文件 / URL / 剪贴板
+│   ├── formatter.py       # 标点、中英文空格、结果渲染
+│   ├── layout.py          # 行盒子 → 段落
+│   ├── output.py          # stdout / Alfred JSON / 剪贴板 / 通知
+│   └── exceptions.py      # 异常体系
+├── providers/         # 各引擎实现（baidu / tencent / google / cnocr / mathpix / zxing / caiyun）
+└── utils/             # 标点映射表、剪贴板封装
+```
+
+新增一个引擎：继承 `BaseProvider`，实现 `recognize()`，然后在 `router.py` 的 `PROVIDER_CLASSES` 中登记。
+
+## 配置
+
+优先级：环境变量 > `config/user.yaml` > `~/.config/alfred-ocr/config.yaml` > `config/default.yaml` > 内置默认值。
+所有可调项及其说明见 [`config/default.yaml`](config/default.yaml)，每一项都能用同名环境变量覆盖（Alfred Workflow 变量即以此方式生效）。
+
+密钥请放在环境变量或 `config/credentials.json`（已被 git 忽略），不要写进配置文件：
+
+```json
+{
+  "baidu_api_key": "...",
+  "baidu_secret_key": "..."
+}
+```
+
+常用调节项：
+
+| 配置项 | 默认值 | 说明 |
+| ------ | ------ | ---- |
+| `http_proxy` | `127.0.0.1:7890` | **全局代理**，对所有引擎生效；填 `""` 则直连 |
+| `http_timeout` | `20.0` | 单次请求超时（秒） |
+| `http_retries` | `2` | 网络抖动与 5xx 的重试次数 |
+| `paragraph_enabled` | `true` | 关闭后每行单独成段 |
+| `paragraph_gap_ratio` | `1.45` | 行距超过常规行距的多少倍算新段落 |
+| `paragraph_short_line_chars` | `3.0` | 行尾留白多少个字算「这一行结束了」 |
+| `paragraph_indent_chars` | `1.2` | 首行缩进多少个字算新段落 |
+| `text_add_cjk_latin_space` | `true` | 中英文之间加空格 |
+| `text_normalize_punctuation` | `true` | 标点按上下文转全角/半角 |
+| `debug` | `false` | 输出段落判定依据到 stderr |
+
+### 关于代理
+
+`http_proxy` 是全局设置，由 `core/http_client.py` 统一注入，**所有引擎（含图片 URL 下载）都会走它**，不需要每个 provider 各自处理。
+
+关闭代理有一处需要注意：**空的环境变量会被当作「未设置」**，因为 Alfred 会把 Workflow 里所有变量都导出，没填的那些不应该覆盖默认值。所以要直连，请在配置文件里写空值：
+
+```yaml
+# config/user.yaml
+http_proxy: ""
+```
+
+## 开发
+
+```bash
+pip install -r requirements.txt
+pip install pytest
+python -m pytest tests -q
+```
 
 ## 依赖
 
@@ -99,10 +195,11 @@ pip install zxing-cpp
 
 #### 说明
 
-1. 具备中英文识别，标点符号将被替换为对应语言下的符号；
-2. 二维码识别支持同时识别多个；
-3. 自带一个测试 Token，不保证可用性，需要稳定可自行申请；
-4. 最大支持单个 4MB 的图片。
+1. 具备中英文识别；标点符号按上下文替换为对应语言下的符号，中英文之间自动补空格，URL、小数、`f(x)` 等不会被误伤；
+2. 自动合并段落：属于同一段的上下行直接拼接，不插入回车（判定依据与阈值见「配置」一节）；
+3. 二维码识别支持同时识别多个；
+4. 自带一个测试 Token，不保证可用性，需要稳定可自行申请；
+5. 最大支持单个 4MB 的图片。
 
 #### 自定义语种
 
@@ -197,12 +294,10 @@ pip install zxing-cpp
 
 #### 说明
 
-1. 自带一个测试 Token，不保证可用性，需要稳定可自行申请；
 2. 支持中译英，及 X 译中(X 为彩云小译已经支持的语言类别)。
 
 ## TODO
 
-- 段落优化
 - 截图翻译
 
 ### 项目
